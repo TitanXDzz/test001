@@ -1,0 +1,3 @@
+ralph:
+Create chatbot web application to diagnose condition by asking for symptoms and information. This is a quick project. Make local host automatically. Make sure the diagnosis is transparent.
+Use Gemini API key in gemini-api-key.txt
