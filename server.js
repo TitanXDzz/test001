@@ -9,7 +9,7 @@ const PORT = 5000;
 // Load API key
 const apiKey = fs.readFileSync('gemini-api-key.txt', 'utf8').trim();
 const genAI = new GoogleGenerativeAI(apiKey);
-const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
 
 const SYSTEM_PROMPT = `You are a medical symptom analysis assistant. Your role is to help users understand potential conditions based on their symptoms.
 
