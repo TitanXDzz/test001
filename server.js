@@ -11,9 +11,8 @@ let apiKey = process.env.GEMINI_API_KEY;
 if (!apiKey) {
   try { apiKey = fs.readFileSync('gemini-api-key.txt', 'utf8').trim(); } catch {}
 }
-if (!apiKey) throw new Error('GEMINI_API_KEY is not set. Add it as an environment variable.');
-const genAI = new GoogleGenerativeAI(apiKey);
-const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
+const genAI = apiKey ? new GoogleGenerativeAI(apiKey) : null;
+const model = genAI ? genAI.getGenerativeModel({ model: 'gemini-2.5-flash' }) : null;
 
 const SYSTEM_PROMPT = `คุณคือผู้ช่วยวิเคราะห์อาการทางการแพทย์ บทบาทของคุณคือช่วยให้ผู้ใช้เข้าใจสภาวะที่อาจเกิดขึ้นจากอาการของพวกเขา ให้ตอบเป็นภาษาไทยเสมอ
 
@@ -64,6 +63,7 @@ app.get('/', (req, res) => {
 });
 
 app.post('/chat', async (req, res) => {
+  if (!model) return res.status(500).json({ error: 'GEMINI_API_KEY is not configured on the server.' });
   const { message, sessionId } = req.body;
   if (!message) return res.status(400).json({ error: 'Empty message' });
 
