@@ -50,6 +50,15 @@ app.engine('html', (filePath, options, callback) => {
 });
 app.set('view engine', 'html');
 
+app.get('/health', (req, res) => {
+  res.json({
+    status: 'ok',
+    hasApiKey: !!apiKey,
+    node: process.version,
+    env: process.env.NODE_ENV || 'none'
+  });
+});
+
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'templates', 'index.html'));
 });
