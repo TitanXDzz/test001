@@ -114,11 +114,16 @@ app.post('/reset', (req, res) => {
   res.json({ status: 'reset' });
 });
 
-app.listen(PORT, () => {
-  console.log('\n' + '='.repeat(50));
-  console.log('  Medical Symptom Diagnosis Chatbot');
-  console.log('='.repeat(50));
-  console.log(`  Running at: http://localhost:${PORT}`);
-  console.log('  Press Ctrl+C to stop');
-  console.log('='.repeat(50) + '\n');
-});
+// Export for Vercel serverless; listen only in local dev
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(PORT, () => {
+    console.log('\n' + '='.repeat(50));
+    console.log('  Medical Symptom Diagnosis Chatbot');
+    console.log('='.repeat(50));
+    console.log(`  Running at: http://localhost:${PORT}`);
+    console.log('  Press Ctrl+C to stop');
+    console.log('='.repeat(50) + '\n');
+  });
+}
+
+module.exports = app;

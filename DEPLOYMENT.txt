@@ -1,12 +1,12 @@
 ================================================================
   Medical Symptom Diagnosis Chatbot - Deployment Manual
-  Platform: Render.com
+  Platform: Vercel.com
 ================================================================
 
 PREREQUISITES
 -------------
 - A GitHub account
-- A Render.com account (free tier works)
+- A Vercel account (free tier works) — sign up at https://vercel.com
 - A Google Gemini API key
   Get one at: https://aistudio.google.com/app/apikey
 
@@ -22,8 +22,10 @@ STEP 1: PUSH YOUR PROJECT TO GITHUB
 3. Name your repository (e.g., symptom-chatbot).
    Set it to Public or Private, then click "Create repository".
 
-4. Open a terminal/command prompt in your project folder
-   (C:\Users\gigabyte\Documents\test001) and run:
+4. Open Command Prompt or Git Bash in your project folder:
+   C:\Users\gigabyte\Documents\test001
+
+   Run these commands one by one:
 
      git init
      git add .
@@ -34,82 +36,74 @@ STEP 1: PUSH YOUR PROJECT TO GITHUB
 
    Replace YOUR_USERNAME and YOUR_REPO_NAME with your actual values.
 
-   NOTE: The file "gemini-api-key.txt" is excluded via .gitignore
-   and will NOT be uploaded to GitHub. Your API key stays private.
+   NOTE: "gemini-api-key.txt" is excluded by .gitignore and will
+   NOT be uploaded to GitHub. Your API key stays private.
 
 
 ================================================================
-STEP 2: CREATE A WEB SERVICE ON RENDER
+STEP 2: IMPORT PROJECT INTO VERCEL
 ================================================================
 
-1. Go to https://render.com and log in (or sign up for free).
+1. Go to https://vercel.com and log in (or sign up for free).
 
-2. Click "New +" (top right) > "Web Service".
+2. Click "Add New..." > "Project".
 
-3. Select "Build and deploy from a Git repository" and click Next.
+3. Under "Import Git Repository", click "Continue with GitHub".
+   Authorize Vercel to access your GitHub account if prompted.
 
-4. Connect your GitHub account if not already connected.
-
-5. Find your repository in the list and click "Connect".
-
-6. Fill in the service settings:
-   - Name:          symptom-chatbot  (or any name you like)
-   - Region:        Choose the closest to your users
-   - Branch:        main
-   - Runtime:       Node
-   - Build Command: npm install
-   - Start Command: npm start
-   - Instance Type: Free
-
-7. Click "Advanced" to expand additional settings.
+4. Find your repository (e.g., symptom-chatbot) in the list
+   and click "Import".
 
 
 ================================================================
-STEP 3: SET THE ENVIRONMENT VARIABLE (API KEY)
+STEP 3: CONFIGURE THE PROJECT
 ================================================================
 
-Still on the Render service creation page under "Advanced":
+On the project configuration page:
 
-1. Click "Add Environment Variable".
+1. Framework Preset: leave as "Other" (not Next.js or Vite).
 
-2. Set:
-   - Key:   GEMINI_API_KEY
-   - Value:  (paste your Gemini API key here)
+2. Root Directory: leave as "./" (default).
 
-3. Click "Save".
+3. Build & Output Settings: leave all as default.
+
+4. Expand "Environment Variables" section at the bottom.
+
+5. Add the following environment variable:
+   - Name:  GEMINI_API_KEY
+   - Value: (paste your Gemini API key here)
+
+   Click "Add" to save it.
 
    IMPORTANT: Never put your API key in your code or commit it
-   to GitHub. The environment variable keeps it secure.
+   to GitHub. The environment variable keeps it secure on Vercel.
 
 
 ================================================================
 STEP 4: DEPLOY
 ================================================================
 
-1. Scroll down and click "Create Web Service".
+1. Click "Deploy".
 
-2. Render will automatically:
+2. Vercel will automatically:
    - Clone your repository
-   - Run: npm install
-   - Run: npm start
+   - Install dependencies (npm install)
+   - Deploy as a serverless Node.js app
 
-3. Watch the deployment logs in real time on the Render dashboard.
+3. Watch the build logs in real time.
 
-4. When you see:
-     Medical Symptom Diagnosis Chatbot
-     Running at: http://localhost:XXXX
-   ...the server is live.
+4. When complete, you will see a success screen with your URL:
+     https://symptom-chatbot.vercel.app
+   (or a similar auto-generated URL)
 
-5. Your public URL will appear at the top of the Render dashboard,
-   something like:
-     https://symptom-chatbot.onrender.com
+5. Click "Visit" to open your live chatbot.
 
 
 ================================================================
 STEP 5: TEST YOUR LIVE APP
 ================================================================
 
-1. Open the URL shown in your Render dashboard.
+1. Open the URL shown on your Vercel dashboard.
 
 2. The chatbot should load and greet you in Thai.
 
@@ -120,7 +114,7 @@ STEP 5: TEST YOUR LIVE APP
 UPDATING YOUR APP IN THE FUTURE
 ================================================================
 
-Whenever you make changes to your code:
+Whenever you make changes to your code locally:
 
 1. In your project folder, run:
 
@@ -128,29 +122,55 @@ Whenever you make changes to your code:
      git commit -m "describe your changes"
      git push
 
-2. Render detects the push automatically and re-deploys.
-   No manual action needed.
+2. Vercel detects the GitHub push automatically and re-deploys.
+   No manual action needed on Vercel.
+
+
+================================================================
+ADDING A CUSTOM DOMAIN (OPTIONAL)
+================================================================
+
+1. On your Vercel project dashboard, go to "Settings" > "Domains".
+
+2. Click "Add Domain" and type your domain name.
+
+3. Follow the DNS instructions Vercel provides to point your
+   domain to Vercel's servers.
 
 
 ================================================================
 TROUBLESHOOTING
 ================================================================
 
-Problem: "Application failed to respond"
-Solution: Check the Render logs. Usually means the start command
-          failed or the API key environment variable is missing.
+Problem: Build fails with "Cannot find module" error
+Solution: Make sure node_modules is NOT committed to GitHub.
+          It should be in .gitignore. Vercel installs dependencies
+          automatically via npm install.
+
+Problem: "Error: ENOENT gemini-api-key.txt"
+Solution: The GEMINI_API_KEY environment variable is missing.
+          Go to Vercel > Project > Settings > Environment Variables
+          and add it, then redeploy.
 
 Problem: Gemini API 429 error (quota exceeded)
 Solution: The app has built-in retry logic. If it keeps failing,
           your daily free quota is exhausted — wait until the
-          next day or upgrade your Google AI plan.
+          next day or upgrade your Google AI plan at:
+          https://aistudio.google.com
+
+Problem: Chat history resets between messages
+Solution: This is expected on Vercel's serverless platform.
+          Each request may run on a fresh instance. The app is
+          designed to pass conversation history in each request,
+          so this should work correctly.
 
 Problem: 404 Not Found on the page
 Solution: Make sure the "templates" and "static" folders were
-          committed to GitHub (check on github.com).
+          committed to GitHub (verify at github.com/YOUR_USERNAME/YOUR_REPO).
 
-Problem: App works locally but not on Render
-Solution: Verify GEMINI_API_KEY is set in Render > Environment.
+Problem: App works locally but not on Vercel
+Solution: Check Vercel build logs for errors. Most common cause
+          is a missing GEMINI_API_KEY environment variable.
 
 
 ================================================================
@@ -158,7 +178,7 @@ LOCAL DEVELOPMENT (running on your own PC)
 ================================================================
 
 1. Make sure "gemini-api-key.txt" exists in the project folder
-   with your API key as its only content.
+   with your Gemini API key as its only content.
 
 2. Run:
      npm start
