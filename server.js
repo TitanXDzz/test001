@@ -7,7 +7,11 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Load API key from environment variable or fallback to file (local dev only)
-const apiKey = process.env.GEMINI_API_KEY || fs.readFileSync('gemini-api-key.txt', 'utf8').trim();
+let apiKey = process.env.GEMINI_API_KEY;
+if (!apiKey) {
+  try { apiKey = fs.readFileSync('gemini-api-key.txt', 'utf8').trim(); } catch {}
+}
+if (!apiKey) throw new Error('GEMINI_API_KEY is not set. Add it as an environment variable.');
 const genAI = new GoogleGenerativeAI(apiKey);
 const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
 
