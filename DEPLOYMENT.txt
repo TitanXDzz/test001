@@ -1,0 +1,168 @@
+================================================================
+  Medical Symptom Diagnosis Chatbot - Deployment Manual
+  Platform: Render.com
+================================================================
+
+PREREQUISITES
+-------------
+- A GitHub account
+- A Render.com account (free tier works)
+- A Google Gemini API key
+  Get one at: https://aistudio.google.com/app/apikey
+
+
+================================================================
+STEP 1: PUSH YOUR PROJECT TO GITHUB
+================================================================
+
+1. Go to https://github.com and log in.
+
+2. Click the "+" icon (top right) > "New repository".
+
+3. Name your repository (e.g., symptom-chatbot).
+   Set it to Public or Private, then click "Create repository".
+
+4. Open a terminal/command prompt in your project folder
+   (C:\Users\gigabyte\Documents\test001) and run:
+
+     git init
+     git add .
+     git commit -m "initial commit"
+     git branch -M main
+     git remote add origin https://github.com/YOUR_USERNAME/YOUR_REPO_NAME.git
+     git push -u origin main
+
+   Replace YOUR_USERNAME and YOUR_REPO_NAME with your actual values.
+
+   NOTE: The file "gemini-api-key.txt" is excluded via .gitignore
+   and will NOT be uploaded to GitHub. Your API key stays private.
+
+
+================================================================
+STEP 2: CREATE A WEB SERVICE ON RENDER
+================================================================
+
+1. Go to https://render.com and log in (or sign up for free).
+
+2. Click "New +" (top right) > "Web Service".
+
+3. Select "Build and deploy from a Git repository" and click Next.
+
+4. Connect your GitHub account if not already connected.
+
+5. Find your repository in the list and click "Connect".
+
+6. Fill in the service settings:
+   - Name:          symptom-chatbot  (or any name you like)
+   - Region:        Choose the closest to your users
+   - Branch:        main
+   - Runtime:       Node
+   - Build Command: npm install
+   - Start Command: npm start
+   - Instance Type: Free
+
+7. Click "Advanced" to expand additional settings.
+
+
+================================================================
+STEP 3: SET THE ENVIRONMENT VARIABLE (API KEY)
+================================================================
+
+Still on the Render service creation page under "Advanced":
+
+1. Click "Add Environment Variable".
+
+2. Set:
+   - Key:   GEMINI_API_KEY
+   - Value:  (paste your Gemini API key here)
+
+3. Click "Save".
+
+   IMPORTANT: Never put your API key in your code or commit it
+   to GitHub. The environment variable keeps it secure.
+
+
+================================================================
+STEP 4: DEPLOY
+================================================================
+
+1. Scroll down and click "Create Web Service".
+
+2. Render will automatically:
+   - Clone your repository
+   - Run: npm install
+   - Run: npm start
+
+3. Watch the deployment logs in real time on the Render dashboard.
+
+4. When you see:
+     Medical Symptom Diagnosis Chatbot
+     Running at: http://localhost:XXXX
+   ...the server is live.
+
+5. Your public URL will appear at the top of the Render dashboard,
+   something like:
+     https://symptom-chatbot.onrender.com
+
+
+================================================================
+STEP 5: TEST YOUR LIVE APP
+================================================================
+
+1. Open the URL shown in your Render dashboard.
+
+2. The chatbot should load and greet you in Thai.
+
+3. Type a symptom and verify the AI responds correctly.
+
+
+================================================================
+UPDATING YOUR APP IN THE FUTURE
+================================================================
+
+Whenever you make changes to your code:
+
+1. In your project folder, run:
+
+     git add .
+     git commit -m "describe your changes"
+     git push
+
+2. Render detects the push automatically and re-deploys.
+   No manual action needed.
+
+
+================================================================
+TROUBLESHOOTING
+================================================================
+
+Problem: "Application failed to respond"
+Solution: Check the Render logs. Usually means the start command
+          failed or the API key environment variable is missing.
+
+Problem: Gemini API 429 error (quota exceeded)
+Solution: The app has built-in retry logic. If it keeps failing,
+          your daily free quota is exhausted — wait until the
+          next day or upgrade your Google AI plan.
+
+Problem: 404 Not Found on the page
+Solution: Make sure the "templates" and "static" folders were
+          committed to GitHub (check on github.com).
+
+Problem: App works locally but not on Render
+Solution: Verify GEMINI_API_KEY is set in Render > Environment.
+
+
+================================================================
+LOCAL DEVELOPMENT (running on your own PC)
+================================================================
+
+1. Make sure "gemini-api-key.txt" exists in the project folder
+   with your API key as its only content.
+
+2. Run:
+     npm start
+
+3. Open: http://localhost:5000
+
+================================================================

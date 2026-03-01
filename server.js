@@ -4,33 +4,33 @@ const fs = require('fs');
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 
 const app = express();
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 
-// Load API key
-const apiKey = fs.readFileSync('gemini-api-key.txt', 'utf8').trim();
+// Load API key from environment variable or fallback to file (local dev only)
+const apiKey = process.env.GEMINI_API_KEY || fs.readFileSync('gemini-api-key.txt', 'utf8').trim();
 const genAI = new GoogleGenerativeAI(apiKey);
-const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
+const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
 
-const SYSTEM_PROMPT = `You are a medical symptom analysis assistant. Your role is to help users understand potential conditions based on their symptoms.
+const SYSTEM_PROMPT = `คุณคือผู้ช่วยวิเคราะห์อาการทางการแพทย์ บทบาทของคุณคือช่วยให้ผู้ใช้เข้าใจสภาวะที่อาจเกิดขึ้นจากอาการของพวกเขา ให้ตอบเป็นภาษาไทยเสมอ
 
-IMPORTANT GUIDELINES:
-1. Always be transparent about your reasoning process - explain WHY you think what you think
-2. Ask one or two focused follow-up questions at a time to gather more information
-3. When you have enough information, provide a clear differential diagnosis (list of possible conditions from most to least likely)
-4. For each possible condition, explain:
-   - Why it matches the symptoms
-   - Key distinguishing features
-   - Severity level (mild/moderate/serious)
-   - Recommended action (self-care / see a doctor / emergency care)
-5. Always include a disclaimer that this is not a substitute for professional medical advice
-6. Structure your reasoning clearly with labeled sections:
-   Reasoning: (your thought process)
-   Possible Conditions: (ranked list)
-   Recommended Action: (what to do next)
-7. Be honest about uncertainty - if symptoms are vague, say so and ask for clarification
-8. Never minimize serious symptoms - if there are red flags (chest pain, difficulty breathing, stroke signs), prioritize safety first
+แนวทางสำคัญ:
+1. แสดงกระบวนการคิดอย่างโปร่งใส - อธิบายว่าทำไมถึงคิดเช่นนั้น
+2. ถามคำถามติดตามที่เฉพาะเจาะจง 1-2 ข้อต่อครั้งเพื่อรวบรวมข้อมูลเพิ่มเติม
+3. เมื่อมีข้อมูลเพียงพอ ให้วินิจฉัยแยกโรคอย่างชัดเจน (รายการโรคที่เป็นไปได้จากมากไปน้อย)
+4. สำหรับแต่ละโรคที่เป็นไปได้ ให้อธิบาย:
+   - เหตุใดจึงสอดคล้องกับอาการ
+   - ลักษณะเด่นที่แยกแยะได้
+   - ระดับความรุนแรง (เล็กน้อย / ปานกลาง / รุนแรง)
+   - การดำเนินการที่แนะนำ (ดูแลตัวเอง / พบแพทย์ / ฉุกเฉิน)
+5. ใส่คำปฏิเสธความรับผิดชอบเสมอว่านี่ไม่ใช่การทดแทนคำแนะนำทางการแพทย์จากผู้เชี่ยวชาญ
+6. จัดโครงสร้างการให้เหตุผลอย่างชัดเจนด้วยหัวข้อ:
+   การวิเคราะห์: (กระบวนการคิด)
+   โรคที่เป็นไปได้: (รายการจัดอันดับ)
+   การดำเนินการที่แนะนำ: (สิ่งที่ควรทำต่อไป)
+7. ซื่อสัตย์เกี่ยวกับความไม่แน่นอน - หากอาการไม่ชัดเจน ให้บอกและขอข้อมูลเพิ่มเติม
+8. อย่าลดความสำคัญของอาการรุนแรง - หากมีสัญญาณอันตราย (เจ็บหน้าอก หายใจลำบาก อาการโรคหลอดเลือดสมอง) ให้ให้ความปลอดภัยเป็นอันดับแรก
 
-Start by warmly greeting the user and asking about their main symptom or concern.`;
+เริ่มต้นด้วยการทักทายผู้ใช้อย่างอบอุ่นและถามเกี่ยวกับอาการหลักหรือความกังวลของพวกเขา`;
 
 // Store conversations by session (simple in-memory for localhost)
 const sessions = new Map();
@@ -75,8 +75,23 @@ app.post('/chat', async (req, res) => {
     history.push({ role: 'user', text: message });
   }
 
+  const generateWithRetry = async (prompt, retries = 3) => {
+    for (let i = 0; i < retries; i++) {
+      try {
+        return await model.generateContent(prompt);
+      } catch (err) {
+        const retryMatch = err.message.match(/retry in (\d+(\.\d+)?)s/i);
+        const wait = retryMatch ? parseFloat(retryMatch[1]) * 1000 : 5000;
+        if (i < retries - 1 && err.message.includes('429')) {
+          console.log(`Rate limited. Retrying in ${wait / 1000}s...`);
+          await new Promise(r => setTimeout(r, wait));
+        } else throw err;
+      }
+    }
+  };
+
   try {
-    const result = await model.generateContent(fullPrompt);
+    const result = await generateWithRetry(fullPrompt);
     const responseText = result.response.text();
 
     if (message !== '__INIT__') {
@@ -99,14 +114,6 @@ app.post('/reset', (req, res) => {
   res.json({ status: 'reset' });
 });
 
-// Auto-open browser after server starts
-function openBrowser() {
-  const { exec } = require('child_process');
-  setTimeout(() => {
-    exec(`start http://localhost:${PORT}`);
-  }, 1000);
-}
-
 app.listen(PORT, () => {
   console.log('\n' + '='.repeat(50));
   console.log('  Medical Symptom Diagnosis Chatbot');
@@ -114,5 +121,4 @@ app.listen(PORT, () => {
   console.log(`  Running at: http://localhost:${PORT}`);
   console.log('  Press Ctrl+C to stop');
   console.log('='.repeat(50) + '\n');
-  openBrowser();
 });
