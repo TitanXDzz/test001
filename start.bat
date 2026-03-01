@@ -6,19 +6,19 @@ echo.
 
 cd /d "%~dp0"
 
-echo [1/3] Checking Python...
-python --version 2>nul
+echo [1/3] Checking Node.js...
+node --version
 if errorlevel 1 (
-    echo ERROR: Python not found. Please install Python 3.8+
+    echo ERROR: Node.js not found. Please install from https://nodejs.org
     pause
     exit /b 1
 )
 
 echo [2/3] Installing dependencies...
-pip install -r requirements.txt -q
+npm install
 
 echo [3/3] Starting server (browser will open automatically)...
 echo.
-python app.py
+node server.js
 
 pause

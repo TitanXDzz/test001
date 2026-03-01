@@ -1,0 +1,14 @@
+{
+  "name": "symptom-diagnosis-chatbot",
+  "version": "1.0.0",
+  "description": "Medical symptom diagnosis chatbot using Gemini AI",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "@google/generative-ai": "^0.21.0"
+  }
+}
