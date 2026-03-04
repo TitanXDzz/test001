@@ -1,0 +1,268 @@
+[
+  {
+    "condition": "Common cold",
+    "category": "Respiratory",
+    "tag": "CONTINUE",
+    "key_symptoms": "runny nose mild cough sore throat",
+    "red_flags": "high fever breathing difficulty"
+  },
+  {
+    "condition": "Mild influenza",
+    "category": "Respiratory",
+    "tag": "CONTINUE",
+    "key_symptoms": "fever fatigue body ache",
+    "red_flags": "severe weakness breathing problems"
+  },
+  {
+    "condition": "Severe influenza",
+    "category": "Respiratory",
+    "tag": "SEEK_HELP_IMMEDIATELY",
+    "key_symptoms": "high fever severe fatigue",
+    "red_flags": "breathing difficulty confusion"
+  },
+  {
+    "condition": "COVID-19 suspected",
+    "category": "Respiratory",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "fever cough fatigue loss of smell",
+    "red_flags": "shortness of breath chest pain"
+  },
+  {
+    "condition": "COVID-19 severe",
+    "category": "Respiratory",
+    "tag": "SEEK_HELP_IMMEDIATELY",
+    "key_symptoms": "breathing difficulty severe weakness",
+    "red_flags": "oxygen problems chest pain"
+  },
+  {
+    "condition": "Viral sore throat",
+    "category": "Respiratory",
+    "tag": "CONTINUE",
+    "key_symptoms": "throat pain mild fever irritation",
+    "red_flags": "difficulty swallowing severe pain"
+  },
+  {
+    "condition": "Possible strep throat",
+    "category": "Respiratory",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "throat pain fever swollen lymph nodes",
+    "red_flags": "high fever difficulty swallowing"
+  },
+  {
+    "condition": "Laryngitis",
+    "category": "Respiratory",
+    "tag": "CONTINUE",
+    "key_symptoms": "hoarse voice throat irritation",
+    "red_flags": "breathing difficulty"
+  },
+  {
+    "condition": "Mild sinus congestion",
+    "category": "Respiratory",
+    "tag": "CONTINUE",
+    "key_symptoms": "nasal congestion facial pressure",
+    "red_flags": "severe facial pain swelling"
+  },
+  {
+    "condition": "Severe sinusitis",
+    "category": "Respiratory",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "facial pain fever nasal blockage",
+    "red_flags": "eye swelling severe headache"
+  },
+  {
+    "condition": "Allergic rhinitis",
+    "category": "Respiratory",
+    "tag": "CONTINUE",
+    "key_symptoms": "sneezing itchy nose runny nose",
+    "red_flags": "breathing difficulty severe swelling"
+  },
+  {
+    "condition": "Acute bronchitis mild",
+    "category": "Respiratory",
+    "tag": "CONTINUE",
+    "key_symptoms": "persistent cough mucus fatigue",
+    "red_flags": "shortness of breath chest pain"
+  },
+  {
+    "condition": "Possible pneumonia",
+    "category": "Respiratory",
+    "tag": "SEEK_HELP_IMMEDIATELY",
+    "key_symptoms": "cough fever chest pain",
+    "red_flags": "shortness of breath rapid breathing"
+  },
+  {
+    "condition": "Earwax impaction",
+    "category": "ENT",
+    "tag": "CONTINUE",
+    "key_symptoms": "blocked ear hearing reduction",
+    "red_flags": "severe ear pain discharge"
+  },
+  {
+    "condition": "Ear infection suspected",
+    "category": "ENT",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "ear pain fever hearing changes",
+    "red_flags": "ear discharge severe pain"
+  },
+  {
+    "condition": "Nosebleed minor",
+    "category": "ENT",
+    "tag": "CONTINUE",
+    "key_symptoms": "light nose bleeding",
+    "red_flags": "bleeding longer than 20 minutes"
+  },
+  {
+    "condition": "Nosebleed severe",
+    "category": "ENT",
+    "tag": "SEEK_HELP_IMMEDIATELY",
+    "key_symptoms": "heavy nose bleeding",
+    "red_flags": "cannot stop bleeding dizziness"
+  },
+  {
+    "condition": "Dengue suspected",
+    "category": "Tropical",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "high fever headache muscle pain rash",
+    "red_flags": "bleeding abdominal pain persistent vomiting"
+  },
+  {
+    "condition": "Dengue warning stage",
+    "category": "Tropical",
+    "tag": "SEEK_HELP_IMMEDIATELY",
+    "key_symptoms": "bleeding severe abdominal pain weakness",
+    "red_flags": "shock symptoms confusion"
+  },
+  {
+    "condition": "Indigestion",
+    "category": "Gastrointestinal",
+    "tag": "CONTINUE",
+    "key_symptoms": "upper stomach discomfort fullness",
+    "red_flags": "severe abdominal pain"
+  },
+  {
+    "condition": "Bloating gas",
+    "category": "Gastrointestinal",
+    "tag": "CONTINUE",
+    "key_symptoms": "abdominal fullness gas pressure",
+    "red_flags": "severe abdominal pain"
+  },
+  {
+    "condition": "Mild gastritis",
+    "category": "Gastrointestinal",
+    "tag": "CONTINUE",
+    "key_symptoms": "stomach burning nausea",
+    "red_flags": "vomiting blood"
+  },
+  {
+    "condition": "Acid reflux",
+    "category": "Gastrointestinal",
+    "tag": "CONTINUE",
+    "key_symptoms": "heartburn chest discomfort after meals",
+    "red_flags": "severe chest pain"
+  },
+  {
+    "condition": "Constipation",
+    "category": "Gastrointestinal",
+    "tag": "CONTINUE",
+    "key_symptoms": "hard stools difficulty passing stool",
+    "red_flags": "severe abdominal pain"
+  },
+  {
+    "condition": "Tension headache",
+    "category": "Neurological",
+    "tag": "CONTINUE",
+    "key_symptoms": "mild pressure headache",
+    "red_flags": "neurological symptoms"
+  },
+  {
+    "condition": "Migraine suspected",
+    "category": "Neurological",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "throbbing headache light sensitivity",
+    "red_flags": "neurological deficit"
+  },
+  {
+    "condition": "Stroke symptoms",
+    "category": "Neurological",
+    "tag": "SEEK_HELP_IMMEDIATELY",
+    "key_symptoms": "face drooping speech difficulty",
+    "red_flags": "arm weakness confusion"
+  },
+  {
+    "condition": "Muscle soreness",
+    "category": "Musculoskeletal",
+    "tag": "CONTINUE",
+    "key_symptoms": "muscle soreness after activity",
+    "red_flags": "severe swelling"
+  },
+  {
+    "condition": "Minor sprain",
+    "category": "Musculoskeletal",
+    "tag": "CONTINUE",
+    "key_symptoms": "joint pain mild swelling",
+    "red_flags": "joint deformity"
+  },
+  {
+    "condition": "Suspected fracture",
+    "category": "Musculoskeletal",
+    "tag": "SEEK_HELP_IMMEDIATELY",
+    "key_symptoms": "severe pain swelling",
+    "red_flags": "bone deformity"
+  },
+  {
+    "condition": "Mild eczema",
+    "category": "Dermatology",
+    "tag": "CONTINUE",
+    "key_symptoms": "itchy dry rash",
+    "red_flags": "signs of infection"
+  },
+  {
+    "condition": "Contact dermatitis",
+    "category": "Dermatology",
+    "tag": "CONTINUE",
+    "key_symptoms": "rash after skin contact irritant",
+    "red_flags": "severe swelling"
+  },
+  {
+    "condition": "Cellulitis suspected",
+    "category": "Dermatology",
+    "tag": "SEEK_HELP_IMMEDIATELY",
+    "key_symptoms": "spreading redness warmth",
+    "red_flags": "fever swelling"
+  },
+  {
+    "condition": "Mild insomnia",
+    "category": "Sleep",
+    "tag": "CONTINUE",
+    "key_symptoms": "difficulty falling asleep",
+    "red_flags": "severe anxiety"
+  },
+  {
+    "condition": "Mouth ulcers",
+    "category": "Oral",
+    "tag": "CONTINUE",
+    "key_symptoms": "painful mouth sores",
+    "red_flags": "ulcer lasting longer than two weeks"
+  },
+  {
+    "condition": "Dental abscess suspected",
+    "category": "Oral",
+    "tag": "SEEK_HELP_IMMEDIATELY",
+    "key_symptoms": "tooth pain swelling fever",
+    "red_flags": "facial swelling"
+  },
+  {
+    "condition": "Suspected UTI",
+    "category": "Urinary",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "burning urination frequent urge",
+    "red_flags": "fever back pain"
+  },
+  {
+    "condition": "Kidney infection suspected",
+    "category": "Urinary",
+    "tag": "SEEK_HELP_IMMEDIATELY",
+    "key_symptoms": "flank pain fever chills",
+    "red_flags": "severe infection symptoms"
+  }
+]
