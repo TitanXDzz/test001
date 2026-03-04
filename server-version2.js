@@ -13,7 +13,7 @@ try { apiKey = fs.readFileSync('gemini-api-key.txt', 'utf8').trim(); } catch { a
 if (!apiKey) { console.error('ERROR: No Gemini API key found.'); process.exit(1); }
 
 const genAI = new GoogleGenerativeAI(apiKey);
-const geminiModel = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+const geminiModel = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
 
 // ── Load condition list ──
 let conditions;
