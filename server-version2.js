@@ -172,7 +172,8 @@ app.post('/chat', async (req, res) => {
     const reasoning = parsed.reasoning || '';
     const nextQuestionPurpose = parsed.next_question_purpose || '';
 
-    if (!isInit) session.history.push({ role: 'assistant', text: assistantMessage });
+    // Store assistant message (including greeting so first user reply has full context)
+    session.history.push({ role: 'assistant', text: assistantMessage });
 
     if (action === 'SEEK_HELP_IMMEDIATELY' || action === 'UNKNOWN') {
       session.ended = true;
