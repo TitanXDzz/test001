@@ -47,6 +47,22 @@
     }
     .reset-btn:hover { background: rgba(255,255,255,0.15); }
 
+    .lang-toggle {
+      display: flex; gap: 4px; align-items: center;
+    }
+    .lang-btn {
+      background: none; border: 1px solid rgba(255,255,255,0.4); color: rgba(255,255,255,0.7);
+      padding: 5px 11px; border-radius: 16px; cursor: pointer; font-size: 0.8rem;
+      font-weight: 600; transition: all 0.2s;
+    }
+    .lang-btn:hover { background: rgba(255,255,255,0.15); color: white; }
+    .lang-btn.active {
+      background: rgba(255,255,255,0.25); color: white;
+      border-color: rgba(255,255,255,0.8);
+    }
+
+    .header-actions { display: flex; align-items: center; gap: 10px; }
+
     /* ── DISCLAIMER BANNER ── */
     .disclaimer-banner {
       background: #fff3cd; border-bottom: 1px solid #ffc107;
@@ -239,7 +255,13 @@
 
 <header>
   <h1>🩺 Symptom Diagnosis Assistant</h1>
-  <button class="reset-btn" onclick="resetChat()">↺ New Session</button>
+  <div class="header-actions">
+    <div class="lang-toggle">
+      <button class="lang-btn active" id="btnEN" onclick="setLang('en')">EN</button>
+      <button class="lang-btn"        id="btnTH" onclick="setLang('th')">TH</button>
+    </div>
+    <button class="reset-btn" onclick="resetChat()">↺ New Session</button>
+  </div>
 </header>
 
 <div class="disclaimer-banner">
@@ -275,8 +297,19 @@
   let isLoading = false;
   let sessionEnded = false;
   let sessionId = 'session_' + Date.now();
+  let language = 'en';
 
   window.addEventListener('load', () => initGreeting());
+
+  function setLang(lang) {
+    if (lang === language) return;
+    language = lang;
+    document.getElementById('btnEN').classList.toggle('active', lang === 'en');
+    document.getElementById('btnTH').classList.toggle('active', lang === 'th');
+    const input = document.getElementById('messageInput');
+    input.placeholder = lang === 'th' ? 'อธิบายอาการของคุณ...' : 'Describe your symptoms...';
+    resetChat(true);
+  }
 
   async function initGreeting() {
     showTyping();
@@ -284,7 +317,7 @@
       const res = await fetch('/chat', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({ message: '__INIT__', sessionId })
+        body: JSON.stringify({ message: '__INIT__', sessionId, language })
       });
       const data = await res.json();
       removeTyping();
@@ -322,7 +355,7 @@
       const res = await fetch('/chat', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({ message: msg, sessionId })
+        body: JSON.stringify({ message: msg, sessionId, language })
       });
       const data = await res.json();
       removeTyping();
@@ -524,8 +557,8 @@
     }
   }
 
-  async function resetChat() {
-    if (!confirm('Start a new session? Current conversation will be cleared.')) return;
+  async function resetChat(silent = false) {
+    if (!silent && !confirm('Start a new session? Current conversation will be cleared.')) return;
     await fetch('/reset', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
@@ -539,7 +572,7 @@
     document.getElementById('sessionEndBanner').style.display = 'none';
     const input = document.getElementById('messageInput');
     input.disabled = false;
-    input.placeholder = 'Describe your symptoms...';
+    input.placeholder = language === 'th' ? 'อธิบายอาการของคุณ...' : 'Describe your symptoms...';
     document.getElementById('sendBtn').disabled = false;
     initGreeting();
   }

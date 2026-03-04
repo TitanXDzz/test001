@@ -109,7 +109,7 @@ app.get('/health', (req, res) => {
 });
 
 app.post('/chat', async (req, res) => {
-  const { message, sessionId = 'default' } = req.body;
+  const { message, sessionId = 'default', language = 'en' } = req.body;
   if (!message) return res.status(400).json({ error: 'Empty message' });
 
   const session = getSession(sessionId);
@@ -119,8 +119,12 @@ app.post('/chat', async (req, res) => {
 
   if (!isInit) session.history.push({ role: 'user', text: message });
 
+  const langInstruction = language === 'th'
+    ? 'IMPORTANT: You MUST respond entirely in Thai (ภาษาไทย). All fields in the JSON, including "message" and "reasoning", must be written in Thai.'
+    : 'IMPORTANT: You MUST respond entirely in English. All fields in the JSON must be in English.';
+
   // Build prompt
-  let fullPrompt = SYSTEM_PROMPT + '\n\n';
+  let fullPrompt = SYSTEM_PROMPT + '\n\n' + langInstruction + '\n\n';
 
   if (isInit) {
     fullPrompt += 'The patient just opened the app. Greet them warmly, explain you will help assess their symptoms, and ask what their main symptom or health concern is today. Set action to "ASKING", matched_conditions to [], reasoning to "".';
