@@ -160,13 +160,18 @@ app.post('/chat', async (req, res) => {
     const result = await generateWithRetry(fullPrompt);
     let raw = result.response.text().trim();
 
-    // Strip markdown fences if Gemini wraps with them
-    raw = raw.replace(/^```(?:json)?\s*/m, '').replace(/\s*```\s*$/m, '').trim();
-
+    // Robustly extract the JSON object — handles code fences, preamble text, etc.
     let parsed;
-    try {
-      parsed = JSON.parse(raw);
-    } catch {
+    const jsonMatch = raw.match(/\{[\s\S]*\}/);
+    if (jsonMatch) {
+      try {
+        parsed = JSON.parse(jsonMatch[0]);
+      } catch {
+        parsed = null;
+      }
+    }
+    if (!parsed) {
+      // Last resort fallback — show raw text as message
       parsed = { message: raw, action: 'ASKING', matched_conditions: [], reasoning: '', next_question_purpose: '' };
     }
 
