@@ -299,15 +299,71 @@
   let sessionId = 'session_' + Date.now();
   let language = 'en';
 
-  window.addEventListener('load', () => initGreeting());
+  const T = {
+    en: {
+      title:           'Symptom Diagnosis Assistant',
+      disclaimer:      '<strong>⚠ Medical Disclaimer:</strong> For informational purposes only — not a substitute for professional medical advice. In emergencies, call <strong>911</strong> or your local emergency number.',
+      newSession:      '↺ New Session',
+      placeholder:     'Describe your symptoms...',
+      inputFooter:     'AI-generated analysis — always consult a qualified healthcare provider.',
+      sideHeader:      '📋 Diagnosis & Reasoning',
+      sideEmpty:       'Possible conditions and reasoning will appear here as the conversation progresses.',
+      showReasoning:   '🧠 Show diagnostic reasoning',
+      narrowing:       '🔍 Narrowing down:',
+      cardContinue:    '✅ Monitor at Home',
+      cardSoon:        '⚠ See a Doctor Soon',
+      cardUrgent:      '🚨 Emergency — Seek Help Now',
+      cardUnknown:     '❗ Seek Immediate Help',
+      cardAsking:      '🔎 Possible Conditions',
+      bannerUrgent:    '🚨 Session ended — Please seek emergency medical help IMMEDIATELY.',
+      bannerUnknown:   '❗ Session ended — Your symptoms need immediate medical attention. Please seek help now.',
+      endedPlaceholder:'Session ended. Start a new session to continue.',
+      confirmReset:    'Start a new session? Current conversation will be cleared.',
+      fallbackGreeting:'Hello! I\'m your symptom diagnosis assistant. Please describe your main symptom or health concern and I\'ll help assess what might be going on.',
+    },
+    th: {
+      title:           'ผู้ช่วยวินิจฉัยอาการ',
+      disclaimer:      '<strong>⚠ ข้อจำกัดความรับผิดชอบทางการแพทย์:</strong> ใช้เพื่อให้ข้อมูลเท่านั้น — ไม่ใช่การทดแทนคำแนะนำจากผู้เชี่ยวชาญ ในกรณีฉุกเฉิน โทร <strong>1669</strong> หรือหมายเลขฉุกเฉินในพื้นที่',
+      newSession:      '↺ เริ่มใหม่',
+      placeholder:     'อธิบายอาการของคุณ...',
+      inputFooter:     'การวิเคราะห์โดย AI — ควรปรึกษาแพทย์หรือผู้เชี่ยวชาญด้านสุขภาพเสมอ',
+      sideHeader:      '📋 การวินิจฉัยและเหตุผล',
+      sideEmpty:       'โรคที่เป็นไปได้และเหตุผลในการวินิจฉัยจะแสดงที่นี่เมื่อการสนทนาดำเนินไป',
+      showReasoning:   '🧠 แสดงเหตุผลการวินิจฉัย',
+      narrowing:       '🔍 กำลังจำกัดความเป็นไปได้:',
+      cardContinue:    '✅ ดูแลตัวเองที่บ้านได้',
+      cardSoon:        '⚠ ควรพบแพทย์เร็วๆ นี้',
+      cardUrgent:      '🚨 ฉุกเฉิน — รีบพบแพทย์ทันที',
+      cardUnknown:     '❗ ควรพบแพทย์ทันที',
+      cardAsking:      '🔎 โรคที่อาจเป็นไปได้',
+      bannerUrgent:    '🚨 สิ้นสุดเซสชัน — กรุณาขอความช่วยเหลือฉุกเฉินโดยทันที',
+      bannerUnknown:   '❗ สิ้นสุดเซสชัน — อาการของคุณต้องได้รับการดูแลจากแพทย์ทันที กรุณาพบแพทย์',
+      endedPlaceholder:'เซสชันสิ้นสุดแล้ว กรุณาเริ่มเซสชันใหม่เพื่อดำเนินการต่อ',
+      confirmReset:    'เริ่มเซสชันใหม่? การสนทนาปัจจุบันจะถูกล้าง',
+      fallbackGreeting:'สวัสดีครับ/ค่ะ! ฉันคือผู้ช่วยวินิจฉัยอาการ กรุณาอธิบายอาการหลักหรือปัญหาสุขภาพของคุณ แล้วฉันจะช่วยประเมินให้',
+    }
+  };
+
+  function t(key) { return T[language][key] || T.en[key]; }
+
+  function applyLangUI() {
+    document.querySelector('header h1').innerHTML = '🩺 ' + t('title');
+    document.querySelector('.disclaimer-banner').innerHTML = t('disclaimer');
+    document.querySelector('.reset-btn').textContent = t('newSession');
+    document.getElementById('messageInput').placeholder = sessionEnded ? t('endedPlaceholder') : t('placeholder');
+    document.querySelector('.input-footer').textContent = t('inputFooter');
+    document.querySelector('.side-panel-header').innerHTML = t('sideHeader');
+    document.getElementById('sideEmpty').textContent = t('sideEmpty');
+  }
+
+  window.addEventListener('load', () => { applyLangUI(); initGreeting(); });
 
   function setLang(lang) {
     if (lang === language) return;
     language = lang;
     document.getElementById('btnEN').classList.toggle('active', lang === 'en');
     document.getElementById('btnTH').classList.toggle('active', lang === 'th');
-    const input = document.getElementById('messageInput');
-    input.placeholder = lang === 'th' ? 'อธิบายอาการของคุณ...' : 'Describe your symptoms...';
+    applyLangUI();
     resetChat(true);
   }
 
@@ -327,7 +383,7 @@
       }
     } catch {
       removeTyping();
-      appendMessage('bot', 'Hello! I\'m your symptom diagnosis assistant. Please describe your main symptom or health concern and I\'ll help assess what might be going on.');
+      appendMessage('bot', t('fallbackGreeting'));
     }
   }
 
@@ -394,7 +450,7 @@
     if (action === 'ASKING' && narrowHint) {
       const hint = document.createElement('div');
       hint.className = 'narrowing-hint';
-      hint.innerHTML = `<strong>🔍 Narrowing down:</strong>${escHtml(narrowHint)}`;
+      hint.innerHTML = `<strong>${t('narrowing')}</strong> ${escHtml(narrowHint)}`;
       sideContent.appendChild(hint);
     }
 
@@ -409,12 +465,12 @@
       }[action] || 'card-continue';
 
       const cardLabel = {
-        'CONTINUE':              '✅ Monitor at Home',
-        'SEEK_HELP_SOON':        '⚠ See a Doctor Soon',
-        'SEEK_HELP_IMMEDIATELY': '🚨 Emergency — Seek Help Now',
-        'UNKNOWN':               '❗ Seek Immediate Help',
-        'ASKING':                '🔎 Possible Conditions'
-      }[action] || '🔎 Possible Conditions';
+        'CONTINUE':              t('cardContinue'),
+        'SEEK_HELP_SOON':        t('cardSoon'),
+        'SEEK_HELP_IMMEDIATELY': t('cardUrgent'),
+        'UNKNOWN':               t('cardUnknown'),
+        'ASKING':                t('cardAsking')
+      }[action] || t('cardAsking');
 
       const card = document.createElement('div');
       card.className = `diagnosis-card ${cardClass}`;
@@ -452,7 +508,7 @@
 
       const toggle = document.createElement('button');
       toggle.className = 'reasoning-toggle';
-      toggle.innerHTML = `<span>🧠 Show diagnostic reasoning</span><span id="toggleArrow">▼</span>`;
+      toggle.innerHTML = `<span>${t('showReasoning')}</span><span id="toggleArrow">▼</span>`;
 
       const box = document.createElement('div');
       box.className = 'reasoning-box';
@@ -475,15 +531,15 @@
     const sendBtn = document.getElementById('sendBtn');
     input.disabled = true;
     sendBtn.disabled = true;
-    input.placeholder = 'Session ended. Start a new session to continue.';
+    input.placeholder = t('endedPlaceholder');
 
     const banner = document.getElementById('sessionEndBanner');
     if (action === 'SEEK_HELP_IMMEDIATELY') {
       banner.className = 'urgent';
-      banner.textContent = '🚨 Session ended — Please seek emergency medical help IMMEDIATELY.';
+      banner.textContent = t('bannerUrgent');
     } else {
       banner.className = 'unknown';
-      banner.textContent = '❗ Session ended — Your symptoms need immediate medical attention. Please seek help now.';
+      banner.textContent = t('bannerUnknown');
     }
     banner.style.display = 'block';
   }
@@ -558,7 +614,7 @@
   }
 
   async function resetChat(silent = false) {
-    if (!silent && !confirm('Start a new session? Current conversation will be cleared.')) return;
+    if (!silent && !confirm(t('confirmReset'))) return;
     await fetch('/reset', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
