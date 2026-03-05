@@ -2,7 +2,8 @@
   "permissions": {
     "allow": [
       "mcp__plugin_oh-my-claudecode_t__state_clear",
-      "Bash(node:*)"
+      "Bash(node:*)",
+      "Bash(git:*)"
     ]
   }
 }
