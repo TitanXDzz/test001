@@ -13,7 +13,10 @@ try { apiKey = fs.readFileSync('gemini-api-key.txt', 'utf8').trim(); } catch { a
 if (!apiKey) { console.error('ERROR: No Gemini API key found.'); process.exit(1); }
 
 const genAI = new GoogleGenerativeAI(apiKey);
-const geminiModel = genAI.getGenerativeModel({ model: 'gemini-2.0-flash-lite' });
+const geminiModel = genAI.getGenerativeModel(
+  { model: 'gemini-2.5-flash' },
+  { apiVersion: 'v1beta' }
+);
 
 // ── Load condition list ──
 let conditions;
@@ -144,7 +147,10 @@ app.post('/chat', async (req, res) => {
   const generateWithRetry = async (prompt, retries = 3) => {
     for (let i = 0; i < retries; i++) {
       try {
-        return await geminiModel.generateContent(prompt);
+        return await geminiModel.generateContent({
+          contents: [{ role: 'user', parts: [{ text: prompt }] }],
+          generationConfig: { thinkingConfig: { thinkingBudget: 0 } }
+        });
       } catch (err) {
         const m = err.message.match(/retry in (\d+(?:\.\d+)?)s/i);
         const wait = m ? parseFloat(m[1]) * 1000 : 5000;
