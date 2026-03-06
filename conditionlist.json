@@ -265,4 +265,123 @@
     "key_symptoms": "flank pain fever chills",
     "red_flags": "severe infection symptoms"
   }
+  {
+    "condition": "Heart attack suspected",
+    "category": "Cardiac",
+    "tag": "SEEK_HELP_IMMEDIATELY",
+    "key_symptoms": "severe chest pressure pain near heart pain spreading to arm jaw sweating nausea",
+    "red_flags": "crushing chest pain shortness of breath fainting"
+  },
+  {
+    "condition": "Unstable angina",
+    "category": "Cardiac",
+    "tag": "SEEK_HELP_IMMEDIATELY",
+    "key_symptoms": "chest pain at rest chest pressure tightness",
+    "red_flags": "persistent chest pain sweating nausea"
+  },
+  {
+    "condition": "Pulmonary embolism suspected",
+    "category": "Respiratory",
+    "tag": "SEEK_HELP_IMMEDIATELY",
+    "key_symptoms": "sudden chest pain shortness of breath rapid heartbeat",
+    "red_flags": "collapse severe breathing difficulty"
+  },
+  {
+    "condition": "Anaphylaxis",
+    "category": "Allergic",
+    "tag": "SEEK_HELP_IMMEDIATELY",
+    "key_symptoms": "allergic reaction swelling lips throat rash breathing difficulty",
+    "red_flags": "airway swelling difficulty breathing fainting"
+  },
+  {
+    "condition": "Severe dehydration",
+    "category": "General",
+    "tag": "SEEK_HELP_IMMEDIATELY",
+    "key_symptoms": "extreme thirst dizziness dry mouth weakness",
+    "red_flags": "confusion fainting inability to drink fluids"
+  },
+  {
+    "condition": "Sepsis suspected",
+    "category": "Infectious",
+    "tag": "SEEK_HELP_IMMEDIATELY",
+    "key_symptoms": "high fever rapid breathing confusion weakness",
+    "red_flags": "low blood pressure confusion severe weakness"
+  },
+  {
+    "condition": "Meningitis suspected",
+    "category": "Neurological",
+    "tag": "SEEK_HELP_IMMEDIATELY",
+    "key_symptoms": "high fever stiff neck headache light sensitivity",
+    "red_flags": "confusion seizures inability to move neck"
+  },
+  {
+    "condition": "Seizure episode",
+    "category": "Neurological",
+    "tag": "SEEK_HELP_IMMEDIATELY",
+    "key_symptoms": "convulsions loss of consciousness shaking",
+    "red_flags": "repeated seizures breathing difficulty"
+  },
+  {
+    "condition": "Hypoglycemia severe",
+    "category": "Metabolic",
+    "tag": "SEEK_HELP_IMMEDIATELY",
+    "key_symptoms": "confusion shaking sweating dizziness",
+    "red_flags": "loss of consciousness seizures"
+  },
+  {
+    "condition": "Hyperglycemia severe",
+    "category": "Metabolic",
+    "tag": "SEEK_HELP_IMMEDIATELY",
+    "key_symptoms": "extreme thirst frequent urination fatigue",
+    "red_flags": "confusion vomiting dehydration"
+  },
+  {
+    "condition": "Acute asthma attack",
+    "category": "Respiratory",
+    "tag": "SEEK_HELP_IMMEDIATELY",
+    "key_symptoms": "wheezing chest tightness shortness of breath",
+    "red_flags": "severe breathing difficulty inability to speak"
+  },
+  {
+    "condition": "Appendicitis suspected",
+    "category": "Gastrointestinal",
+    "tag": "SEEK_HELP_IMMEDIATELY",
+    "key_symptoms": "right lower abdominal pain fever nausea",
+    "red_flags": "severe abdominal pain vomiting fever"
+  },
+  {
+    "condition": "Gallbladder attack suspected",
+    "category": "Gastrointestinal",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "right upper abdominal pain nausea after fatty food",
+    "red_flags": "severe persistent pain fever"
+  },
+  {
+    "condition": "Peptic ulcer suspected",
+    "category": "Gastrointestinal",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "burning stomach pain worse when hungry",
+    "red_flags": "vomiting blood black stool"
+  },
+  {
+    "condition": "Food poisoning suspected",
+    "category": "Gastrointestinal",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "vomiting diarrhea stomach cramps",
+    "red_flags": "severe dehydration blood in stool"
+  },
+  {
+    "condition": "Kidney stones suspected",
+    "category": "Urinary",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "severe side pain pain during urination nausea",
+    "red_flags": "fever severe pain vomiting"
+  },
+  {
+    "condition": "Panic attack",
+    "category": "Mental",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "sudden fear chest tightness rapid breathing",
+    "red_flags": "fainting persistent chest pain"
+  }
 ]
