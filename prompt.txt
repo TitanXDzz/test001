@@ -8,3 +8,6 @@ If tag == SEEK_HELP_IMMEDIATELY, tell them the suspecting conditions, tell them 
 If there are many possible conditions, try narrow down by asking about symptoms that could seperate each condition.
 See condition list in conditionlist.json
 Use Gemini API key in gemini-api-key.txt
+
+2 improvements. 1 I have added more conditions in conditionlist.json 2 I want the chatbot to ask more questions, become more confident before concluding or       
+  making a decision. For example, if there are more than 1 candidates, ask questions to clarify which condition the patient is actually having.   
