@@ -1,0 +1,75 @@
+{
+  "metadata": {
+    "case_id": "string | null",
+    "language": "en | th | mixed | unknown",
+    "created_at": "ISO-8601 string | null"
+  },
+
+  "patient_info": {
+    "age": "number | null",
+    "biological_sex": "male | female | unknown",
+    "pregnancy_status": "true | false | null"
+  },
+
+  "chief_complaint": {
+    "symptom": "string",
+    "severity": "0-10 | null",
+    "duration_days": "number | null"
+  },
+
+  "symptoms": [
+    {
+      "name": "string",
+      "severity": "0-10 | null",
+      "duration_days": "number | null",
+      "onset_type": "sudden | gradual | unknown",
+      "progression": "improving | stable | worsening | unknown"
+    }
+  ],
+
+  "associated_symptoms": ["string"],
+
+  "vitals": {
+    "temperature_c": "number | null",
+    "heart_rate_bpm": "number | null",
+    "blood_pressure": "string | null",
+    "oxygen_saturation_percent": "number | null"
+  },
+
+  "risk_factors": ["string"],
+
+  "medical_history": {
+    "conditions": ["string"],
+    "surgeries": ["string"]
+  },
+
+  "medications": [
+    {
+      "name": "string",
+      "dose": "string | null",
+      "frequency": "string | null"
+    }
+  ],
+
+  "allergies": ["string"],
+
+  "red_flags": {
+    "detected": "true | false",
+    "items": ["string"]
+  },
+
+  "triage_result": {
+    "primary_condition": "string",
+    "confidence": "low | medium | high",
+    "tag": "CONTINUE | SEEK_HELP_SOON | SEEK_HELP_IMMEDIATELY",
+    "differential_diagnoses": [
+      {
+        "condition": "string",
+        "confidence": "low | medium | high"
+      }
+    ]
+  },
+
+  "conversation_summary": "string",
+  "raw_user_input": ["string"]
+}

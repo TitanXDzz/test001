@@ -12,5 +12,13 @@ Use Gemini API key in gemini-api-key.txt
 2 improvements. 1 I have added more conditions in conditionlist.json 2 I want the chatbot to ask more questions, become more confident before concluding or       
   making a decision. For example, if there are more than 1 candidates, ask questions to clarify which condition the patient is actually having.   
 
-2 improvements. 1, Apart from dangerous conditions that the chatbot could identify as red flags, I add an additional list full of red flags in redflaglist.json
-2, To make the AI chatbot more structured and reasonable and getting all the important information, I create a key schema. Make sure the chatbot fills in all required data in the schema before concluding or recommending things.
+The chatbot system is already functioning well in identifying dangerous symptoms and performing medical triage through its own reasoning process. Recently, two additional structural resources have been introduced to make the system more organized and safer.
+1. Red Flag List (redflaglist.json)
+A dedicated red flag file has been created that contains critical emergency symptoms and symptom combinations. These represent situations where the patient may be experiencing a life-threatening condition.
+But If you also suspect conditions that are flagged with SEEK_HELP_IMMEDIATELY, that's also a red flag. Or If you feel like what's dangerous but not on the list, you can also identify it as red flags yourself.
+When evaluating user input, you should also check if it matches any red flag. If the user's symptoms match any red flag condition or symptom combination , you should immediately prioritize patient safety and trigger the SEEK_HELP_IMMEDIATELY
+2. Structured Case Schema (schema.json)
+A structured schema file has also been introduced to standardize how patient information is collected and processed.
+Make sure the chatbot gathers information and populate the fields defined in schema.json before making decisions, concluding, or recommending.
+If key information is missing, ask follow-up questions to collect it.
+These additions do not replace your reasoning process but provide structured safety checks and data organization to improve reliability and consistency.
