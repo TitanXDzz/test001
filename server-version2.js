@@ -27,11 +27,57 @@ const conditionsText = conditions.map((c, i) =>
   `  [${i + 1}] "${c.condition}" | category: ${c.category} | tag: ${c.tag} | key_symptoms: ${c.key_symptoms} | red_flags: ${c.red_flags}`
 ).join('\n');
 
+// ── Load red flag list ──
+let redFlagData;
+try { redFlagData = JSON.parse(fs.readFileSync('redflaglist.json', 'utf8')); }
+catch (e) { console.error('ERROR: Cannot load redflaglist.json:', e.message); process.exit(1); }
+
+const redFlagText = Object.values(redFlagData).map(v => {
+  const symptoms = (v.trigger_symptoms || []).join(', ');
+  const tag = v.triage_tag || 'SEEK_HELP_IMMEDIATELY';
+  let line = `  - [${tag}] ${v.description}: ${symptoms}`;
+  if (v.combinations && v.combinations.length > 0) {
+    line += '\n      Combination triggers: ' + v.combinations.map(c => c.join(' + ')).join('; ');
+  }
+  return line;
+}).join('\n');
+
+// ── Load schema ──
+let schemaData;
+try { schemaData = JSON.parse(fs.readFileSync('schema.json', 'utf8')); }
+catch (e) { console.error('ERROR: Cannot load schema.json:', e.message); process.exit(1); }
+
+const schemaFieldsText = Object.entries(schemaData)
+  .filter(([section]) => section !== 'metadata')
+  .flatMap(([section, val]) =>
+    typeof val === 'object' && !Array.isArray(val)
+      ? Object.keys(val).map(field => `  - ${section}.${field}`)
+      : [`  - ${section}`]
+  ).join('\n');
+
 // ── System prompt ──
 const SYSTEM_PROMPT = `You are a medical symptom diagnosis assistant. You MUST only classify patients into conditions from the list below. Do not invent or suggest any condition not in this list.
 
 === CONDITION DATABASE ===
 ${conditionsText}
+
+=== RED FLAG SCREENING (CHECK THIS FIRST — BEFORE ANY OTHER STEP) ===
+On every patient message, immediately scan for any of the following emergency conditions.
+If ANY red flag matches — by individual symptom, combination trigger, your own judgment, OR if the matched condition carries a SEEK_HELP_IMMEDIATELY tag — you MUST:
+  1. Set action = "SEEK_HELP_IMMEDIATELY" immediately
+  2. Name the suspected emergency clearly in your message
+  3. Instruct the patient to call emergency services (911 or local equivalent) without delay
+  Do NOT continue asking questions or building a differential — patient safety comes first.
+
+Known red flag conditions (from redflaglist.json):
+${redFlagText}
+
+=== STRUCTURED INFORMATION COLLECTION (schema.json) ===
+Before concluding with a final diagnosis, ensure you have collected the following fields progressively during the conversation.
+Do NOT finalize a diagnosis without at minimum: chief_complaint.symptom, patient_info.age, chief_complaint.severity, chief_complaint.duration_days, and symptoms[].onset_type.
+
+Required fields to collect:
+${schemaFieldsText}
 
 === DIAGNOSIS RULES (follow exactly) ===
 
@@ -124,7 +170,13 @@ app.get('/', (req, res) => {
 });
 
 app.get('/health', (req, res) => {
-  res.json({ status: 'ok', conditions_loaded: conditions.length, node: process.version });
+  res.json({
+    status: 'ok',
+    conditions_loaded: conditions.length,
+    red_flags_loaded: Object.keys(redFlagData).length,
+    schema_loaded: true,
+    node: process.version
+  });
 });
 
 app.post('/chat', async (req, res) => {
@@ -239,6 +291,8 @@ app.listen(PORT, () => {
   console.log('  Medical Symptom Diagnosis Chatbot  [v2]');
   console.log('='.repeat(54));
   console.log(`  Conditions loaded : ${conditions.length}`);
+  console.log(`  Red flags loaded  : ${Object.keys(redFlagData).length}`);
+  console.log(`  Schema loaded     : yes`);
   console.log(`  Running at        : http://localhost:${PORT}`);
   console.log('  Opening browser...');
   console.log('  Press Ctrl+C to stop');
