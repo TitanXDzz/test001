@@ -23,14 +23,54 @@ conditions_text = "\n".join([
     for i, c in enumerate(conditions)
 ])
 
+# Load red flag list
+with open("redflaglist.json", "r") as f:
+    red_flag_data = json.load(f)
+
+red_flag_text = "\n".join([
+    f'  - [{v.get("triage_tag","SEEK_HELP_IMMEDIATELY")}] {v["description"]}: {", ".join(v.get("trigger_symptoms", []))}'
+    + (("\n      Combination triggers: " + "; ".join(" + ".join(c) for c in v["combinations"])) if v.get("combinations") else "")
+    for v in red_flag_data.values()
+])
+
+# Load schema
+with open("schema.json", "r") as f:
+    schema_data = json.load(f)
+
+schema_fields_text = "\n".join([
+    f'  - {section}.{field}' if isinstance(val, dict) else f'  - {section}'
+    for section, val in schema_data.items()
+    if section != "metadata"
+    for field in (val.keys() if isinstance(val, dict) else [section])
+])
+
 SYSTEM_PROMPT = f"""You are a medical symptom diagnosis assistant. You MUST only classify patients into conditions from the list below. Do not invent or suggest any condition not in this list.
 
 === CONDITION DATABASE ===
 {conditions_text}
 
+=== RED FLAG SCREENING (CHECK THIS FIRST — BEFORE ANY OTHER STEP) ===
+On every patient message, immediately scan for any of the following emergency conditions.
+If ANY red flag matches — by individual symptom, combination trigger, your own judgment, OR if the matched condition carries a SEEK_HELP_IMMEDIATELY tag — you MUST:
+  1. Set action = "SEEK_HELP_IMMEDIATELY" immediately
+  2. Name the suspected emergency clearly in your message
+  3. Instruct the patient to call emergency services (911 or local equivalent) without delay
+  Do NOT continue asking questions or building a differential — patient safety comes first.
+
+Known red flag conditions (from redflaglist.json):
+{red_flag_text}
+
+=== STRUCTURED INFORMATION COLLECTION (schema.json) ===
+Before concluding with a final diagnosis, ensure you have collected the following fields.
+If critical fields are missing, ask focused follow-up questions to fill them in.
+Do NOT finalize a diagnosis without at minimum: chief_complaint.symptom, patient_info.age, chief_complaint.severity, chief_complaint.duration_days, and symptoms[].onset_type.
+
+Required fields to collect:
+{schema_fields_text}
+
 === DIAGNOSIS RULES (follow exactly) ===
 
-STEP 1 — Gather symptoms by asking focused questions (1-2 per turn).
+STEP 1 — Gather symptoms by asking focused questions (1-2 per turn). Collect schema fields progressively.
 STEP 2 — When multiple conditions are possible, ask a question that DIFFERENTIATES them (ask about a symptom present in one but not the others).
 STEP 3 — Once confident, apply the rule based on the tag of the HIGHEST-urgency matched condition:
 
@@ -197,7 +237,12 @@ def reset():
 
 @app.route("/health", methods=["GET"])
 def health():
-    return jsonify({"status": "ok", "conditions_loaded": len(conditions)})
+    return jsonify({
+        "status": "ok",
+        "conditions_loaded": len(conditions),
+        "red_flags_loaded": len(red_flag_data),
+        "schema_loaded": True
+    })
 
 
 def open_browser():
@@ -211,7 +256,9 @@ if __name__ == "__main__":
     print("\n" + "=" * 54)
     print("   Medical Symptom Diagnosis Chatbot  [v2]")
     print("=" * 54)
-    print(f"   Conditions loaded: {len(conditions)}")
+    print(f"   Conditions loaded:  {len(conditions)}")
+    print(f"   Red flags loaded:   {len(red_flag_data)}")
+    print(f"   Schema loaded:      yes")
     print("   Running at: http://localhost:5000")
     print("   Browser opening automatically...")
     print("   Press Ctrl+C to stop")
