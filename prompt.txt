@@ -11,3 +11,6 @@ Use Gemini API key in gemini-api-key.txt
 
 2 improvements. 1 I have added more conditions in conditionlist.json 2 I want the chatbot to ask more questions, become more confident before concluding or       
   making a decision. For example, if there are more than 1 candidates, ask questions to clarify which condition the patient is actually having.   
+
+2 improvements. 1, Apart from dangerous conditions that the chatbot could identify as red flags, I add an additional list full of red flags in redflaglist.json
+2, To make the AI chatbot more structured and reasonable and getting all the important information, I create a key schema. Make sure the chatbot fills in all required data in the schema before concluding or recommending things.

@@ -1,0 +1,231 @@
+{
+  "cardiac_emergency": {
+    "description": "Possible heart attack or acute coronary syndrome",
+    "match_strategy": "combination",
+    "priority": 1,
+    "trigger_symptoms": [
+      "chest pain",
+      "chest pressure",
+      "tight chest",
+      "pain spreading to arm",
+      "pain spreading to jaw",
+      "shortness of breath",
+      "sweating",
+      "nausea",
+      "dizziness"
+    ],
+    "combinations": [
+      ["chest pain", "sweating"],
+      ["chest pain", "shortness of breath"],
+      ["chest pain", "pain spreading to arm"],
+      ["chest pressure", "nausea"]
+    ],
+    "triage_tag": "SEEK_HELP_IMMEDIATELY"
+  },
+
+  "stroke_emergency": {
+    "description": "Possible stroke",
+    "match_strategy": "combination",
+    "priority": 1,
+    "trigger_symptoms": [
+      "face drooping",
+      "arm weakness",
+      "speech difficulty",
+      "sudden confusion",
+      "vision loss",
+      "loss of balance",
+      "sudden severe headache"
+    ],
+    "combinations": [
+      ["face drooping", "speech difficulty"],
+      ["arm weakness", "speech difficulty"]
+    ],
+    "triage_tag": "SEEK_HELP_IMMEDIATELY"
+  },
+
+  "anaphylaxis": {
+    "description": "Severe allergic reaction",
+    "match_strategy": "any",
+    "priority": 1,
+    "trigger_symptoms": [
+      "swelling of lips",
+      "swelling of tongue",
+      "swelling of throat",
+      "difficulty breathing",
+      "hives",
+      "fainting"
+    ],
+    "triage_tag": "SEEK_HELP_IMMEDIATELY"
+  },
+
+  "sepsis_risk": {
+    "description": "Possible systemic infection or sepsis",
+    "match_strategy": "combination",
+    "priority": 2,
+    "trigger_symptoms": [
+      "high fever",
+      "confusion",
+      "rapid breathing",
+      "extreme weakness",
+      "low blood pressure"
+    ],
+    "combinations": [
+      ["high fever", "confusion"],
+      ["high fever", "rapid breathing"]
+    ],
+    "triage_tag": "SEEK_HELP_IMMEDIATELY"
+  },
+
+  "severe_respiratory_distress": {
+    "description": "Severe breathing difficulty",
+    "match_strategy": "any",
+    "priority": 1,
+    "trigger_symptoms": [
+      "difficulty breathing",
+      "severe shortness of breath",
+      "blue lips",
+      "unable to speak full sentences",
+      "gasping for air"
+    ],
+    "triage_tag": "SEEK_HELP_IMMEDIATELY"
+  },
+
+  "meningitis_warning": {
+    "description": "Possible meningitis",
+    "match_strategy": "combination",
+    "priority": 2,
+    "trigger_symptoms": [
+      "high fever",
+      "stiff neck",
+      "light sensitivity",
+      "severe headache",
+      "confusion",
+      "vomiting"
+    ],
+    "combinations": [
+      ["high fever", "stiff neck"],
+      ["high fever", "confusion"]
+    ],
+    "triage_tag": "SEEK_HELP_IMMEDIATELY"
+  },
+
+  "severe_dengue_warning": {
+    "description": "Warning signs of severe dengue",
+    "match_strategy": "any",
+    "priority": 2,
+    "trigger_symptoms": [
+      "bleeding gums",
+      "nose bleeding",
+      "blood in vomit",
+      "blood in stool",
+      "severe abdominal pain",
+      "persistent vomiting",
+      "extreme weakness",
+      "confusion"
+    ],
+    "triage_tag": "SEEK_HELP_IMMEDIATELY"
+  },
+
+  "appendicitis_warning": {
+    "description": "Possible appendicitis",
+    "match_strategy": "combination",
+    "priority": 2,
+    "trigger_symptoms": [
+      "right lower abdominal pain",
+      "fever",
+      "nausea",
+      "pain worsening with movement"
+    ],
+    "combinations": [
+      ["right lower abdominal pain", "fever"],
+      ["right lower abdominal pain", "nausea"]
+    ],
+    "triage_tag": "SEEK_HELP_IMMEDIATELY"
+  },
+
+  "severe_dehydration": {
+    "description": "Severe dehydration",
+    "match_strategy": "any",
+    "priority": 3,
+    "trigger_symptoms": [
+      "extreme thirst",
+      "confusion",
+      "fainting",
+      "unable to drink fluids",
+      "very little urine"
+    ],
+    "triage_tag": "SEEK_HELP_IMMEDIATELY"
+  },
+
+  "seizure_emergency": {
+    "description": "Active seizure or seizure disorder emergency",
+    "match_strategy": "any",
+    "priority": 1,
+    "trigger_symptoms": [
+      "seizure",
+      "convulsions",
+      "loss of consciousness",
+      "uncontrolled shaking"
+    ],
+    "triage_tag": "SEEK_HELP_IMMEDIATELY"
+  },
+
+  "major_bleeding": {
+    "description": "Severe bleeding",
+    "match_strategy": "any",
+    "priority": 1,
+    "trigger_symptoms": [
+      "heavy bleeding",
+      "bleeding that will not stop",
+      "vomiting blood",
+      "blood in stool",
+      "coughing blood"
+    ],
+    "triage_tag": "SEEK_HELP_IMMEDIATELY"
+  },
+
+  "severe_head_injury": {
+    "description": "Possible brain injury",
+    "match_strategy": "any",
+    "priority": 1,
+    "trigger_symptoms": [
+      "loss of consciousness",
+      "severe head injury",
+      "confusion after head injury",
+      "vomiting after head injury",
+      "severe headache after injury"
+    ],
+    "triage_tag": "SEEK_HELP_IMMEDIATELY"
+  },
+
+  "ectopic_pregnancy_warning": {
+    "description": "Possible ectopic pregnancy",
+    "match_strategy": "combination",
+    "priority": 1,
+    "trigger_symptoms": [
+      "severe lower abdominal pain",
+      "vaginal bleeding",
+      "dizziness",
+      "fainting",
+      "shoulder pain"
+    ],
+    "combinations": [
+      ["severe lower abdominal pain", "vaginal bleeding"],
+      ["vaginal bleeding", "fainting"]
+    ],
+    "triage_tag": "SEEK_HELP_IMMEDIATELY"
+  },
+
+  "severe_burn": {
+    "description": "Serious burn injury",
+    "match_strategy": "any",
+    "priority": 2,
+    "trigger_symptoms": [
+      "large burn",
+      "burn covering large area",
+      "burn with blisters",
+      "burn with severe pain"
+    ],
+    "triage_tag": "SEEK_HELP_IMMEDIATELY"
+  }
+}
