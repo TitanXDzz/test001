@@ -1,7 +1,7 @@
 import webbrowser
 import threading
-from flask import Flask, render_template, request, jsonify
-import google.generativeai as genai
+from flask import Flask, render_template, request, jsonify  # type: ignore
+import google.generativeai as genai  # type: ignore
 
 app = Flask(__name__)
 
