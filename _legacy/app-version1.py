@@ -1,5 +1,3 @@
-import os
-import json
 import webbrowser
 import threading
 from flask import Flask, render_template, request, jsonify
