@@ -105,9 +105,11 @@
     .avatar {
       width: 34px; height: 34px; border-radius: 50%; display: flex;
       align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0;
+      overflow: hidden;
     }
     .message.bot .avatar  { background: var(--blue); color: white; }
     .message.user .avatar { background: #34a853; color: white; }
+    .message.bot .avatar img { width: 34px; height: 34px; border-radius: 50%; object-fit: cover; }
 
     .bubble {
       max-width: 78%; padding: 11px 15px; border-radius: 18px;
@@ -575,7 +577,11 @@
 
     const avatar = document.createElement('div');
     avatar.className = 'avatar';
-    avatar.textContent = role === 'bot' ? '🩺' : '👤';
+    if (role === 'bot') {
+      avatar.innerHTML = '<img src="/symtra-avatar.svg" alt="Symtra">';
+    } else {
+      avatar.textContent = '👤';
+    }
 
     const bubble = document.createElement('div');
     bubble.className = 'bubble';
@@ -595,7 +601,7 @@
     const container = document.getElementById('chatContainer');
     const el = document.createElement('div');
     el.className = 'message bot'; el.id = 'typingIndicator';
-    el.innerHTML = `<div class="avatar">🩺</div><div class="bubble"><div class="typing-indicator"><span></span><span></span><span></span></div></div>`;
+    el.innerHTML = `<div class="avatar"><img src="/symtra-avatar.svg" alt="Symtra"></div><div class="bubble"><div class="typing-indicator"><span></span><span></span><span></span></div></div>`;
     container.appendChild(el);
     container.scrollTop = container.scrollHeight;
   }
