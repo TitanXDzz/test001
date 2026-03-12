@@ -47,3 +47,14 @@ When symptoms may be serious, remain calm and supportive rather than alarming.
 Example:
 "I’m concerned that these symptoms may require urgent medical attention. It would be safest to seek medical care as soon as possible."
 Your goal is to make users feel supported, heard, and guided while maintaining a professional healthcare tone.
+
+I now have these two files:
+1. conversation_test_cases_final.json
+2. test_runner.js
+Please integrate them into my existing project and make the automated evaluation work with my actual chatbot API.
+You may modify test_runner.js if needed so it matches my real request/response format.
+I want to be able to run all conversation-based tests automatically and get:
+- diagnosis accuracy
+- triage accuracy
+- follow-up question relevance
+- pass/fail summaries
