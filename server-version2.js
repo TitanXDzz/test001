@@ -7,16 +7,28 @@ const { GoogleGenerativeAI } = require('@google/generative-ai');
 const app = express();
 const PORT = 5000;
 
-// ── Load API key ──
-let apiKey;
-try { apiKey = fs.readFileSync('gemini-api-key.txt', 'utf8').trim(); } catch { apiKey = process.env.GEMINI_API_KEY; }
-if (!apiKey) { console.error('ERROR: No Gemini API key found.'); process.exit(1); }
+// ── Load API keys (with rotation support) ──
+const keysDir = path.join(__dirname, 'api-keys');
+let apiKeys = [];
+if (fs.existsSync(keysDir)) {
+  apiKeys = fs.readdirSync(keysDir)
+    .filter(f => f.endsWith('.txt'))
+    .sort()
+    .map(f => fs.readFileSync(path.join(keysDir, f), 'utf8').trim())
+    .filter(k => k.length > 0);
+}
+// Fallback to legacy single key file
+if (apiKeys.length === 0) {
+  try { const k = fs.readFileSync('gemini-api-key.txt', 'utf8').trim(); if (k) apiKeys = [k]; } catch {}
+}
+if (apiKeys.length === 0 && process.env.GEMINI_API_KEY) apiKeys = [process.env.GEMINI_API_KEY];
+if (apiKeys.length === 0) { console.error('ERROR: No Gemini API key found.'); process.exit(1); }
 
-const genAI = new GoogleGenerativeAI(apiKey);
-const geminiModel = genAI.getGenerativeModel(
-  { model: 'gemini-2.5-flash' },
-  { apiVersion: 'v1beta' }
-);
+let currentKeyIndex = 0;
+function getModel() {
+  return new GoogleGenerativeAI(apiKeys[currentKeyIndex])
+    .getGenerativeModel({ model: 'gemini-2.5-flash' }, { apiVersion: 'v1beta' });
+}
 
 // ── Load condition list ──
 let conditions;
@@ -232,24 +244,41 @@ app.post('/chat', async (req, res) => {
     fullPrompt += `Patient's latest message: ${message}\n\nYour JSON response:`;
   }
 
-  // Retry logic for rate limits
+  // Retry logic with key rotation on daily limit
   const generateWithRetry = async (prompt, retries = 3) => {
-    for (let i = 0; i < retries; i++) {
-      try {
-        return await geminiModel.generateContent({
-          contents: [{ role: 'user', parts: [{ text: prompt }] }],
-          generationConfig: { thinkingConfig: { thinkingBudget: 0 } }
-        });
-      } catch (err) {
-        const m = err.message.match(/retry in (\d+(?:\.\d+)?)s/i);
-        const wait = m ? parseFloat(m[1]) * 1000 : 5000;
-        const isDaily = err.message.includes('PerDay');
-        if (!isDaily && i < retries - 1 && err.message.includes('429')) {
-          console.log(`Rate limited — retrying in ${wait / 1000}s...`);
-          await new Promise(r => setTimeout(r, wait));
-        } else throw err;
+    let keyAttempts = 0;
+    while (keyAttempts < apiKeys.length) {
+      for (let i = 0; i < retries; i++) {
+        try {
+          return await getModel().generateContent({
+            contents: [{ role: 'user', parts: [{ text: prompt }] }],
+            generationConfig: { thinkingConfig: { thinkingBudget: 0 } }
+          });
+        } catch (err) {
+          const isDaily = err.message.includes('PerDay') || err.message.includes('RESOURCE_EXHAUSTED');
+          const isRateLimit = err.message.includes('429');
+          if (isDaily) {
+            // Daily quota exhausted — try next key
+            if (currentKeyIndex < apiKeys.length - 1) {
+              currentKeyIndex++;
+              console.log(`[Key rotation] Daily limit on key ${currentKeyIndex}. Switching to key ${currentKeyIndex + 1}/${apiKeys.length}...`);
+              break; // break inner loop, outer loop will retry with new key
+            } else {
+              throw new Error('All API keys have reached their daily limit.');
+            }
+          } else if (isRateLimit && i < retries - 1) {
+            const m = err.message.match(/retry in (\d+(?:\.\d+)?)s/i);
+            const wait = m ? parseFloat(m[1]) * 1000 : 5000;
+            console.log(`Rate limited — retrying in ${wait / 1000}s...`);
+            await new Promise(r => setTimeout(r, wait));
+          } else {
+            throw err;
+          }
+        }
       }
+      keyAttempts++;
     }
+    throw new Error('All API keys exhausted.');
   };
 
   try {
@@ -314,6 +343,7 @@ app.listen(PORT, () => {
   console.log(`  Conditions loaded : ${conditions.length}`);
   console.log(`  Red flags loaded  : ${Object.keys(redFlagData).length}`);
   console.log(`  Schema loaded     : yes`);
+  console.log(`  API keys loaded   : ${apiKeys.length} (rotation enabled)`);
   console.log(`  Running at        : http://localhost:${PORT}`);
   console.log('  Opening browser...');
   console.log('  Press Ctrl+C to stop');
