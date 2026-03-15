@@ -1,0 +1,1036 @@
+{
+  "format_version": "1.0",
+  "description": "Profile-based test cases for an AI patient simulator. The tester AI should answer Symtra consistently using the patient profile and hidden target condition/triage. Symptoms are intentionally not fully prewritten, so the tester can reveal them naturally during the conversation based on the assigned condition.",
+  "cases": [
+    {
+      "id": "profile_001",
+      "target_condition": "Common cold",
+      "expected_triage_tag": "CONTINUE",
+      "patient_profile": {
+        "age": 16,
+        "biological_sex": "male",
+        "pregnancy_status": null,
+        "medical_history": [],
+        "medications": [],
+        "allergies": [],
+        "risk_factors": [
+          "recent school exposure to classmates with colds"
+        ]
+      }
+    },
+    {
+      "id": "profile_002",
+      "target_condition": "Mild influenza",
+      "expected_triage_tag": "CONTINUE",
+      "patient_profile": {
+        "age": 21,
+        "biological_sex": "female",
+        "pregnancy_status": false,
+        "medical_history": [],
+        "medications": [
+          "paracetamol as needed"
+        ],
+        "allergies": [],
+        "risk_factors": [
+          "recent contact with sick roommate"
+        ]
+      }
+    },
+    {
+      "id": "profile_003",
+      "target_condition": "Severe influenza",
+      "expected_triage_tag": "SEEK_HELP_IMMEDIATELY",
+      "patient_profile": {
+        "age": 68,
+        "biological_sex": "male",
+        "pregnancy_status": null,
+        "medical_history": [
+          "hypertension"
+        ],
+        "medications": [
+          "amlodipine"
+        ],
+        "allergies": [],
+        "risk_factors": [
+          "elderly",
+          "recent influenza exposure"
+        ]
+      }
+    },
+    {
+      "id": "profile_004",
+      "target_condition": "COVID-19 suspected",
+      "expected_triage_tag": "SEEK_HELP_SOON",
+      "patient_profile": {
+        "age": 28,
+        "biological_sex": "female",
+        "pregnancy_status": false,
+        "medical_history": [],
+        "medications": [],
+        "allergies": [],
+        "risk_factors": [
+          "recent office outbreak",
+          "recent travel"
+        ]
+      }
+    },
+    {
+      "id": "profile_005",
+      "target_condition": "COVID-19 severe",
+      "expected_triage_tag": "SEEK_HELP_IMMEDIATELY",
+      "patient_profile": {
+        "age": 63,
+        "biological_sex": "male",
+        "pregnancy_status": null,
+        "medical_history": [
+          "type 2 diabetes"
+        ],
+        "medications": [
+          "metformin"
+        ],
+        "allergies": [],
+        "risk_factors": [
+          "older age",
+          "diabetes",
+          "recent exposure to COVID-19"
+        ]
+      }
+    },
+    {
+      "id": "profile_006",
+      "target_condition": "Viral sore throat",
+      "expected_triage_tag": "CONTINUE",
+      "patient_profile": {
+        "age": 19,
+        "biological_sex": "female",
+        "pregnancy_status": false,
+        "medical_history": [],
+        "medications": [],
+        "allergies": [
+          "penicillin"
+        ],
+        "risk_factors": []
+      }
+    },
+    {
+      "id": "profile_007",
+      "target_condition": "Possible strep throat",
+      "expected_triage_tag": "SEEK_HELP_SOON",
+      "patient_profile": {
+        "age": 15,
+        "biological_sex": "male",
+        "pregnancy_status": null,
+        "medical_history": [],
+        "medications": [],
+        "allergies": [],
+        "risk_factors": [
+          "school exposure"
+        ]
+      }
+    },
+    {
+      "id": "profile_008",
+      "target_condition": "Laryngitis",
+      "expected_triage_tag": "CONTINUE",
+      "patient_profile": {
+        "age": 30,
+        "biological_sex": "female",
+        "pregnancy_status": false,
+        "medical_history": [],
+        "medications": [],
+        "allergies": [],
+        "risk_factors": [
+          "heavy voice use"
+        ]
+      }
+    },
+    {
+      "id": "profile_009",
+      "target_condition": "Mild sinus congestion",
+      "expected_triage_tag": "CONTINUE",
+      "patient_profile": {
+        "age": 27,
+        "biological_sex": "male",
+        "pregnancy_status": null,
+        "medical_history": [
+          "allergic rhinitis"
+        ],
+        "medications": [],
+        "allergies": [],
+        "risk_factors": [
+          "seasonal allergies"
+        ]
+      }
+    },
+    {
+      "id": "profile_010",
+      "target_condition": "Severe sinusitis",
+      "expected_triage_tag": "SEEK_HELP_SOON",
+      "patient_profile": {
+        "age": 34,
+        "biological_sex": "female",
+        "pregnancy_status": false,
+        "medical_history": [],
+        "medications": [
+          "cetirizine"
+        ],
+        "allergies": [],
+        "risk_factors": [
+          "symptoms > 1 week"
+        ]
+      }
+    },
+    {
+      "id": "profile_011",
+      "target_condition": "Allergic rhinitis",
+      "expected_triage_tag": "CONTINUE",
+      "patient_profile": {
+        "age": 24,
+        "biological_sex": "female",
+        "pregnancy_status": false,
+        "medical_history": [
+          "eczema"
+        ],
+        "medications": [],
+        "allergies": [
+          "dust mites"
+        ],
+        "risk_factors": [
+          "seasonal pollen exposure"
+        ]
+      }
+    },
+    {
+      "id": "profile_012",
+      "target_condition": "Acute bronchitis mild",
+      "expected_triage_tag": "CONTINUE",
+      "patient_profile": {
+        "age": 38,
+        "biological_sex": "male",
+        "pregnancy_status": null,
+        "medical_history": [
+          "former smoker"
+        ],
+        "medications": [],
+        "allergies": [],
+        "risk_factors": [
+          "recent upper respiratory infection"
+        ]
+      }
+    },
+    {
+      "id": "profile_013",
+      "target_condition": "Possible pneumonia",
+      "expected_triage_tag": "SEEK_HELP_IMMEDIATELY",
+      "patient_profile": {
+        "age": 72,
+        "biological_sex": "female",
+        "pregnancy_status": false,
+        "medical_history": [
+          "COPD"
+        ],
+        "medications": [
+          "inhaler"
+        ],
+        "allergies": [],
+        "risk_factors": [
+          "elderly",
+          "chronic lung disease"
+        ]
+      }
+    },
+    {
+      "id": "profile_014",
+      "target_condition": "Earwax impaction",
+      "expected_triage_tag": "CONTINUE",
+      "patient_profile": {
+        "age": 41,
+        "biological_sex": "male",
+        "pregnancy_status": null,
+        "medical_history": [],
+        "medications": [],
+        "allergies": [],
+        "risk_factors": [
+          "frequent cotton swab use"
+        ]
+      }
+    },
+    {
+      "id": "profile_015",
+      "target_condition": "Ear infection suspected",
+      "expected_triage_tag": "SEEK_HELP_SOON",
+      "patient_profile": {
+        "age": 18,
+        "biological_sex": "female",
+        "pregnancy_status": false,
+        "medical_history": [],
+        "medications": [],
+        "allergies": [],
+        "risk_factors": [
+          "recent swimming"
+        ]
+      }
+    },
+    {
+      "id": "profile_016",
+      "target_condition": "Nosebleed minor",
+      "expected_triage_tag": "CONTINUE",
+      "patient_profile": {
+        "age": 13,
+        "biological_sex": "male",
+        "pregnancy_status": null,
+        "medical_history": [],
+        "medications": [],
+        "allergies": [],
+        "risk_factors": [
+          "dry weather"
+        ]
+      }
+    },
+    {
+      "id": "profile_017",
+      "target_condition": "Nosebleed severe",
+      "expected_triage_tag": "SEEK_HELP_IMMEDIATELY",
+      "patient_profile": {
+        "age": 58,
+        "biological_sex": "male",
+        "pregnancy_status": null,
+        "medical_history": [
+          "hypertension"
+        ],
+        "medications": [
+          "warfarin"
+        ],
+        "allergies": [],
+        "risk_factors": [
+          "anticoagulant use"
+        ]
+      }
+    },
+    {
+      "id": "profile_018",
+      "target_condition": "Dengue suspected",
+      "expected_triage_tag": "SEEK_HELP_SOON",
+      "patient_profile": {
+        "age": 22,
+        "biological_sex": "male",
+        "pregnancy_status": null,
+        "medical_history": [],
+        "medications": [
+          "paracetamol"
+        ],
+        "allergies": [],
+        "risk_factors": [
+          "mosquito exposure",
+          "living in dengue-endemic area"
+        ]
+      }
+    },
+    {
+      "id": "profile_019",
+      "target_condition": "Dengue warning stage",
+      "expected_triage_tag": "SEEK_HELP_IMMEDIATELY",
+      "patient_profile": {
+        "age": 26,
+        "biological_sex": "female",
+        "pregnancy_status": false,
+        "medical_history": [],
+        "medications": [],
+        "allergies": [],
+        "risk_factors": [
+          "mosquito exposure",
+          "recent febrile illness"
+        ]
+      }
+    },
+    {
+      "id": "profile_020",
+      "target_condition": "Indigestion",
+      "expected_triage_tag": "CONTINUE",
+      "patient_profile": {
+        "age": 31,
+        "biological_sex": "male",
+        "pregnancy_status": null,
+        "medical_history": [],
+        "medications": [],
+        "allergies": [],
+        "risk_factors": [
+          "heavy meal",
+          "late-night eating"
+        ]
+      }
+    },
+    {
+      "id": "profile_021",
+      "target_condition": "Bloating gas",
+      "expected_triage_tag": "CONTINUE",
+      "patient_profile": {
+        "age": 29,
+        "biological_sex": "female",
+        "pregnancy_status": false,
+        "medical_history": [],
+        "medications": [],
+        "allergies": [
+          "lactose"
+        ],
+        "risk_factors": [
+          "recent dairy intake"
+        ]
+      }
+    },
+    {
+      "id": "profile_022",
+      "target_condition": "Mild gastritis",
+      "expected_triage_tag": "CONTINUE",
+      "patient_profile": {
+        "age": 35,
+        "biological_sex": "male",
+        "pregnancy_status": null,
+        "medical_history": [
+          "occasional gastritis"
+        ],
+        "medications": [
+          "ibuprofen as needed"
+        ],
+        "allergies": [],
+        "risk_factors": [
+          "NSAID use",
+          "spicy food"
+        ]
+      }
+    },
+    {
+      "id": "profile_023",
+      "target_condition": "Acid reflux",
+      "expected_triage_tag": "CONTINUE",
+      "patient_profile": {
+        "age": 40,
+        "biological_sex": "female",
+        "pregnancy_status": false,
+        "medical_history": [
+          "GERD"
+        ],
+        "medications": [
+          "antacid as needed"
+        ],
+        "allergies": [],
+        "risk_factors": [
+          "after meals",
+          "lying down after eating"
+        ]
+      }
+    },
+    {
+      "id": "profile_024",
+      "target_condition": "Constipation",
+      "expected_triage_tag": "CONTINUE",
+      "patient_profile": {
+        "age": 47,
+        "biological_sex": "male",
+        "pregnancy_status": null,
+        "medical_history": [],
+        "medications": [
+          "iron supplement"
+        ],
+        "allergies": [],
+        "risk_factors": [
+          "low fiber diet",
+          "low water intake"
+        ]
+      }
+    },
+    {
+      "id": "profile_025",
+      "target_condition": "Tension headache",
+      "expected_triage_tag": "CONTINUE",
+      "patient_profile": {
+        "age": 20,
+        "biological_sex": "female",
+        "pregnancy_status": false,
+        "medical_history": [],
+        "medications": [],
+        "allergies": [],
+        "risk_factors": [
+          "stress",
+          "sleep deprivation"
+        ]
+      }
+    },
+    {
+      "id": "profile_026",
+      "target_condition": "Migraine suspected",
+      "expected_triage_tag": "SEEK_HELP_SOON",
+      "patient_profile": {
+        "age": 23,
+        "biological_sex": "female",
+        "pregnancy_status": false,
+        "medical_history": [
+          "migraine history"
+        ],
+        "medications": [
+          "sumatriptan as needed"
+        ],
+        "allergies": [],
+        "risk_factors": [
+          "bright light trigger"
+        ]
+      }
+    },
+    {
+      "id": "profile_027",
+      "target_condition": "Stroke symptoms",
+      "expected_triage_tag": "SEEK_HELP_IMMEDIATELY",
+      "patient_profile": {
+        "age": 70,
+        "biological_sex": "male",
+        "pregnancy_status": null,
+        "medical_history": [
+          "hypertension",
+          "atrial fibrillation"
+        ],
+        "medications": [
+          "warfarin",
+          "amlodipine"
+        ],
+        "allergies": [],
+        "risk_factors": [
+          "advanced age",
+          "vascular disease"
+        ]
+      }
+    },
+    {
+      "id": "profile_028",
+      "target_condition": "Muscle soreness",
+      "expected_triage_tag": "CONTINUE",
+      "patient_profile": {
+        "age": 18,
+        "biological_sex": "male",
+        "pregnancy_status": null,
+        "medical_history": [],
+        "medications": [],
+        "allergies": [],
+        "risk_factors": [
+          "recent intense exercise"
+        ]
+      }
+    },
+    {
+      "id": "profile_029",
+      "target_condition": "Minor sprain",
+      "expected_triage_tag": "CONTINUE",
+      "patient_profile": {
+        "age": 17,
+        "biological_sex": "female",
+        "pregnancy_status": false,
+        "medical_history": [],
+        "medications": [],
+        "allergies": [],
+        "risk_factors": [
+          "sports injury"
+        ]
+      }
+    },
+    {
+      "id": "profile_030",
+      "target_condition": "Suspected fracture",
+      "expected_triage_tag": "SEEK_HELP_IMMEDIATELY",
+      "patient_profile": {
+        "age": 27,
+        "biological_sex": "male",
+        "pregnancy_status": null,
+        "medical_history": [],
+        "medications": [],
+        "allergies": [],
+        "risk_factors": [
+          "recent fall"
+        ]
+      }
+    },
+    {
+      "id": "profile_031",
+      "target_condition": "Mild eczema",
+      "expected_triage_tag": "CONTINUE",
+      "patient_profile": {
+        "age": 25,
+        "biological_sex": "female",
+        "pregnancy_status": false,
+        "medical_history": [
+          "eczema"
+        ],
+        "medications": [
+          "moisturizer"
+        ],
+        "allergies": [
+          "fragrance"
+        ],
+        "risk_factors": [
+          "dry weather"
+        ]
+      }
+    },
+    {
+      "id": "profile_032",
+      "target_condition": "Contact dermatitis",
+      "expected_triage_tag": "CONTINUE",
+      "patient_profile": {
+        "age": 33,
+        "biological_sex": "male",
+        "pregnancy_status": null,
+        "medical_history": [],
+        "medications": [],
+        "allergies": [
+          "nickel"
+        ],
+        "risk_factors": [
+          "new detergent exposure"
+        ]
+      }
+    },
+    {
+      "id": "profile_033",
+      "target_condition": "Cellulitis suspected",
+      "expected_triage_tag": "SEEK_HELP_IMMEDIATELY",
+      "patient_profile": {
+        "age": 52,
+        "biological_sex": "female",
+        "pregnancy_status": false,
+        "medical_history": [
+          "diabetes"
+        ],
+        "medications": [
+          "metformin"
+        ],
+        "allergies": [],
+        "risk_factors": [
+          "skin wound",
+          "diabetes"
+        ]
+      }
+    },
+    {
+      "id": "profile_034",
+      "target_condition": "Mild insomnia",
+      "expected_triage_tag": "CONTINUE",
+      "patient_profile": {
+        "age": 22,
+        "biological_sex": "female",
+        "pregnancy_status": false,
+        "medical_history": [],
+        "medications": [],
+        "allergies": [],
+        "risk_factors": [
+          "exam stress"
+        ]
+      }
+    },
+    {
+      "id": "profile_035",
+      "target_condition": "Mouth ulcers",
+      "expected_triage_tag": "CONTINUE",
+      "patient_profile": {
+        "age": 19,
+        "biological_sex": "male",
+        "pregnancy_status": null,
+        "medical_history": [],
+        "medications": [],
+        "allergies": [
+          "spicy food irritation"
+        ],
+        "risk_factors": [
+          "stress",
+          "recent mouth trauma"
+        ]
+      }
+    },
+    {
+      "id": "profile_036",
+      "target_condition": "Dental abscess suspected",
+      "expected_triage_tag": "SEEK_HELP_IMMEDIATELY",
+      "patient_profile": {
+        "age": 36,
+        "biological_sex": "female",
+        "pregnancy_status": false,
+        "medical_history": [
+          "poor dentition"
+        ],
+        "medications": [],
+        "allergies": [
+          "amoxicillin"
+        ],
+        "risk_factors": [
+          "untreated tooth decay"
+        ]
+      }
+    },
+    {
+      "id": "profile_037",
+      "target_condition": "Suspected UTI",
+      "expected_triage_tag": "SEEK_HELP_SOON",
+      "patient_profile": {
+        "age": 24,
+        "biological_sex": "female",
+        "pregnancy_status": false,
+        "medical_history": [
+          "previous UTI"
+        ],
+        "medications": [],
+        "allergies": [],
+        "risk_factors": [
+          "recent sexual activity"
+        ]
+      }
+    },
+    {
+      "id": "profile_038",
+      "target_condition": "Kidney infection suspected",
+      "expected_triage_tag": "SEEK_HELP_IMMEDIATELY",
+      "patient_profile": {
+        "age": 29,
+        "biological_sex": "female",
+        "pregnancy_status": false,
+        "medical_history": [
+          "recurrent UTI"
+        ],
+        "medications": [],
+        "allergies": [],
+        "risk_factors": [
+          "previous untreated urinary symptoms"
+        ]
+      }
+    },
+    {
+      "id": "profile_039",
+      "target_condition": "Heart attack suspected",
+      "expected_triage_tag": "SEEK_HELP_IMMEDIATELY",
+      "patient_profile": {
+        "age": 61,
+        "biological_sex": "male",
+        "pregnancy_status": null,
+        "medical_history": [
+          "hypertension",
+          "high cholesterol"
+        ],
+        "medications": [
+          "atorvastatin",
+          "amlodipine"
+        ],
+        "allergies": [],
+        "risk_factors": [
+          "smoking",
+          "family history of heart disease"
+        ]
+      }
+    },
+    {
+      "id": "profile_040",
+      "target_condition": "Unstable angina",
+      "expected_triage_tag": "SEEK_HELP_IMMEDIATELY",
+      "patient_profile": {
+        "age": 58,
+        "biological_sex": "female",
+        "pregnancy_status": false,
+        "medical_history": [
+          "coronary artery disease"
+        ],
+        "medications": [
+          "aspirin",
+          "nitroglycerin"
+        ],
+        "allergies": [],
+        "risk_factors": [
+          "known heart disease"
+        ]
+      }
+    },
+    {
+      "id": "profile_041",
+      "target_condition": "Pulmonary embolism suspected",
+      "expected_triage_tag": "SEEK_HELP_IMMEDIATELY",
+      "patient_profile": {
+        "age": 42,
+        "biological_sex": "female",
+        "pregnancy_status": false,
+        "medical_history": [],
+        "medications": [
+          "combined oral contraceptive pill"
+        ],
+        "allergies": [],
+        "risk_factors": [
+          "recent long flight",
+          "OCP use"
+        ]
+      }
+    },
+    {
+      "id": "profile_042",
+      "target_condition": "Anaphylaxis",
+      "expected_triage_tag": "SEEK_HELP_IMMEDIATELY",
+      "patient_profile": {
+        "age": 17,
+        "biological_sex": "male",
+        "pregnancy_status": null,
+        "medical_history": [
+          "peanut allergy"
+        ],
+        "medications": [
+          "epinephrine autoinjector"
+        ],
+        "allergies": [
+          "peanuts"
+        ],
+        "risk_factors": [
+          "recent food exposure"
+        ]
+      }
+    },
+    {
+      "id": "profile_043",
+      "target_condition": "Severe dehydration",
+      "expected_triage_tag": "SEEK_HELP_IMMEDIATELY",
+      "patient_profile": {
+        "age": 14,
+        "biological_sex": "female",
+        "pregnancy_status": false,
+        "medical_history": [],
+        "medications": [],
+        "allergies": [],
+        "risk_factors": [
+          "recent vomiting and diarrhea",
+          "poor fluid intake"
+        ]
+      }
+    },
+    {
+      "id": "profile_044",
+      "target_condition": "Sepsis suspected",
+      "expected_triage_tag": "SEEK_HELP_IMMEDIATELY",
+      "patient_profile": {
+        "age": 67,
+        "biological_sex": "male",
+        "pregnancy_status": null,
+        "medical_history": [
+          "diabetes",
+          "chronic kidney disease"
+        ],
+        "medications": [
+          "metformin",
+          "losartan"
+        ],
+        "allergies": [],
+        "risk_factors": [
+          "recent wound infection"
+        ]
+      }
+    },
+    {
+      "id": "profile_045",
+      "target_condition": "Meningitis suspected",
+      "expected_triage_tag": "SEEK_HELP_IMMEDIATELY",
+      "patient_profile": {
+        "age": 20,
+        "biological_sex": "female",
+        "pregnancy_status": false,
+        "medical_history": [],
+        "medications": [],
+        "allergies": [],
+        "risk_factors": [
+          "recent dormitory exposure"
+        ]
+      }
+    },
+    {
+      "id": "profile_046",
+      "target_condition": "Seizure episode",
+      "expected_triage_tag": "SEEK_HELP_IMMEDIATELY",
+      "patient_profile": {
+        "age": 18,
+        "biological_sex": "male",
+        "pregnancy_status": null,
+        "medical_history": [
+          "epilepsy"
+        ],
+        "medications": [
+          "levetiracetam"
+        ],
+        "allergies": [],
+        "risk_factors": [
+          "missed medication dose"
+        ]
+      }
+    },
+    {
+      "id": "profile_047",
+      "target_condition": "Hypoglycemia severe",
+      "expected_triage_tag": "SEEK_HELP_IMMEDIATELY",
+      "patient_profile": {
+        "age": 35,
+        "biological_sex": "male",
+        "pregnancy_status": null,
+        "medical_history": [
+          "type 1 diabetes"
+        ],
+        "medications": [
+          "insulin"
+        ],
+        "allergies": [],
+        "risk_factors": [
+          "missed meal after insulin"
+        ]
+      }
+    },
+    {
+      "id": "profile_048",
+      "target_condition": "Hyperglycemia severe",
+      "expected_triage_tag": "SEEK_HELP_IMMEDIATELY",
+      "patient_profile": {
+        "age": 44,
+        "biological_sex": "female",
+        "pregnancy_status": false,
+        "medical_history": [
+          "type 2 diabetes"
+        ],
+        "medications": [
+          "insulin",
+          "metformin"
+        ],
+        "allergies": [],
+        "risk_factors": [
+          "poor glucose control"
+        ]
+      }
+    },
+    {
+      "id": "profile_049",
+      "target_condition": "Acute asthma attack",
+      "expected_triage_tag": "SEEK_HELP_IMMEDIATELY",
+      "patient_profile": {
+        "age": 19,
+        "biological_sex": "female",
+        "pregnancy_status": false,
+        "medical_history": [
+          "asthma"
+        ],
+        "medications": [
+          "salbutamol inhaler"
+        ],
+        "allergies": [
+          "dust"
+        ],
+        "risk_factors": [
+          "missed inhaler",
+          "allergen exposure"
+        ]
+      }
+    },
+    {
+      "id": "profile_050",
+      "target_condition": "Appendicitis suspected",
+      "expected_triage_tag": "SEEK_HELP_IMMEDIATELY",
+      "patient_profile": {
+        "age": 18,
+        "biological_sex": "male",
+        "pregnancy_status": null,
+        "medical_history": [],
+        "medications": [],
+        "allergies": [],
+        "risk_factors": []
+      }
+    },
+    {
+      "id": "profile_051",
+      "target_condition": "Gallbladder attack suspected",
+      "expected_triage_tag": "SEEK_HELP_SOON",
+      "patient_profile": {
+        "age": 46,
+        "biological_sex": "female",
+        "pregnancy_status": false,
+        "medical_history": [
+          "gallstones"
+        ],
+        "medications": [],
+        "allergies": [],
+        "risk_factors": [
+          "fatty meal trigger"
+        ]
+      }
+    },
+    {
+      "id": "profile_052",
+      "target_condition": "Peptic ulcer suspected",
+      "expected_triage_tag": "SEEK_HELP_SOON",
+      "patient_profile": {
+        "age": 39,
+        "biological_sex": "male",
+        "pregnancy_status": null,
+        "medical_history": [
+          "previous H. pylori infection"
+        ],
+        "medications": [
+          "ibuprofen frequently"
+        ],
+        "allergies": [],
+        "risk_factors": [
+          "NSAID use",
+          "smoking"
+        ]
+      }
+    },
+    {
+      "id": "profile_053",
+      "target_condition": "Food poisoning suspected",
+      "expected_triage_tag": "SEEK_HELP_SOON",
+      "patient_profile": {
+        "age": 27,
+        "biological_sex": "female",
+        "pregnancy_status": false,
+        "medical_history": [],
+        "medications": [],
+        "allergies": [
+          "shellfish"
+        ],
+        "risk_factors": [
+          "ate suspicious street food"
+        ]
+      }
+    },
+    {
+      "id": "profile_054",
+      "target_condition": "Kidney stones suspected",
+      "expected_triage_tag": "SEEK_HELP_SOON",
+      "patient_profile": {
+        "age": 32,
+        "biological_sex": "male",
+        "pregnancy_status": null,
+        "medical_history": [
+          "prior kidney stones"
+        ],
+        "medications": [],
+        "allergies": [],
+        "risk_factors": [
+          "low water intake"
+        ]
+      }
+    },
+    {
+      "id": "profile_055",
+      "target_condition": "Panic attack",
+      "expected_triage_tag": "SEEK_HELP_SOON",
+      "patient_profile": {
+        "age": 23,
+        "biological_sex": "female",
+        "pregnancy_status": false,
+        "medical_history": [
+          "anxiety disorder"
+        ],
+        "medications": [
+          "sertraline"
+        ],
+        "allergies": [],
+        "risk_factors": [
+          "recent severe stress"
+        ]
+      }
+    }
+  ]
+}
