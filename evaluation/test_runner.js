@@ -1,5 +1,3 @@
-
-#!/usr/bin/env node
 /**
  * Profile-based conversation test runner for Symtra
  *
