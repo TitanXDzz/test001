@@ -71,9 +71,13 @@ function getPatientModel(systemPrompt) {
     );
 }
 
-// ── Patient AI caller with key rotation ───────────────────────────────────────
+// ── Patient AI caller with key rotation and backoff ───────────────────────────
 async function callPatientAI(systemPrompt, history) {
-  for (let attempt = 0; attempt < apiKeys.length; attempt++) {
+  let totalAttempts = 0;
+  const maxAttempts = apiKeys.length * 4;
+
+  while (totalAttempts < maxAttempts) {
+    totalAttempts++;
     try {
       const model  = getPatientModel(systemPrompt);
       const result = await model.generateContent({
@@ -85,18 +89,30 @@ async function callPatientAI(systemPrompt, history) {
       });
       return result.response.text().trim();
     } catch (err) {
-      const isDaily = err.message.includes('PerDay') || err.message.includes('RESOURCE_EXHAUSTED');
-      if (isDaily && keyIndex < apiKeys.length - 1) {
-        keyIndex++;
-        console.log(`[Patient AI] Daily limit. Switching to key ${keyIndex + 1}/${apiKeys.length}...`);
-      } else if (isDaily) {
-        throw new Error('All patient AI keys have reached their daily limit.');
+      const isDaily    = err.message.includes('PerDay') || err.message.includes('RESOURCE_EXHAUSTED');
+      const isInvalid  = err.message.includes('API_KEY_INVALID') || err.message.includes('key expired') || err.message.includes('key was reported as leaked');
+      const isRateLimit = err.message.includes('429');
+
+      if (isInvalid || isDaily) {
+        // Skip this key entirely
+        if (keyIndex < apiKeys.length - 1) {
+          keyIndex++;
+          console.log(`[Patient AI] Key ${keyIndex} invalid/exhausted. Switching to key ${keyIndex + 1}/${apiKeys.length}...`);
+        } else {
+          throw new Error('All patient AI keys are invalid or exhausted.');
+        }
+      } else if (isRateLimit) {
+        // Per-minute rate limit — wait the suggested time then retry same key
+        const m    = err.message.match(/retry in (\d+(?:\.\d+)?)s/i);
+        const wait = m ? Math.ceil(parseFloat(m[1])) * 1000 + 1000 : 15000;
+        console.log(`[Patient AI] Rate limited. Waiting ${wait / 1000}s...`);
+        await sleep(wait);
       } else {
         throw err;
       }
     }
   }
-  throw new Error('Patient AI: exhausted all key attempts.');
+  throw new Error('Patient AI: exhausted all retry attempts.');
 }
 
 // ── Symtra API calls ───────────────────────────────────────────────────────────
@@ -246,7 +262,7 @@ async function runCase(caseObj) {
     patientHistory.push({ role: 'model', parts: [{ text: patientReply }] });
 
     userMessage = patientReply;
-    await sleep(300);
+    await sleep(13000); // stay under 5 RPM free tier (patient AI + server = 2 calls per turn)
   }
 
   // ── Score ──
@@ -309,7 +325,7 @@ async function main() {
       results.push({ id: c.id, target_condition: c.target_condition, passed: false, error: err.message });
       console.log(`ERROR  ${err.message}`);
     }
-    await sleep(200);
+    await sleep(15000); // pause between cases
   }
 
   // ── Summary ──
