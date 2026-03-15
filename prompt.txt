@@ -59,3 +59,8 @@ I want to be able to run all conversation-based tests automatically and get:
 - follow-up question relevance
 - pass/fail summaries
 Put them in a newly-created file by yourself.
+
+So the plan is to create another AI acting as a system tester. It will see its assignment (like its description and past medications). It will also see what condition it is having but will keep it as a secret, slowly revealing symptoms based on what Symtra asks.
+Make sure the AI tester answer according to its condition and description, but only reveals what's actually related to Symtra's specific question slowly to not make it too easy for Symtra.
+Now you can start doing it. The test case is in profile_based_test_cases_full.json. For the test_runner.js you can do whatever you want with it or even overwrite the entire file.
+Log the results and create a file to keep them. Also create a file eval_summary to give data of what happens.
