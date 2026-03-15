@@ -2,32 +2,57 @@ const express = require('express');
 const path = require('path');
 const fs = require('fs');
 const { exec } = require('child_process');
-const { GoogleGenerativeAI } = require('@google/generative-ai');
-
 const app = express();
 const PORT = 5000;
 
-// ── Load API keys (with rotation support) ──
-const keysDir = path.join(__dirname, 'api-keys');
-let apiKeys = [];
-if (fs.existsSync(keysDir)) {
-  apiKeys = fs.readdirSync(keysDir)
-    .filter(f => f.endsWith('.txt'))
-    .sort()
-    .map(f => fs.readFileSync(path.join(keysDir, f), 'utf8').trim())
-    .filter(k => k.length > 0);
+// ── Load OpenRouter key for Symtra ──
+const orKeyPath = path.join(__dirname, 'openrouter-api-keys', 'symtra.txt');
+let openRouterKey;
+try { openRouterKey = fs.readFileSync(orKeyPath, 'utf8').trim(); } catch {}
+if (!openRouterKey || openRouterKey.startsWith('PASTE_')) {
+  console.error('ERROR: No OpenRouter API key found in openrouter-api-keys/symtra.txt');
+  process.exit(1);
 }
-// Fallback to legacy single key file
-if (apiKeys.length === 0) {
-  try { const k = fs.readFileSync('gemini-api-key.txt', 'utf8').trim(); if (k) apiKeys = [k]; } catch {}
-}
-if (apiKeys.length === 0 && process.env.GEMINI_API_KEY) apiKeys = [process.env.GEMINI_API_KEY];
-if (apiKeys.length === 0) { console.error('ERROR: No Gemini API key found.'); process.exit(1); }
 
-let currentKeyIndex = 0;
-function getModel() {
-  return new GoogleGenerativeAI(apiKeys[currentKeyIndex])
-    .getGenerativeModel({ model: 'gemini-2.5-flash' }, { apiVersion: 'v1beta' });
+const OPENROUTER_MODEL = 'google/gemini-2.5-flash';
+const OPENROUTER_URL   = 'https://openrouter.ai/api/v1/chat/completions';
+
+async function callOpenRouter(prompt, retries = 3) {
+  for (let i = 0; i < retries; i++) {
+    const ctrl  = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), 60000);
+    try {
+      const res = await fetch(OPENROUTER_URL, {
+        method:  'POST',
+        headers: {
+          'Authorization': `Bearer ${openRouterKey}`,
+          'Content-Type':  'application/json',
+          'HTTP-Referer':  'http://localhost:5000',
+          'X-Title':       'Symtra'
+        },
+        body:   JSON.stringify({
+          model:    OPENROUTER_MODEL,
+          messages: [{ role: 'user', content: prompt }]
+        }),
+        signal: ctrl.signal
+      });
+      if (!res.ok) {
+        const errText = await res.text();
+        throw new Error(`OpenRouter ${res.status}: ${errText}`);
+      }
+      const data = await res.json();
+      return data.choices[0].message.content;
+    } catch (err) {
+      if (i < retries - 1 && (err.message.includes('429') || err.message.includes('529'))) {
+        console.log(`OpenRouter rate limited — retrying in 5s...`);
+        await new Promise(r => setTimeout(r, 5000));
+      } else {
+        throw err;
+      }
+    } finally {
+      clearTimeout(timer);
+    }
+  }
 }
 
 // ── Load condition list ──
@@ -244,46 +269,8 @@ app.post('/chat', async (req, res) => {
     fullPrompt += `Patient's latest message: ${message}\n\nYour JSON response:`;
   }
 
-  // Retry logic with key rotation on daily limit
-  const generateWithRetry = async (prompt, retries = 3) => {
-    let keyAttempts = 0;
-    while (keyAttempts < apiKeys.length) {
-      for (let i = 0; i < retries; i++) {
-        try {
-          return await getModel().generateContent({
-            contents: [{ role: 'user', parts: [{ text: prompt }] }],
-            generationConfig: { thinkingConfig: { thinkingBudget: 0 } }
-          });
-        } catch (err) {
-          const isDaily = err.message.includes('PerDay') || err.message.includes('RESOURCE_EXHAUSTED');
-          const isRateLimit = err.message.includes('429');
-          if (isDaily) {
-            // Daily quota exhausted — try next key
-            if (currentKeyIndex < apiKeys.length - 1) {
-              currentKeyIndex++;
-              console.log(`[Key rotation] Daily limit on key ${currentKeyIndex}. Switching to key ${currentKeyIndex + 1}/${apiKeys.length}...`);
-              break; // break inner loop, outer loop will retry with new key
-            } else {
-              throw new Error('All API keys have reached their daily limit.');
-            }
-          } else if (isRateLimit && i < retries - 1) {
-            const m = err.message.match(/retry in (\d+(?:\.\d+)?)s/i);
-            const wait = m ? parseFloat(m[1]) * 1000 : 5000;
-            console.log(`Rate limited — retrying in ${wait / 1000}s...`);
-            await new Promise(r => setTimeout(r, wait));
-          } else {
-            throw err;
-          }
-        }
-      }
-      keyAttempts++;
-    }
-    throw new Error('All API keys exhausted.');
-  };
-
   try {
-    const result = await generateWithRetry(fullPrompt);
-    let raw = result.response.text().trim();
+    let raw = (await callOpenRouter(fullPrompt)).trim();
 
     // Robustly extract the JSON object — handles code fences, preamble text, etc.
     let parsed;
@@ -343,7 +330,7 @@ app.listen(PORT, () => {
   console.log(`  Conditions loaded : ${conditions.length}`);
   console.log(`  Red flags loaded  : ${Object.keys(redFlagData).length}`);
   console.log(`  Schema loaded     : yes`);
-  console.log(`  API keys loaded   : ${apiKeys.length} (rotation enabled)`);
+  console.log(`  AI model          : ${OPENROUTER_MODEL} (OpenRouter)`);
   console.log(`  Running at        : http://localhost:${PORT}`);
   console.log('  Opening browser...');
   console.log('  Press Ctrl+C to stop');

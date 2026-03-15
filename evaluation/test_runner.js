@@ -56,7 +56,7 @@ function parseArgs(argv) {
 const args = parseArgs(process.argv);
 
 const CASES_PATH = args.cases || './profile_based_test_cases_full.json';
-const API_URL = args.api || 'http://localhost:5000/api/chat';
+const API_URL = args.api || 'http://localhost:5000/chat';
 const MAX_TURNS_DEFAULT = Number(args['max-turns'] || 8);
 const VERBOSE = Boolean(args.verbose);
 const OUT_PATH = args.out || './test-results/profile_test_results.json';
