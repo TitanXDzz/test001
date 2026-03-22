@@ -64,3 +64,80 @@ So the plan is to create another AI acting as a system tester. It will see its a
 Make sure the AI tester answer according to its condition and description, but only reveals what's actually related to Symtra's specific question slowly to not make it too easy for Symtra.
 Now you can start doing it. The test case is in profile_based_test_cases_full.json. For the test_runner.js you can do whatever you want with it or even overwrite the entire file.
 Log the results and create a file to keep them. Also create a file eval_summary to give data of what happens.
+
+We have a working medical triage chatbot called Symtra.
+It already:
+- Asks structured follow-up questions
+- Matches symptoms to conditions
+- Uses a condition list and red flag list
+- Outputs triage decisions (CONTINUE, SEEK_HELP_SOON, SEEK_HELP_IMMEDIATELY)
+However, after running automated tests, we identified critical issues that must be fixed.
+CURRENT PROBLEMS (VERY IMPORTANT)
+1. UNDER-TRIAGING (CRITICAL SAFETY ISSUE)
+The system sometimes outputs CONTINUE when it should escalate.
+Examples:
+- Severe influenza → CONTINUE (WRONG)
+- COVID severe → CONTINUE (WRONG)
+- Meningitis → CONTINUE (WRONG)
+- Heart attack → SEEK_HELP_SOON instead of IMMEDIATE (WRONG)
+2. RED FLAGS ARE NOT OVERRIDING DECISIONS
+Even when dangerous symptoms are present (e.g. shortness of breath, confusion), the system continues instead of escalating.
+3. DIAGNOSIS AND TRIAGE ARE TOO COUPLED
+Currently triage is based on predicted condition.
+This is incorrect.
+Triage must be based on:
+→ WORST symptom / risk
+NOT just final diagnosis.
+4. OVER-BIAS TOWARD MILD CONDITIONS
+The system frequently defaults to:
+- Common cold
+- Mild sinus congestion
+Even when more serious conditions are possible.
+5. FOLLOW-UP ANSWERS ARE NOT USED PROPERLY
+The system asks good questions but fails to escalate after receiving dangerous answers.
+🎯 WHAT I WANT YOU TO DO
+Refactor and improve the chatbot logic with the following STRICT rules:
+✅ 1. IMPLEMENT HARD RED FLAG OVERRIDE SYSTEM (MANDATORY)
+If dangerous symtoms show up LET THAT BE YOUR MAIN PRIORITY unless you find out it's false alarm provide:
+→ SEEK_HELP_IMMEDIATELY
+✅ 2. DECOUPLE TRIAGE FROM DIAGNOSIS
+Do NOT determine triage only from the predicted condition.
+Instead:
+- Also compute TRIAGE based on symptom severity and red flags
+Example:
+Top Diagnosis = Mild influenza
+BUT
+Triage = SEEK_HELP_IMMEDIATELY (if severe symptoms present)
+✅ 3. PRIORITIZE WORST-CASE SAFETY
+If unsure between:
+- CONTINUE vs SEEK_HELP_SOON → choose SEEK_HELP_SOON
+- SEEK_HELP_SOON vs IMMEDIATE → choose IMMEDIATE
+Try classify, but if really unsure Bias toward safety.
+✅ 4. USE REDFLAGLIST.JSON PROPERLY
+We already provide a structured redflaglist.json.
+You must:
+- match symptoms against it
+- support BOTH:
+  - "any" match
+  - "combination" match
+If matched:
+→ immediately trigger its triage_tag
+✅ 5. IMPROVE CONDITION MATCHING
+Fix bias toward common cold.
+- Penalize conditions if key symptoms are missing
+- Reward conditions that match MULTIPLE key symptoms
+- Do not allow "Common cold" to dominate by default
+- For example if 5 symptoms out of 5 match COLD, but 5 out of 8 match COVID, it's possible that the problem might just be we haven't asked enough questions not just the patients doesnt have the 3 remaining symptoms.
+✅ 6. USE FOLLOW-UP ANSWERS CORRECTLY
+After each user response:
+- Re-evaluate severity
+- Re-check red flags
+- Update triage immediately if needed
+DO NOT wait until the end.
+✅ 7. MAINTAIN EXISTING STRUCTURE
+Do NOT break:
+- current conversation flow
+- schema.json structure
+- redflaglist.json structure
+Only improve logic.
+Now improve the system.
