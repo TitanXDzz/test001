@@ -1,0 +1,51 @@
+{
+  "timestamp": "2026-03-22T14-21-09",
+  "results": [
+    {
+      "id": "profile_039",
+      "target_condition": "Heart attack suspected",
+      "expected_triage": "SEEK_HELP_IMMEDIATELY",
+      "actual_triage": "SEEK_HELP_IMMEDIATELY",
+      "matched_conditions": [
+        "Heart attack suspected"
+      ],
+      "triage_pass": true,
+      "condition_pass": true,
+      "passed": true,
+      "turn_count": 3,
+      "conversation": [
+        {
+          "turn": 1,
+          "patient": "I've been feeling some tightness in my chest lately, and it's been worrying me. It's not constant, but it definitely catches my attention.",
+          "symtra": "Hello, I'm Symtra, your medical symptom diagnosis assistant. I understand you're feeling some chest tightness, and I want to assure you that we'll explore this carefully. Chest tightness can be related to a few different things, so gathering a bit more information will help me understand what might be happening.\n\nCould you please tell me if this chest tightness is associated with any pain, and if so, where exactly is the pain located and does it spread to other areas like your arm or jaw?",
+          "action": "ASKING",
+          "matched_conditions": [
+            "Heart attack suspected",
+            "Unstable angina",
+            "Pulmonary embolism suspected",
+            "Acid reflux",
+            "Panic attack"
+          ]
+        },
+        {
+          "turn": 2,
+          "patient": "Yes, there’s a bit of pain with it. It feels like it’s mostly in the center of my chest, and sometimes it feels like it could spread to my left arm.",
+          "symtra": "Thanks for sharing that. The chest pain feeling like it could spread to your left arm is something Symtra takes very seriously.\n\nCould you please tell me if you are experiencing any other symptoms, such as shortness of breath, sweating, or nausea?",
+          "action": "ASKING",
+          "matched_conditions": [
+            "Heart attack suspected"
+          ]
+        },
+        {
+          "turn": 3,
+          "patient": "I've noticed I get a little short of breath sometimes, especially when I’m active. I haven't felt sweaty or nauseous, though.",
+          "symtra": "Thank you for providing that additional information. The combination of chest tightness, pain that spreads to your left arm, and shortness of breath, even without sweating or nausea, raises a concern for Symtra. These could be subtle indicators of a serious cardiac issue. I'm concerned that these symptoms may require urgent medical attention.\n\nIt would be safest to seek medical care as soon as possible. I advise you to please call emergency services (911 or your local equivalent) without delay to be evaluated by a healthcare professional.",
+          "action": "SEEK_HELP_IMMEDIATELY",
+          "matched_conditions": [
+            "Heart attack suspected"
+          ]
+        }
+      ]
+    }
+  ]
+}

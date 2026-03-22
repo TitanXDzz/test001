@@ -79,6 +79,120 @@ const redFlagText = Object.values(redFlagData).map(v => {
   return line;
 }).join('\n');
 
+// ── Server-side Red Flag Scanner ──────────────────────────────────────────────
+// Normalises common patient phrasings to canonical trigger symptom phrases
+function normalizeSymptoms(text) {
+  return text.toLowerCase()
+    // breathing
+    .replace(/can'?t breathe|trouble breathing|hard to breathe|hard time breathing|difficulty breathing|cannot breathe|unable to breathe|not breathing well/g, 'difficulty breathing')
+    .replace(/short of breath|shortness of breath|not enough air|out of breath/g, 'severe shortness of breath')
+    .replace(/gasping for air|gasping|can barely breathe/g, 'gasping for air')
+    .replace(/can'?t speak.*(full )?sentences?|unable to speak.*sentences?|barely speak/g, 'unable to speak full sentences')
+    .replace(/blue lips?|lips? (are |is )?blue|cyanosis/g, 'blue lips')
+    // cardiac
+    .replace(/chest (pain|hurt|ache|hurts?|is painful)|pain in (my )?chest/g, 'chest pain')
+    .replace(/chest pressure|pressure (on|in) (my )?chest/g, 'chest pressure')
+    .replace(/chest.*(tight|tightness)|tight.*(chest)/g, 'tight chest')
+    .replace(/spread(ing)?.*(arm|shoulder)|radiat(ing)?.*(arm|shoulder)|pain.*(arm|shoulder).*chest|chest.*pain.*(arm|shoulder)/g, 'pain spreading to arm')
+    .replace(/spread(ing)?.*(jaw)|radiat(ing)?.*(jaw)|jaw.*pain|pain.*jaw/g, 'pain spreading to jaw')
+    .replace(/sweat(ing)?|drenched in sweat|profuse sweat/g, 'sweating')
+    // stroke FAST
+    .replace(/face.*(droop|drop|fell|drooping)|droop.*(face)/g, 'face drooping')
+    .replace(/arm.*(weak|weakness|numb)|weak.*(arm)/g, 'arm weakness')
+    .replace(/trouble speaking|difficulty speaking|slurred speech|can'?t speak|hard to speak|speech (problem|difficulty|trouble)/g, 'speech difficulty')
+    .replace(/sudden confusion|confused|confusion|disoriented|not thinking clearly/g, 'confusion')
+    .replace(/vision.*(loss|lost|gone)|can'?t see suddenly|sudden.*(blur|vision)/g, 'vision loss')
+    .replace(/loss of balance|can'?t balance|losing balance|falling over/g, 'loss of balance')
+    .replace(/worst headache|sudden severe headache|sudden terrible headache|thunderclap headache/g, 'sudden severe headache')
+    // allergy / anaphylaxis
+    .replace(/swoll?en?.*(lips?|tongue|throat)|lips?.*(swoll?en|swelling)|tongue.*(swoll?en|swelling)|throat.*(swoll?en|swelling|tight|closing)/g, 'swelling of throat')
+    .replace(/hives|urticaria/g, 'hives')
+    .replace(/faint(ing|ed)?|passed? out|about to faint|nearly fainted|feel(ing)? like (i might )?faint/g, 'fainting')
+    // sepsis / meningitis
+    .replace(/high fever|very high (fever|temperature)|extremely high (fever|temperature)/g, 'high fever')
+    .replace(/stiff neck|neck.*(stiff|rigid|stiffness)|can'?t move (my )?neck|neck won'?t move/g, 'stiff neck')
+    .replace(/light.*(sensitive|bother|hurt|sensitivity)|sensitive.*light|photophobia|bright light (bother|hurt)/g, 'light sensitivity')
+    .replace(/rapid(ly)? breath(ing)?|breathing fast|fast breathing|breathing quickly/g, 'rapid breathing')
+    .replace(/extreme(ly)? weak(ness)?|very weak|can barely move|too weak to/g, 'extreme weakness')
+    // seizure
+    .replace(/seizure|convuls(ion|ions|ing|ed)?|blacked? out|uncontrolled? shaking|fit \(seizure\)|twitching uncontrollably/g, 'seizure')
+    .replace(/loss of consciousness|lost consciousness/g, 'loss of consciousness')
+    // bleeding
+    .replace(/heavy bleeding|bleeding heavily|a lot of blood|severe bleeding/g, 'heavy bleeding')
+    .replace(/bleeding (that )?(won'?t|doesn'?t|will not) stop|can'?t stop bleeding|bleeding non.?stop/g, 'bleeding that will not stop')
+    .replace(/vomit(ing)? blood|throw(ing)? up blood/g, 'vomiting blood')
+    .replace(/blood in (my )?(stool|poop|bowel movement)|bloody stool/g, 'blood in stool')
+    .replace(/cough(ing)? (up )?blood|blood when (i )?cough/g, 'coughing blood')
+    .replace(/bleeding gums?|gums?.*(bleed|bleeding)/g, 'bleeding gums')
+    // dehydration
+    .replace(/extreme(ly)? thirst(y)?|very thirst(y)?|terribly thirsty/g, 'extreme thirst')
+    .replace(/can'?t (keep|hold) fluids?|unable to drink|can'?t drink/g, 'unable to drink fluids')
+    .replace(/barely urinating|not urinating|very little urine|no urine/g, 'very little urine')
+    // abdominal / appendicitis
+    .replace(/severe (stomach|abdominal|belly|gut) pain|very bad (stomach|abdominal) pain|excruciating (stomach|abdominal) pain/g, 'severe abdominal pain')
+    .replace(/lower right (stomach|abdomen|abdominal|belly|side|quadrant)|right lower (abdomen|stomach|belly|abdominal|side|quadrant)|right side (lower|bottom)|pain.*(lower right)/g, 'right lower abdominal pain')
+    .replace(/can'?t stop vomiting|persistent vomiting|vomiting (again and again|repeatedly|over and over)/g, 'persistent vomiting');
+}
+
+function serverRedFlagCheck(patientMessages) {
+  const rawText = patientMessages.join(' ');
+  const text = normalizeSymptoms(rawText);
+
+  // Sort by priority (lower number = more critical, check first)
+  const sorted = Object.entries(redFlagData)
+    .sort((a, b) => (a[1].priority || 99) - (b[1].priority || 99));
+
+  for (const [key, flag] of sorted) {
+    const triggers = (flag.trigger_symptoms || []).map(s => s.toLowerCase());
+    const strategy = flag.match_strategy;
+
+    if (strategy === 'any') {
+      if (triggers.some(t => text.includes(t))) {
+        return { triggered: true, key, description: flag.description, tag: flag.triage_tag };
+      }
+    } else if (strategy === 'combination') {
+      const combos = flag.combinations || [];
+      const hit = combos.find(combo => combo.every(s => text.includes(s.toLowerCase())));
+      if (hit) {
+        return { triggered: true, key, description: flag.description, tag: flag.triage_tag };
+      }
+    }
+  }
+  return { triggered: false };
+}
+
+// ── Condition Tag Enforcer ─────────────────────────────────────────────────────
+// Ensures triage action is never lower than what matched conditions demand
+function enforceConditionTriage(llmAction, matchedConditions) {
+  const urgency = { 'SEEK_HELP_IMMEDIATELY': 3, 'SEEK_HELP_SOON': 2, 'CONTINUE': 1, 'ASKING': 0 };
+  let highest = llmAction;
+
+  for (const mc of matchedConditions) {
+    const prob = (mc.probability || '').toLowerCase();
+    const cond = conditions.find(c => c.condition.toLowerCase() === (mc.name || '').toLowerCase());
+    if (!cond) continue;
+
+    // High probability + serious condition tag → always enforce
+    if (prob === 'high' && cond.tag === 'SEEK_HELP_IMMEDIATELY') {
+      return 'SEEK_HELP_IMMEDIATELY';
+    }
+
+    // Medium probability + SEEK_HELP_IMMEDIATELY → at minimum SEEK_HELP_SOON
+    if (prob === 'medium' && cond.tag === 'SEEK_HELP_IMMEDIATELY') {
+      if ((urgency['SEEK_HELP_SOON'] || 0) > (urgency[highest] || 0)) {
+        highest = 'SEEK_HELP_SOON';
+      }
+    }
+
+    // Any probability + SEEK_HELP_SOON → at minimum SEEK_HELP_SOON
+    if (cond.tag === 'SEEK_HELP_SOON' && (urgency[highest] || 0) < (urgency['SEEK_HELP_SOON'] || 0)) {
+      highest = 'SEEK_HELP_SOON';
+    }
+  }
+
+  return highest;
+}
+
 // ── Load schema ──
 let schemaData;
 try { schemaData = JSON.parse(fs.readFileSync('schema.json', 'utf8')); }
@@ -118,16 +232,70 @@ You MUST only classify patients into conditions from the list below. Do not inve
 === CONDITION DATABASE ===
 ${conditionsText}
 
-=== RED FLAG SCREENING (CHECK THIS FIRST — BEFORE ANY OTHER STEP) ===
-On every patient message, immediately scan for any of the following emergency conditions.
-If ANY red flag matches — by individual symptom, combination trigger, your own judgment, OR if the matched condition carries a SEEK_HELP_IMMEDIATELY tag — you MUST:
-  1. Set action = "SEEK_HELP_IMMEDIATELY" immediately
-  2. Name the suspected emergency clearly in your message
-  3. Instruct the patient to call emergency services (911 or local equivalent) without delay
-  Do NOT continue asking questions or building a differential — patient safety comes first.
+=== ⚠️ MANDATORY SAFETY RULES — READ BEFORE ANYTHING ELSE ===
 
-Known red flag conditions (from redflaglist.json):
+RULE 1 — TRIAGE IS BASED ON WORST SYMPTOM, NOT JUST DIAGNOSIS LABEL
+Your triage action must reflect the MOST DANGEROUS symptom reported by the patient — not only the predicted condition name.
+Even if your best-match condition is "Mild influenza" or "Common cold", if the patient also reports any of the following, you MUST escalate:
+  • Shortness of breath / difficulty breathing → SEEK_HELP_IMMEDIATELY
+  • Confusion (especially with fever) → SEEK_HELP_IMMEDIATELY
+  • Chest pain with sweating, arm/jaw pain, or nausea → SEEK_HELP_IMMEDIATELY
+  • Stiff neck with high fever → SEEK_HELP_IMMEDIATELY
+  • Unable to speak in full sentences → SEEK_HELP_IMMEDIATELY
+  • Face drooping or sudden arm weakness with speech difficulty → SEEK_HELP_IMMEDIATELY
+  • Active seizure / loss of consciousness → SEEK_HELP_IMMEDIATELY
+  • Throat/lip swelling with breathing difficulty → SEEK_HELP_IMMEDIATELY
+
+RULE 2 — RE-CHECK RED FLAGS AFTER EVERY PATIENT MESSAGE
+Every time the patient answers a follow-up question, re-scan ALL symptoms they have reported so far.
+Dangerous symptoms often appear in ANSWERS to your questions, not just the opening message.
+Examples:
+  → You ask about breathing. Patient says "yes, I'm short of breath." → SEEK_HELP_IMMEDIATELY immediately. Do not ask more questions.
+  → You ask about confusion. Patient says "yes, a bit confused" and they have high fever → SEEK_HELP_IMMEDIATELY (sepsis/meningitis).
+  → You ask about chest pain spreading. Patient says "yes, to my left arm" → SEEK_HELP_IMMEDIATELY (cardiac).
+Once a red flag is confirmed in any answer, stop gathering information and escalate immediately.
+
+RULE 3 — SAFETY BIAS (NON-NEGOTIABLE)
+When genuinely uncertain between two triage levels:
+  • CONTINUE vs SEEK_HELP_SOON → choose SEEK_HELP_SOON
+  • SEEK_HELP_SOON vs SEEK_HELP_IMMEDIATELY → choose SEEK_HELP_IMMEDIATELY
+Patient safety is always more important than avoiding false alarms.
+
+RULE 4 — DO NOT DEFAULT TO MILD CONDITIONS
+"Common cold", "Mild sinus congestion", "Tension headache", "Indigestion" etc. must ONLY be your top match when:
+  (a) The patient has no dangerous or severe symptoms whatsoever
+  (b) More serious conditions have been ruled out with specific targeted questions
+  (c) All symptoms are explicitly mild
+If the patient has risk factors (elderly, chronic illness, immunocompromised) or severe-sounding symptoms, bias toward the more serious condition.
+
+RULE 5 — DO NOT RULE OUT SERIOUS CONDITIONS PREMATURELY
+If a more serious condition shares 50%+ of its key symptoms with what the patient has reported, but you have NOT yet asked about the remaining symptoms — ask those questions before ruling it out.
+Example: Patient has fever + cough + fatigue → COVID-19 suspected and Possible pneumonia are both plausible. Ask about breathing, smell, and chest pain before concluding it's just a cold.
+
+=== RED FLAG SCREENING (CHECK THIS ON EVERY TURN — BEFORE ANYTHING ELSE) ===
+Scan ALL patient-reported symptoms against the red flag patterns below.
+If ANY red flag matches — by individual symptom, combination trigger, your own clinical judgment — you MUST:
+  1. Set action = "SEEK_HELP_IMMEDIATELY"
+  2. Name the suspected emergency clearly
+  3. Tell the patient to call emergency services immediately
+  Do NOT ask more questions. Patient safety is the absolute priority.
+
+Known red flag conditions:
 ${redFlagText}
+
+CRITICAL RED FLAG COMBINATIONS TO MEMORISE:
+  • Chest pain + sweating → cardiac emergency → SEEK_HELP_IMMEDIATELY
+  • Chest pain + shortness of breath → cardiac or pulmonary emergency → SEEK_HELP_IMMEDIATELY
+  • Chest pain + pain to arm or jaw → heart attack → SEEK_HELP_IMMEDIATELY
+  • High fever + stiff neck → meningitis → SEEK_HELP_IMMEDIATELY
+  • High fever + confusion → sepsis or meningitis → SEEK_HELP_IMMEDIATELY
+  • High fever + rapid breathing → sepsis → SEEK_HELP_IMMEDIATELY
+  • Shortness of breath (severe) or difficulty breathing → SEEK_HELP_IMMEDIATELY
+  • Face drooping + speech difficulty → stroke → SEEK_HELP_IMMEDIATELY
+  • Seizure / convulsions / loss of consciousness → SEEK_HELP_IMMEDIATELY
+  • Throat or lip swelling + difficulty breathing → anaphylaxis → SEEK_HELP_IMMEDIATELY
+  • Severe right lower abdominal pain + fever → appendicitis → SEEK_HELP_IMMEDIATELY
+  • Bleeding gums + severe abdominal pain + persistent vomiting (dengue) → SEEK_HELP_IMMEDIATELY
 
 === STRUCTURED INFORMATION COLLECTION (schema.json) ===
 Before concluding with a final diagnosis, ensure you have collected the following fields progressively during the conversation.
@@ -143,37 +311,22 @@ STEP 1 — Ask focused questions (1-2 per turn) to gather symptoms. You MUST ask
 STEP 2 — When 2 or more conditions are still plausible candidates, you MUST keep asking differentiating questions. Do NOT conclude while multiple conditions remain equally likely.
           For each differentiating question, target a symptom that is present in one candidate but absent or unlikely in the others.
           Keep narrowing until ONE condition clearly stands out as HIGH probability and all others are LOW.
-
-          *** CRITICAL RULE: If you identify a differentiating question in next_question_purpose, you MUST actually ask that question in the "message" field. The message MUST end with a direct question to the patient. Setting next_question_purpose but then concluding or summarizing without asking is FORBIDDEN. ***
+          *** CRITICAL RULE: If you identify a differentiating question in next_question_purpose, you MUST actually ask that question in the "message" field. Setting next_question_purpose but then concluding or summarizing without asking is FORBIDDEN. ***
 
 STEP 3 — Only conclude when you have gathered enough evidence to be genuinely confident. Confidence requires:
           • At least 3 questions asked (unless immediate emergency red flag), AND
           • Either one condition is clearly dominant (High probability), OR
           • You have explicitly ruled out all other candidates with targeted questions.
+          *** SELF-CHECK before concluding: List all remaining candidate conditions. If any two are still Medium or High probability, do NOT conclude — go back to STEP 2. ***
 
-          *** SELF-CHECK before concluding: List all remaining candidate conditions. If any two are still Medium or High probability, do NOT conclude — go back to STEP 2 and ask another differentiating question. ***
+STEP 4 — Determine the FINAL TRIAGE LEVEL using BOTH of these checks — use whichever gives the HIGHER urgency:
+          (A) Symptom-based triage: Does the patient have any red flag symptom? → apply Rule 1 above
+          (B) Condition-based triage: What is the tag of the highest-probability matched condition?
+          → Final action = whichever of (A) or (B) gives the MORE urgent result.
 
-STEP 4 — Once confident, apply the rule based on the HIGHEST-urgency tag among matched conditions:
-
-  tag = CONTINUE:
-    → List all matched conditions ranked High/Medium/Low probability.
-    → Advise the patient to monitor at home but see a doctor if symptoms worsen.
-    → Set action = "CONTINUE"
-
-  tag = SEEK_HELP_SOON:
-    → List all matched conditions ranked by probability.
-    → Tell the patient to seek medical attention within 24-48 hours.
-    → Set action = "SEEK_HELP_SOON"
-
-  tag = SEEK_HELP_IMMEDIATELY:
-    → List suspected conditions.
-    → Tell the patient to seek EMERGENCY medical help IMMEDIATELY.
-    → Set action = "SEEK_HELP_IMMEDIATELY"  ← session ends
-
-  No condition matches at all:
-    → Tell the patient their symptoms don't match the condition database.
-    → Tell them to seek immediate medical help regardless.
-    → Set action = "UNKNOWN"  ← session ends
+  action = "CONTINUE"               — all matched conditions are CONTINUE-tag and NO red flag symptoms
+  action = "SEEK_HELP_SOON"         — highest matched condition is SEEK_HELP_SOON OR patient has moderate-risk symptoms
+  action = "SEEK_HELP_IMMEDIATELY"  — ANY red flag symptom confirmed OR any High-probability condition has SEEK_HELP_IMMEDIATELY tag
 
 EXCEPTION — Skip minimum questions and conclude immediately ONLY if:
   • The patient describes an obvious life-threatening emergency (e.g., severe chest pain radiating to arm, collapse, uncontrollable bleeding, signs of stroke, anaphylaxis).
@@ -288,10 +441,27 @@ app.post('/chat', async (req, res) => {
     }
 
     const assistantMessage = parsed.message || raw;
-    const action = parsed.action || 'ASKING';
     const matchedConditions = parsed.matched_conditions || [];
     const reasoning = parsed.reasoning || '';
     const nextQuestionPurpose = parsed.next_question_purpose || '';
+
+    // ── Server-side safety enforcement ──────────────────────────────────────
+    // Run deterministic red flag check across all patient messages so far
+    const patientMessages = session.history.filter(m => m.role === 'user').map(m => m.text);
+    const redFlagResult   = serverRedFlagCheck(patientMessages);
+
+    let action = parsed.action || 'ASKING';
+
+    // 1. Hard override: red flag detected in patient text
+    if (redFlagResult.triggered && redFlagResult.tag === 'SEEK_HELP_IMMEDIATELY') {
+      action = 'SEEK_HELP_IMMEDIATELY';
+    }
+
+    // 2. Condition tag enforcement: ensure action is never lower than conditions demand
+    if (action !== 'SEEK_HELP_IMMEDIATELY') {
+      action = enforceConditionTriage(action, matchedConditions);
+    }
+    // ────────────────────────────────────────────────────────────────────────
 
     // Store assistant message (including greeting so first user reply has full context)
     session.history.push({ role: 'assistant', text: assistantMessage });
