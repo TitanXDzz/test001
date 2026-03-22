@@ -1,29 +1,173 @@
 {
-  "generated_at": "2026-03-22T12:38:36.153Z",
-  "results_file": "results_2026-03-22T12-38-19.json",
-  "total_cases": 1,
-  "passed": 0,
-  "failed": 1,
+  "generated_at": "2026-03-22T13:00:10.940Z",
+  "results_file": "results_2026-03-22T12-40-15.json",
+  "total_cases": 55,
+  "passed": 41,
+  "failed": 14,
   "errors": 0,
-  "pass_rate": "0.0%",
-  "triage_accuracy": "100.0%",
-  "condition_accuracy": "0.0%",
+  "pass_rate": "74.5%",
+  "triage_accuracy": "80.0%",
+  "condition_accuracy": "81.8%",
   "by_triage_tag": {
     "CONTINUE": {
-      "total": 1,
-      "triage_correct": 1,
-      "fully_passed": 0
+      "total": 21,
+      "triage_correct": 20,
+      "fully_passed": 19
+    },
+    "SEEK_HELP_IMMEDIATELY": {
+      "total": 22,
+      "triage_correct": 16,
+      "fully_passed": 15
+    },
+    "SEEK_HELP_SOON": {
+      "total": 12,
+      "triage_correct": 8,
+      "fully_passed": 7
     }
   },
   "failed_cases": [
     {
-      "id": "profile_001",
-      "condition": "Common cold",
+      "id": "profile_002",
+      "condition": "Mild influenza",
       "expected_triage": "CONTINUE",
+      "actual_triage": "CONTINUE",
+      "matched": [
+        "Common cold",
+        "Mild sinus congestion",
+        "Viral sore throat"
+      ]
+    },
+    {
+      "id": "profile_003",
+      "condition": "Severe influenza",
+      "expected_triage": "SEEK_HELP_IMMEDIATELY",
+      "actual_triage": "CONTINUE",
+      "matched": [
+        "Mild influenza",
+        "Acute bronchitis mild",
+        "Common cold"
+      ]
+    },
+    {
+      "id": "profile_004",
+      "condition": "COVID-19 suspected",
+      "expected_triage": "SEEK_HELP_SOON",
+      "actual_triage": "CONTINUE",
+      "matched": [
+        "Common cold",
+        "Mild influenza",
+        "Viral sore throat"
+      ]
+    },
+    {
+      "id": "profile_005",
+      "condition": "COVID-19 severe",
+      "expected_triage": "SEEK_HELP_IMMEDIATELY",
+      "actual_triage": "CONTINUE",
+      "matched": [
+        "Mild influenza",
+        "Acute bronchitis mild",
+        "Possible pneumonia"
+      ]
+    },
+    {
+      "id": "profile_010",
+      "condition": "Severe sinusitis",
+      "expected_triage": "SEEK_HELP_SOON",
       "actual_triage": "CONTINUE",
       "matched": [
         "Mild sinus congestion",
         "Severe sinusitis"
+      ]
+    },
+    {
+      "id": "profile_015",
+      "condition": "Ear infection suspected",
+      "expected_triage": "SEEK_HELP_SOON",
+      "actual_triage": "CONTINUE",
+      "matched": [
+        "Earwax impaction",
+        "Ear infection suspected"
+      ]
+    },
+    {
+      "id": "profile_018",
+      "condition": "Dengue suspected",
+      "expected_triage": "SEEK_HELP_SOON",
+      "actual_triage": "SEEK_HELP_SOON",
+      "matched": [
+        "Mild influenza",
+        "COVID-19 suspected"
+      ]
+    },
+    {
+      "id": "profile_019",
+      "condition": "Dengue warning stage",
+      "expected_triage": "SEEK_HELP_IMMEDIATELY",
+      "actual_triage": "SEEK_HELP_SOON",
+      "matched": [
+        "Mild influenza"
+      ]
+    },
+    {
+      "id": "profile_025",
+      "condition": "Tension headache",
+      "expected_triage": "CONTINUE",
+      "actual_triage": "SEEK_HELP_SOON",
+      "matched": [
+        "Migraine suspected",
+        "Tension headache"
+      ]
+    },
+    {
+      "id": "profile_038",
+      "condition": "Kidney infection suspected",
+      "expected_triage": "SEEK_HELP_IMMEDIATELY",
+      "actual_triage": "SEEK_HELP_SOON",
+      "matched": [
+        "Kidney stones suspected",
+        "Suspected UTI"
+      ]
+    },
+    {
+      "id": "profile_039",
+      "condition": "Heart attack suspected",
+      "expected_triage": "SEEK_HELP_IMMEDIATELY",
+      "actual_triage": "SEEK_HELP_SOON",
+      "matched": [
+        "Unstable angina",
+        "Heart attack suspected"
+      ]
+    },
+    {
+      "id": "profile_045",
+      "condition": "Meningitis suspected",
+      "expected_triage": "SEEK_HELP_IMMEDIATELY",
+      "actual_triage": "CONTINUE",
+      "matched": [
+        "Mild influenza",
+        "Viral sore throat",
+        "Common cold"
+      ]
+    },
+    {
+      "id": "profile_046",
+      "condition": "Seizure episode",
+      "expected_triage": "SEEK_HELP_IMMEDIATELY",
+      "actual_triage": "SEEK_HELP_IMMEDIATELY",
+      "matched": [
+        "Stroke symptoms"
+      ]
+    },
+    {
+      "id": "profile_052",
+      "condition": "Peptic ulcer suspected",
+      "expected_triage": "SEEK_HELP_SOON",
+      "actual_triage": "CONTINUE",
+      "matched": [
+        "Acid reflux",
+        "Indigestion",
+        "Mild gastritis"
       ]
     }
   ]
