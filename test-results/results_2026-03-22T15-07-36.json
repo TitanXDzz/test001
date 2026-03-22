@@ -1,0 +1,62 @@
+{
+  "timestamp": "2026-03-22T15-07-36",
+  "results": [
+    {
+      "id": "profile_046",
+      "target_condition": "Seizure episode",
+      "expected_triage": "SEEK_HELP_IMMEDIATELY",
+      "actual_triage": "UNKNOWN",
+      "matched_conditions": [],
+      "triage_pass": false,
+      "condition_pass": false,
+      "passed": false,
+      "turn_count": 5,
+      "conversation": [
+        {
+          "turn": 1,
+          "patient": "I've been feeling really off lately. I’ve had some strange moments where I just can't focus at all.",
+          "symtra": "Hello, I'm Symtra. I'm here to help you understand what might be going on. I hear you've been feeling 'off' and experiencing moments where you can't focus. To help me understand this better, could you please tell me how long these moments of not being able to focus have been happening?\n\nAlso, could you describe what you mean by 'off'? Are there any other symptoms you've noticed accompanying these moments?",
+          "action": "ASKING",
+          "matched_conditions": []
+        },
+        {
+          "turn": 2,
+          "patient": "It's been happening for a few days now. By \"off,\" I mean I just feel a little dizzy and kind of disoriented at times. I haven't noticed any other symptoms, though.",
+          "symtra": "Thank you for clarifying, I'm Symtra, and I appreciate you sharing more details. So, you've been experiencing dizziness and disorientation for a few days, along with difficulty focusing. It's good to know there aren't other symptoms you've noticed right now. \n\nTo help me understand your situation better, could you tell me your age, please? Also, have you had any recent head injuries, even minor ones?",
+          "action": "ASKING",
+          "matched_conditions": [
+            "Severe dehydration",
+            "Meningitis suspected",
+            "Stroke symptoms",
+            "Hypoglycemia severe",
+            "Tension headache",
+            "Migraine suspected"
+          ]
+        },
+        {
+          "turn": 3,
+          "patient": "I'm 18. I haven't had any recent head injuries, not even minor ones.",
+          "symtra": "Thank you for that information. I'm Symtra, and it's helpful to know you are 18 and haven't had any recent head injuries. \n\nI'm considering a few possibilities, such as a **Migraine suspected** due to symptoms like dizziness and disorientation, which can sometimes accompany a migraine, though you haven't mentioned a throbbing headache. I also want to make sure we're not missing anything else, as confusion can be a red flag in various conditions, but you've described it more as disorientation and difficulty focusing. \n\nCould you please tell me if you've experienced any headache along with these symptoms, and if so, could you describe its nature and severity (e.g., dull ache, throbbing pain, mild, moderate, or severe)?",
+          "action": "ASKING",
+          "matched_conditions": [
+            "Migraine suspected"
+          ]
+        },
+        {
+          "turn": 4,
+          "patient": "I haven't had any headaches at all. It's mostly just the dizziness and feeling disoriented.",
+          "symtra": "Thank you for clarifying that, I'm Symtra. It's helpful to know you haven't been experiencing any headaches, and that it's primarily the dizziness and disorientation you're concerned about.\n\nSince you haven't had headaches, that makes conditions like Migraine less likely at this point. However, dizziness and disorientation can be symptoms of various conditions. To help me narrow things down further, could you tell me if you've noticed any other symptoms like weakness, numbness, or difficulty speaking?",
+          "action": "ASKING",
+          "matched_conditions": []
+        },
+        {
+          "turn": 5,
+          "patient": "I haven't noticed any weakness or numbness. I don’t have trouble speaking either. It's really just the dizziness and feeling out of it.",
+          "symtra": "Thank you for confirming that, I'm Symtra. It's helpful to know you're not experiencing any weakness, numbness, or difficulty speaking, and that it's primarily the dizziness and feeling disoriented. \n\nGiven the information you've provided so far – difficulties focusing, dizziness, disorientation, no headaches, no recent head injuries, and no weakness, numbness, or speech difficulties – the symptoms you're describing don't clearly align with a specific condition in my current database with high confidence. While confusion can be a red flag, your description of 'disoriented' and 'difficulty focusing' without other neurological signs makes it less likely to be an immediate life-threatening emergency like a stroke or meningitis, especially given that you are 18 and have had no head injury.\n\nHowever, it's important to rule out any underlying causes for dizziness and disorientation. I would recommend you see a doctor for a thorough evaluation to understand what might be causing these symptoms. They will be able to perform a complete assessment and provide a diagnosis.\n\nFor now, please monitor your symptoms closely. If you develop any new symptoms such as severe headache, severe dizziness, new weakness, changes in vision, loss of consciousness, or any difficulty with balance, please seek medical attention immediately.",
+          "action": "UNKNOWN",
+          "matched_conditions": []
+        }
+      ]
+    }
+  ]
+}

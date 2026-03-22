@@ -1,0 +1,64 @@
+{
+  "timestamp": "2026-03-22T15-06-59",
+  "results": [
+    {
+      "id": "profile_046",
+      "target_condition": "Seizure episode",
+      "expected_triage": "SEEK_HELP_IMMEDIATELY",
+      "actual_triage": "UNKNOWN",
+      "matched_conditions": [],
+      "triage_pass": false,
+      "condition_pass": false,
+      "passed": false,
+      "turn_count": 5,
+      "conversation": [
+        {
+          "turn": 1,
+          "patient": "I've been feeling really strange lately, like my head is spinning and I can't focus properly. It's been hard to keep my balance too.",
+          "symtra": "Hello, I'm Symtra, here to help. I understand you've been feeling dizzy, having trouble focusing, and experiencing balance issues. These can certainly be unsettling. \n\nTo help me understand your symptoms better, could you please tell me if you've also experienced any arm weakness or difficulty speaking?",
+          "action": "ASKING",
+          "matched_conditions": [
+            "Stroke symptoms"
+          ]
+        },
+        {
+          "turn": 2,
+          "patient": "No, I haven't had any arm weakness or trouble speaking. It's mostly just the dizziness and balance problems.",
+          "symtra": "Thanks for sharing that, I'm Symtra and I appreciate you providing more details. It's helpful to know you haven't experienced arm weakness or speech difficulty, as that helps rule out some more serious concerns. \n\nI'm currently thinking about potential conditions like Migraine suspected or perhaps even something like Severe dehydration given the dizziness. To help me narrow this down further, could you tell me your age and if you've been experiencing any extreme thirst or dry mouth recently?",
+          "action": "ASKING",
+          "matched_conditions": [
+            "Migraine suspected",
+            "Severe dehydration",
+            "Tension headache"
+          ]
+        },
+        {
+          "turn": 3,
+          "patient": "I'm 18 years old. I haven't really felt extreme thirst or had a dry mouth lately, though.",
+          "symtra": "Thanks for sharing that, I'm Symtra and I appreciate you providing your age. It's helpful to know you haven't been experiencing extreme thirst or dry mouth, as that helps me to refine the possibilities.\n\nSince you're experiencing dizziness, difficulty focusing, and balance issues, I'd like to ask about the duration of these symptoms. How long have you been feeling this way, and would you describe the dizziness as mild, moderate, or severe?",
+          "action": "ASKING",
+          "matched_conditions": [
+            "Migraine suspected"
+          ]
+        },
+        {
+          "turn": 4,
+          "patient": "I've been feeling this way for a couple of days now. I’d say the dizziness is moderate, not the worst but definitely noticeable.",
+          "symtra": "Thanks for sharing that, I'm Symtra and I appreciate you providing more details about the duration and severity of your dizziness. It's helpful to know these symptoms have been present for a couple of days and that the dizziness is moderate.\n\nI'm currently considering a few possibilities based on your symptoms of dizziness, difficulty focusing, and balance issues. One potential condition is Migraine suspected, especially since some migraines can present with these types of symptoms.\n\nTo help me understand this better and differentiate between possibilities, could you please tell me if you've experienced any headache along with these symptoms, and if so, would you describe it as throbbing or mild pressure? Also, have you noticed any sensitivity to light or sound?",
+          "action": "ASKING",
+          "matched_conditions": [
+            "Migraine suspected",
+            "Severe dehydration"
+          ]
+        },
+        {
+          "turn": 5,
+          "patient": "I haven't had a headache at all with these symptoms. I also haven't noticed any sensitivity to light or sound.",
+          "symtra": "Thanks for sharing that, I'm Symtra, and I appreciate you providing more details. It's helpful to know you haven't experienced a headache, light sensitivity, or sound sensitivity. This information helps me to rule out Migraine as a primary possibility, given that typical migraines often involve headaches and sensitivities.\n\nAt this point, your symptoms of dizziness, difficulty focusing, and balance issues, present for a couple of days and described as moderate, don't clearly align with a single condition in my database. Many things can cause dizziness and balance problems, and without more specific symptoms like those often associated with respiratory, gastrointestinal, or neurological conditions, it's difficult to pinpoint a specific diagnosis from the list I have.\n\nBecause I cannot confidently match your symptoms to a specific condition in my database, and given the nature of dizziness and balance issues, I would advise you to seek medical attention soon to get a proper evaluation. A healthcare professional can perform a more thorough examination and help determine the cause of your symptoms.",
+          "action": "UNKNOWN",
+          "matched_conditions": []
+        }
+      ]
+    }
+  ]
+}

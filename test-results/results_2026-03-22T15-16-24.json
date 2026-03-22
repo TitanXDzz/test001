@@ -1,0 +1,88 @@
+{
+  "timestamp": "2026-03-22T15-16-24",
+  "results": [
+    {
+      "id": "profile_003",
+      "target_condition": "Severe influenza",
+      "expected_triage": "SEEK_HELP_IMMEDIATELY",
+      "actual_triage": "CONTINUE",
+      "matched_conditions": [
+        "Mild influenza",
+        "Viral sore throat",
+        "COVID-19 suspected"
+      ],
+      "triage_pass": false,
+      "condition_pass": false,
+      "passed": false,
+      "turn_count": 6,
+      "conversation": [
+        {
+          "turn": 1,
+          "patient": "I've been feeling really tired and achy lately, and I just can't seem to shake it off. It's been hard to do my usual activities.",
+          "symtra": "Hello, I'm Symtra, here to help you. I understand you've been feeling tired and achy, and it's making it difficult to do your usual activities. I'd like to ask a few more questions to better understand what you're experiencing. \n\nCould you please tell me if you've also had a fever?",
+          "action": "ASKING",
+          "matched_conditions": [
+            "Mild influenza",
+            "Severe influenza",
+            "COVID-19 suspected",
+            "Acute bronchitis mild"
+          ]
+        },
+        {
+          "turn": 2,
+          "patient": "Yes, I have been feeling warm, and I think I might have had a bit of a fever. It's hard to tell exactly, though.",
+          "symtra": "Thanks for sharing that. It's helpful to know you've been feeling warm and might have a fever. \n\nTo help me understand better, could you please tell me how long you've been experiencing this tiredness, body aches, and warmth?",
+          "action": "ASKING",
+          "matched_conditions": [
+            "Mild influenza"
+          ]
+        },
+        {
+          "turn": 3,
+          "patient": "I've been feeling this way for about a week now. It started out mild but seems to be getting worse.",
+          "symtra": "Thank you for that detail. Feeling this way for about a week and noticing it's getting worse is important information.\n\nNow, to help Symtra understand your situation more clearly, have you noticed any other symptoms, such as a cough, sore throat, or perhaps any difficulty breathing?\n\nBased on your symptoms so far, I'm currently considering conditions like \"Mild influenza\" or \"Dengue suspected\" given the fever, fatigue, and body aches you've described. Your answer to my last question will help Symtra differentiate between them.",
+          "action": "ASKING",
+          "matched_conditions": [
+            "Mild influenza",
+            "Dengue suspected"
+          ]
+        },
+        {
+          "turn": 4,
+          "patient": "Yes, I've also got a bit of a cough and my throat feels sore. It's been uncomfortable, especially when I try to swallow.",
+          "symtra": "Thank you for providing those additional details. A cough and sore throat, especially with discomfort when swallowing, are important symptoms to consider.\n\nBased on your symptoms: tiredness, body aches, a potential fever that's been ongoing for about a week and worsening, along with a cough and sore throat, Symtra is now considering 'Mild influenza' with a higher probability. Your description might also fit initial stages of 'COVID-19 suspected' given the general fatigue, aches, and cough.\n\nTo help me understand which condition might be a closer match, have you noticed any changes in your sense of smell or taste?",
+          "action": "ASKING",
+          "matched_conditions": [
+            "Mild influenza",
+            "COVID-19 suspected",
+            "Common cold",
+            "Dengue suspected",
+            "Viral sore throat"
+          ]
+        },
+        {
+          "turn": 5,
+          "patient": "I haven't noticed any changes in my sense of smell or taste. That seems to be normal for me.",
+          "symtra": "Thank you for confirming that you haven't noticed any changes in your sense of smell or taste. That's a very helpful piece of information.\n\nBased on all the symptoms you've shared so far – the tiredness, body aches, potential fever for about a week and worsening, along with a cough and sore throat, and now confirming no loss of smell or taste – Symtra is highly suspecting you might have \"Mild influenza\". \"Viral sore throat\" is also a possibility due to your sore throat and cough. While \"COVID-19 suspected\" was considered, the absence of loss of smell or taste makes it less likely at this point.\n\nMy primary concern is still \"Mild influenza\" or \"Viral sore throat.\" To help Symtra distinguish further, could you tell me if you have any significant weakness or problems with your breathing?",
+          "action": "ASKING",
+          "matched_conditions": [
+            "Mild influenza",
+            "Viral sore throat",
+            "Common cold"
+          ]
+        },
+        {
+          "turn": 6,
+          "patient": "I do feel quite weak and tired, but my breathing seems to be okay. It's more the fatigue that’s bothering me.",
+          "symtra": "Thank you for letting me know that you feel quite weak and tired, but your breathing seems to be okay. It's helpful to understand that fatigue is a primary concern for you, and it's good to hear that you are not experiencing breathing difficulties.\n\nBased on all the information you've provided: the tiredness, body aches, potential fever for about a week and worsening, a cough, a sore throat, feeling weak, and no changes in your sense of smell or taste, Symtra is now quite confident that your symptoms align most closely with **Mild influenza**.\n\nBecause the tag for Mild influenza is 'CONTINUE', Symtra recommends that you monitor your symptoms at home. If your symptoms worsen or if you develop any new concerns, especially severe weakness or any breathing difficulties, please consider seeking medical attention.\n\nIs there anything else you would like to discuss today?",
+          "action": "CONTINUE",
+          "matched_conditions": [
+            "Mild influenza",
+            "Viral sore throat",
+            "COVID-19 suspected"
+          ]
+        }
+      ]
+    }
+  ]
+}
