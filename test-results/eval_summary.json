@@ -1,19 +1,200 @@
 {
-  "generated_at": "2026-03-22T14:21:22.804Z",
-  "results_file": "results_2026-03-22T14-21-09.json",
-  "total_cases": 1,
-  "passed": 1,
-  "failed": 0,
+  "generated_at": "2026-03-22T14:42:32.145Z",
+  "results_file": "results_2026-03-22T14-21-29.json",
+  "total_cases": 55,
+  "passed": 38,
+  "failed": 17,
   "errors": 0,
-  "pass_rate": "100.0%",
-  "triage_accuracy": "100.0%",
-  "condition_accuracy": "100.0%",
+  "pass_rate": "69.1%",
+  "triage_accuracy": "72.7%",
+  "condition_accuracy": "83.6%",
   "by_triage_tag": {
+    "CONTINUE": {
+      "total": 21,
+      "triage_correct": 19,
+      "fully_passed": 19
+    },
     "SEEK_HELP_IMMEDIATELY": {
-      "total": 1,
-      "triage_correct": 1,
-      "fully_passed": 1
+      "total": 22,
+      "triage_correct": 11,
+      "fully_passed": 9
+    },
+    "SEEK_HELP_SOON": {
+      "total": 12,
+      "triage_correct": 10,
+      "fully_passed": 10
     }
   },
-  "failed_cases": []
+  "failed_cases": [
+    {
+      "id": "profile_003",
+      "condition": "Severe influenza",
+      "expected_triage": "SEEK_HELP_IMMEDIATELY",
+      "actual_triage": "CONTINUE",
+      "matched": [
+        "Mild influenza",
+        "Acute bronchitis mild",
+        "Common cold"
+      ]
+    },
+    {
+      "id": "profile_004",
+      "condition": "COVID-19 suspected",
+      "expected_triage": "SEEK_HELP_SOON",
+      "actual_triage": "CONTINUE",
+      "matched": [
+        "Mild influenza",
+        "Acute bronchitis mild"
+      ]
+    },
+    {
+      "id": "profile_005",
+      "condition": "COVID-19 severe",
+      "expected_triage": "SEEK_HELP_IMMEDIATELY",
+      "actual_triage": "SEEK_HELP_IMMEDIATELY",
+      "matched": [
+        "Unstable angina",
+        "Pulmonary embolism suspected"
+      ]
+    },
+    {
+      "id": "profile_006",
+      "condition": "Viral sore throat",
+      "expected_triage": "CONTINUE",
+      "actual_triage": "SEEK_HELP_SOON",
+      "matched": [
+        "Possible strep throat",
+        "Viral sore throat",
+        "Common cold"
+      ]
+    },
+    {
+      "id": "profile_010",
+      "condition": "Severe sinusitis",
+      "expected_triage": "SEEK_HELP_SOON",
+      "actual_triage": "SEEK_HELP_IMMEDIATELY",
+      "matched": [
+        "Severe sinusitis"
+      ]
+    },
+    {
+      "id": "profile_013",
+      "condition": "Possible pneumonia",
+      "expected_triage": "SEEK_HELP_IMMEDIATELY",
+      "actual_triage": "SEEK_HELP_SOON",
+      "matched": [
+        "Possible pneumonia",
+        "Acute bronchitis mild",
+        "COVID-19 suspected"
+      ]
+    },
+    {
+      "id": "profile_019",
+      "condition": "Dengue warning stage",
+      "expected_triage": "SEEK_HELP_IMMEDIATELY",
+      "actual_triage": "CONTINUE",
+      "matched": [
+        "Mild influenza",
+        "Severe influenza"
+      ]
+    },
+    {
+      "id": "profile_022",
+      "condition": "Mild gastritis",
+      "expected_triage": "CONTINUE",
+      "actual_triage": "SEEK_HELP_SOON",
+      "matched": [
+        "Acid reflux",
+        "Mild gastritis",
+        "Indigestion"
+      ]
+    },
+    {
+      "id": "profile_030",
+      "condition": "Suspected fracture",
+      "expected_triage": "SEEK_HELP_IMMEDIATELY",
+      "actual_triage": "SEEK_HELP_SOON",
+      "matched": [
+        "Minor sprain",
+        "Suspected fracture"
+      ]
+    },
+    {
+      "id": "profile_038",
+      "condition": "Kidney infection suspected",
+      "expected_triage": "SEEK_HELP_IMMEDIATELY",
+      "actual_triage": "SEEK_HELP_SOON",
+      "matched": [
+        "Suspected UTI",
+        "Kidney infection suspected"
+      ]
+    },
+    {
+      "id": "profile_041",
+      "condition": "Pulmonary embolism suspected",
+      "expected_triage": "SEEK_HELP_IMMEDIATELY",
+      "actual_triage": "SEEK_HELP_SOON",
+      "matched": [
+        "COVID-19 suspected"
+      ]
+    },
+    {
+      "id": "profile_043",
+      "condition": "Severe dehydration",
+      "expected_triage": "SEEK_HELP_IMMEDIATELY",
+      "actual_triage": "SEEK_HELP_SOON",
+      "matched": [
+        "Food poisoning suspected",
+        "Mild influenza"
+      ]
+    },
+    {
+      "id": "profile_044",
+      "condition": "Sepsis suspected",
+      "expected_triage": "SEEK_HELP_IMMEDIATELY",
+      "actual_triage": "SEEK_HELP_IMMEDIATELY",
+      "matched": [
+        "Cellulitis suspected"
+      ]
+    },
+    {
+      "id": "profile_045",
+      "condition": "Meningitis suspected",
+      "expected_triage": "SEEK_HELP_IMMEDIATELY",
+      "actual_triage": "CONTINUE",
+      "matched": [
+        "Mild influenza",
+        "Dengue suspected"
+      ]
+    },
+    {
+      "id": "profile_046",
+      "condition": "Seizure episode",
+      "expected_triage": "SEEK_HELP_IMMEDIATELY",
+      "actual_triage": "SEEK_HELP_SOON",
+      "matched": [
+        "Migraine suspected",
+        "Tension headache"
+      ]
+    },
+    {
+      "id": "profile_048",
+      "condition": "Hyperglycemia severe",
+      "expected_triage": "SEEK_HELP_IMMEDIATELY",
+      "actual_triage": "SEEK_HELP_SOON",
+      "matched": [
+        "Hyperglycemia severe"
+      ]
+    },
+    {
+      "id": "profile_050",
+      "condition": "Appendicitis suspected",
+      "expected_triage": "SEEK_HELP_IMMEDIATELY",
+      "actual_triage": "SEEK_HELP_SOON",
+      "matched": [
+        "Kidney stones suspected",
+        "Appendicitis suspected"
+      ]
+    }
+  ]
 }
