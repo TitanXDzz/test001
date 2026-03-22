@@ -1,0 +1,30 @@
+{
+  "generated_at": "2026-03-22T12:38:36.153Z",
+  "results_file": "results_2026-03-22T12-38-19.json",
+  "total_cases": 1,
+  "passed": 0,
+  "failed": 1,
+  "errors": 0,
+  "pass_rate": "0.0%",
+  "triage_accuracy": "100.0%",
+  "condition_accuracy": "0.0%",
+  "by_triage_tag": {
+    "CONTINUE": {
+      "total": 1,
+      "triage_correct": 1,
+      "fully_passed": 0
+    }
+  },
+  "failed_cases": [
+    {
+      "id": "profile_001",
+      "condition": "Common cold",
+      "expected_triage": "CONTINUE",
+      "actual_triage": "CONTINUE",
+      "matched": [
+        "Mild sinus congestion",
+        "Severe sinusitis"
+      ]
+    }
+  ]
+}
