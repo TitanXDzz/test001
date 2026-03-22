@@ -20,7 +20,7 @@ const path = require('path');
 // ── Config ────────────────────────────────────────────────────────────────────
 const CASES_PATH     = path.join(__dirname, 'profile_based_test_cases_full.json');
 const SYMTRA_URL     = 'http://localhost:5000/chat';
-const RESULTS_DIR    = path.join(__dirname, '../test-results');
+const RESULTS_DIR    = path.join(__dirname, 'test-result');
 const SUMMARY_PATH   = path.join(RESULTS_DIR, 'eval_summary.json');
 const OPENROUTER_URL = 'https://openrouter.ai/api/v1/chat/completions';
 const TESTER_MODEL   = 'openai/gpt-4o-mini';
