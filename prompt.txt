@@ -142,6 +142,56 @@ Do NOT break:
 Only improve logic.
 Now improve the system.
 
+You previously improved the Symtra medical triage system.
+After running evaluation, the system still has critical safety failures.
+Current results:
+- Triage accuracy ~72%
+- Condition accuracy ~83%
+- Multiple severe cases are under-triaged
+Examples of failures:
+- Severe influenza → CONTINUE
+- Dengue warning → CONTINUE
+- Meningitis → CONTINUE
+- Pneumonia → SEEK_HELP_SOON instead of IMMEDIATE
+- Seizure → SEEK_HELP_SOON
+This indicates the system is underestimating severity.
+CORE ISSUE
+The system is reasoning based on most likely condition instead of worst-case risk.
+It must shift to safety-first triage.
+TASK
+Redesign the triage decision logic with strict safety prioritization.
+REQUIREMENTS
+1. Worst-case-first reasoning  
+Before diagnosis, check if symptoms could indicate any dangerous condition.  
+If yes, escalate triage regardless of probability.
+2. Red flag priority (mandatory)  
+Check redflaglist.json first.  
+If any rule matches:
+→ immediately return its triage_tag  
+→ stop further reasoning  
+3. Combination-based risk detection  
+Evaluate symptom combinations, not just individual symptoms  
+(e.g. fever + weakness, abdominal pain + worsening, confusion + anything)
+4. Remove “low confidence = safe” logic  
+If uncertain and symptoms are concerning → escalate, not CONTINUE
+5. Conservative bias  
+When uncertain:
+IMMEDIATE > SOON > CONTINUE  
+6. Fix known failure patterns  
+Ensure these always escalate appropriately:
+- confusion  
+- shortness of breath  
+- seizure  
+- persistent vomiting  
+- severe abdominal pain  
+- high fever + weakness  
+CONSTRAINTS
+- Do not change schema.json or redflaglist.json structure  
+- Keep existing conversation style  
+- Only improve decision logic  
+OUTPUT REQUIRED
+Explanation of how it fixes failures.
+
 0.1.1 done 
 0.1.2 we don't need it. we could just figure out by asking questions and look at what's the closest so it's unimportant mark as 100%
 0.1.3 I think we already have that and it's enough. Let LLM decide, just make sure that it could also decide by its own. For example, a red flag pops up but not listed in the file, IT MUST ALSO IMPLEMENT and be able to decide on its own.   Mark 100%
