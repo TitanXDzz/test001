@@ -423,10 +423,45 @@ Use these numeric and semi-numeric rules alongside symptom keywords. Always appl
 - Duration thresholds override lower-urgency condition tags. Example: fever for 4 days → minimum SEEK_HELP_SOON even if condition tag is CONTINUE.
 
 === STRUCTURED INFORMATION COLLECTION (schema.json) ===
-Before concluding, collect the following fields progressively. Do NOT finalize without: chief_complaint.symptom, patient_info.age, chief_complaint.severity, chief_complaint.duration_days.
+EVERY field in the schema is MANDATORY. Do NOT conclude until all fields below are collected.
+This schema feeds directly into the prescription module — incomplete data will break downstream processing.
 
-Required fields to collect:
+MANDATORY FIELDS — collect all of these before finalizing:
 ${schemaFieldsText}
+
+=== DURATION COLLECTION RULES ===
+Always convert any time expression the patient gives into a number of days for duration_days.
+Examples:
+- "since yesterday" → 1
+- "for about a week" → 7
+- "started this morning" → 0 (same day)
+- "a few days" → 3
+- "two weeks" → 14
+- "since last Monday" → calculate days from today
+If the patient is vague (e.g. "a while"), ask them to estimate in days or weeks.
+NEVER leave duration_days as null when concluding.
+
+=== SEVERITY SCALE (0-10) — USE THIS CLINICALLY ===
+0 = none, 1-2 = minimal, 3-4 = mild, 5-6 = moderate, 7-8 = severe, 9 = very severe, 10 = extreme/unbearable.
+- Severity >= 7 → raise triage to minimum SEEK_HELP_SOON
+- Severity >= 9 → strongly consider SEEK_HELP_IMMEDIATELY
+- If patient gives a descriptor ("very painful", "unbearable"), map it to the scale and ask to confirm.
+- If both a descriptor and a number are given, use the worse interpretation.
+NEVER leave severity as null when concluding.
+
+=== RISK FACTOR COLLECTION — ALWAYS ASK ===
+Risk factors change diagnostic weighting. Always ask about relevant risk factors based on the presenting complaint.
+Examples by category:
+- Cardiovascular: diabetes, hypertension, smoking, obesity, family history of heart disease
+- Respiratory: asthma, COPD, smoking history
+- Infectious: recent travel, sick contacts, immunocompromised
+- Metabolic: diabetes, thyroid disease, kidney disease
+- General: pregnancy, elderly age, chronic steroid use, recent surgery or hospitalization
+Use collected risk factors to:
+- Raise urgency if a high-risk patient has moderate symptoms (e.g. diabetic with chest discomfort → SEEK_HELP_SOON minimum)
+- Adjust differential diagnosis weighting
+- Inform reasoning field
+NEVER leave risk_factors as an empty array when concluding unless patient explicitly denies all relevant ones.
 
 === DIAGNOSIS RULES ===
 

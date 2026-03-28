@@ -6,37 +6,41 @@
   },
 
   "patient_info": {
-    "age": "number | null",
+    "age": "number >=0 | null",
     "biological_sex": "male | female | unknown",
     "pregnancy_status": "true | false | null"
   },
 
   "chief_complaint": {
-    "symptom": "string",
-    "severity": "0-10 | null",
-    "duration_days": "number | null"
+    "symptom": "string (non-empty)",
+    "severity": "number 0-10 | null",
+    "duration_days": "number >=0 | null"
   },
 
   "symptoms": [
     {
-      "name": "string",
-      "severity": "0-10 | null",
-      "duration_days": "number | null",
+      "name": "string (non-empty)",
+      "severity": "number 0-10 | null",
+      "duration_days": "number >=0 | null",
       "onset_type": "sudden | gradual | unknown",
       "progression": "improving | stable | worsening | unknown"
     }
   ],
 
-  "associated_symptoms": ["string"],
+  "associated_symptoms": [
+    "string (non-empty)"
+  ],
 
   "vitals": {
-    "temperature_c": "number | null",
-    "heart_rate_bpm": "number | null",
-    "blood_pressure": "string | null",
-    "oxygen_saturation_percent": "number | null"
+    "temperature_c": "number 30-45 | null",
+    "heart_rate_bpm": "number 30-220 | null",
+    "blood_pressure": "string (e.g. 120/80) | null",
+    "oxygen_saturation_percent": "number 50-100 | null"
   },
 
-  "risk_factors": ["string"],
+  "risk_factors": [
+    "string (standardized keyword)"
+  ],
 
   "medical_history": {
     "conditions": ["string"],
@@ -45,31 +49,44 @@
 
   "medications": [
     {
-      "name": "string",
+      "name": "string (non-empty)",
       "dose": "string | null",
       "frequency": "string | null"
     }
   ],
 
-  "allergies": ["string"],
+  "allergies": [
+    "string (allergen name only)"
+  ],
 
   "red_flags": {
-    "detected": "true | false",
-    "items": ["string"]
+    "detected": "boolean",
+    "items": [
+      "string (must match redflaglist.json keys or trigger labels)"
+    ],
+    "source": "rule | combination | threshold | time_based"
   },
 
   "triage_result": {
-    "primary_condition": "string",
-    "confidence": "low | medium | high",
-    "tag": "CONTINUE | SEEK_HELP_SOON | SEEK_HELP_IMMEDIATELY",
+    "primary_condition": "string | null",
+    "confidence": "low | medium | high | null",
+    "tag": "CONTINUE | SEEK_HELP_SOON | SEEK_HELP_IMMEDIATELY | null",
+
     "differential_diagnoses": [
       {
         "condition": "string",
-        "confidence": "low | medium | high"
+        "confidence": "low | medium | high",
+        "reason": "short explanation string"
       }
     ]
   },
 
-  "conversation_summary": "string",
+  "conversation_state": {
+    "stage": "COLLECTING | ANALYZING | FINALIZED",
+    "missing_fields": ["string"],
+    "questions_asked": "number >=0"
+  },
+
+  "conversation_summary": "string | null",
   "raw_user_input": ["string"]
 }
