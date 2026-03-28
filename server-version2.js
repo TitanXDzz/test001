@@ -259,6 +259,24 @@ let schemaData;
 try { schemaData = JSON.parse(fs.readFileSync('schema.json', 'utf8')); }
 catch (e) { console.error('ERROR: Cannot load schema.json:', e.message); process.exit(1); }
 
+// ── Decision Log ──
+const LOG_PATH = path.join(__dirname, 'symtra-decision-log.json');
+let decisionLog;
+try {
+  decisionLog = JSON.parse(fs.readFileSync(LOG_PATH, 'utf8'));
+  // Strip out the example/schema entry on first real use
+  decisionLog.log_entries = (decisionLog.log_entries || []).filter(e => !e._example);
+} catch {
+  decisionLog = { _description: 'Symtra Decision Log', _schema_version: '1.0', log_entries: [] };
+}
+
+function appendDecisionLog(entry) {
+  decisionLog.log_entries.push(entry);
+  fs.writeFile(LOG_PATH, JSON.stringify(decisionLog, null, 2), err => {
+    if (err) console.error('Decision log write error:', err.message);
+  });
+}
+
 const schemaFieldsText = Object.entries(schemaData)
   .filter(([section]) => section !== 'metadata')
   .flatMap(([section, val]) =>
@@ -544,6 +562,39 @@ app.post('/chat', async (req, res) => {
       session.ended = true;
     }
 
+    const turnNumber = session.history.filter(m => m.role === 'user').length;
+
+    // ── Write decision log entry ──
+    if (!isInit) {
+      appendDecisionLog({
+        session_id: sessionId,
+        timestamp: new Date().toISOString(),
+        turn: turnNumber,
+        patient_snapshot: {
+          chief_complaint: patientMessages[0] || '',
+          symptoms_collected: patientMessages,
+          schema_fields_filled: patientMessages.length
+        },
+        red_flag_check: {
+          performed: true,
+          flags_detected: redFlagResult.triggered ? [redFlagResult.description] : [],
+          source: redFlagResult.triggered
+            ? (redFlagResult.key === 'solo_immediate' ? 'server_solo'
+              : redFlagResult.key === 'combination' ? 'server_combination'
+              : 'redflaglist.json')
+            : 'none'
+        },
+        action_taken: action,
+        matched_conditions: matchedConditions.map(mc => ({
+          condition: mc.name,
+          confidence: mc.probability,
+          tag: (conditions.find(c => c.condition.toLowerCase() === (mc.name || '').toLowerCase()) || {}).tag || 'unknown'
+        })),
+        reasoning,
+        next_question_purpose: nextQuestionPurpose || null
+      });
+    }
+
     res.json({
       response: assistantMessage,
       action,
@@ -551,7 +602,7 @@ app.post('/chat', async (req, res) => {
       reasoning,
       next_question_purpose: nextQuestionPurpose,
       session_ended: session.ended,
-      turn: session.history.filter(m => m.role === 'user').length
+      turn: turnNumber
     });
 
   } catch (err) {
