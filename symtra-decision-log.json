@@ -1,0 +1,42 @@
+{
+  "_description": "Symtra Decision Log — records response history and reasoning behind each action taken during a session.",
+  "_schema_version": "1.0",
+
+  "log_entries": [
+    {
+      "_example": true,
+      "session_id": "string — unique session identifier",
+      "timestamp": "ISO-8601 string",
+      "turn": "number — conversation turn index (1-based)",
+
+      "patient_snapshot": {
+        "age": "number | null",
+        "biological_sex": "male | female | unknown",
+        "pregnancy_status": "true | false | null",
+        "chief_complaint": "string",
+        "symptoms_collected": ["string"],
+        "schema_fields_filled": "number — count of non-null schema fields at this turn"
+      },
+
+      "red_flag_check": {
+        "performed": true,
+        "flags_detected": ["string"],
+        "source": "redflaglist.json | AI judgment | both | none"
+      },
+
+      "action_taken": "ASKING | CONTINUE | SEEK_HELP_SOON | SEEK_HELP_IMMEDIATELY | UNKNOWN",
+
+      "matched_conditions": [
+        {
+          "condition": "string",
+          "confidence": "low | medium | high",
+          "tag": "CONTINUE | SEEK_HELP_SOON | SEEK_HELP_IMMEDIATELY"
+        }
+      ],
+
+      "reasoning": "string — plain-language explanation of why this action was chosen",
+
+      "next_question_purpose": "string — what information the next question is trying to collect, or null if session ended"
+    }
+  ]
+}
