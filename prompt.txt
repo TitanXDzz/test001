@@ -201,3 +201,21 @@ Explanation of how it fixes failures.
 0.1.7 added. dont trigger red flags immediately but act accordingly to the file when facing symptoms.
 0.1.8 no need for the cutoff or something just act accordingly to the diagnosis and symptoms. Evaluating is Symtra's job.
 0.1.9 You create a file that will collect response history and reasons behing each action of Symtra.
+
+0.2.1 cool 
+0.2.2 added a new file
+0.2.3 already good
+0.2.4 ALWAYS USE THIS TO CLASSIFY THE CONDITION. ALWAYS COLLECT TIME AND ALWAYS USE IT TO DIAGNOSE AND FURTHER USE IT.
+0.2.5 LEAVE IT.
+0.2.6 added.
+0.2.7 it's fine just log together with the decision-log
+0.2.8 cool already
+
+0.3.1 EVERYONE OF THEM IS MANDATORY.
+0.3.2 cool
+0.3.3 file added
+0.3.4 Just train the AI to be able to collect number of days or amount of time properly and use it to diagnose
+0.3.5 schema improved
+0.3.6 schema improved
+0.3.7 That's a you problem. Make the AI ask for those factors and determine by themselves how to use them. Whether they interrupt with stuffs or not somewhat like that.
+0.3.8 & 0.3.9 These don't need any improvement. JUST MAKE SURE THE SCHEMA IS FILLED COMPLETELY IN EVERY FIELD CAUSE WHEN OUR PROJECT CONTINUES TO PRESCRIPTION IT'S SUPER IMPORTANT.

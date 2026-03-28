@@ -1,5 +1,379 @@
 {
   "_description": "Symtra Decision Log — records response history and reasoning behind each action taken during a session.",
   "_schema_version": "1.0",
-  "log_entries": []
+  "log_entries": [
+    {
+      "session_id": "session_1774715395819",
+      "timestamp": "2026-03-28T16:30:11.905Z",
+      "turn": 1,
+      "patient_snapshot": {
+        "chief_complaint": "cough",
+        "symptoms_collected": [
+          "cough"
+        ],
+        "schema_fields_filled": 1
+      },
+      "red_flag_check": {
+        "performed": true,
+        "flags_detected": [],
+        "source": "none"
+      },
+      "action_taken": "ASKING",
+      "matched_conditions": [],
+      "reasoning": "The patient reported a cough. To begin narrowing down potential conditions, I need to understand its characteristics (e.g., duration, type). This will help differentiate between various respiratory conditions such as common cold, bronchitis, or even more serious conditions like pneumonia or COVID-19.",
+      "next_question_purpose": "To determine the duration and nature of the cough, which are key differentiating factors for respiratory conditions."
+    },
+    {
+      "session_id": "session_1774715395819",
+      "timestamp": "2026-03-28T16:30:30.567Z",
+      "turn": 2,
+      "patient_snapshot": {
+        "chief_complaint": "cough",
+        "symptoms_collected": [
+          "cough",
+          "30 minutes. mucus."
+        ],
+        "schema_fields_filled": 2
+      },
+      "red_flag_check": {
+        "performed": true,
+        "flags_detected": [],
+        "source": "none"
+      },
+      "action_taken": "ASKING",
+      "matched_conditions": [
+        {
+          "condition": "Acute bronchitis mild",
+          "confidence": "Medium",
+          "tag": "CONTINUE"
+        },
+        {
+          "condition": "Common cold",
+          "confidence": "Low",
+          "tag": "CONTINUE"
+        }
+      ],
+      "reasoning": "The patient reports a cough with mucus, which could indicate a respiratory issue. Given the short duration of 30 minutes, Symtra needs to investigate for other common symptoms associated with respiratory infections, such as fever, fatigue, and body aches, to refine the differential diagnosis. Acute bronchitis often presents with a persistent cough and mucus, while a common cold typically includes a runny nose and sore throat.",
+      "next_question_purpose": "To determine if the patient has other systemic symptoms (fever, body aches, fatigue) that would suggest a viral illness like mild influenza or common cold, and to further differentiate from conditions like acute bronchitis."
+    },
+    {
+      "session_id": "session_1774715395819",
+      "timestamp": "2026-03-28T16:30:49.401Z",
+      "turn": 3,
+      "patient_snapshot": {
+        "chief_complaint": "cough",
+        "symptoms_collected": [
+          "cough",
+          "30 minutes. mucus.",
+          "nah just lil fatigue"
+        ],
+        "schema_fields_filled": 3
+      },
+      "red_flag_check": {
+        "performed": true,
+        "flags_detected": [],
+        "source": "none"
+      },
+      "action_taken": "ASKING",
+      "matched_conditions": [
+        {
+          "condition": "Acute bronchitis mild",
+          "confidence": "Medium",
+          "tag": "CONTINUE"
+        }
+      ],
+      "reasoning": "The patient reports a cough with mucus and fatigue, which are key symptoms for acute bronchitis. While the duration of 30 minutes is very short, I need to rule out red flags, especially concerning respiratory symptoms. Therefore, I will ask about shortness of breath and chest pain.",
+      "next_question_purpose": "To assess for red-flag symptoms like shortness of breath or chest pain to rule out more serious respiratory conditions like pneumonia or pulmonary embolism, as well as to further refine the potential diagnosis of acute bronchitis."
+    },
+    {
+      "session_id": "session_1774715395819",
+      "timestamp": "2026-03-28T16:31:04.635Z",
+      "turn": 4,
+      "patient_snapshot": {
+        "chief_complaint": "cough",
+        "symptoms_collected": [
+          "cough",
+          "30 minutes. mucus.",
+          "nah just lil fatigue",
+          "nah"
+        ],
+        "schema_fields_filled": 4
+      },
+      "red_flag_check": {
+        "performed": true,
+        "flags_detected": [],
+        "source": "none"
+      },
+      "action_taken": "ASKING",
+      "matched_conditions": [
+        {
+          "condition": "Common cold",
+          "confidence": "Low",
+          "tag": "CONTINUE"
+        },
+        {
+          "condition": "Acute bronchitis mild",
+          "confidence": "Low",
+          "tag": "CONTINUE"
+        },
+        {
+          "condition": "Mild influenza",
+          "confidence": "Low",
+          "tag": "CONTINUE"
+        }
+      ],
+      "reasoning": "The patient initially reported a cough with mucus for 30 minutes and then mentioned 'lil fatigue.' I've eliminated the immediate red flags of shortness of breath and chest pain. The extremely short duration (30 minutes) makes it difficult to firmly link to any condition yet, as most conditions have a longer onset. I'm now asking for demographic information which is mandatory for charting.",
+      "next_question_purpose": "To collect mandatory patient demographic information (age, biological_sex, pregnancy_status) for a complete assessment."
+    },
+    {
+      "session_id": "session_1774715395819",
+      "timestamp": "2026-03-28T16:31:22.934Z",
+      "turn": 5,
+      "patient_snapshot": {
+        "chief_complaint": "cough",
+        "symptoms_collected": [
+          "cough",
+          "30 minutes. mucus.",
+          "nah just lil fatigue",
+          "nah",
+          "16. male. not pregnant."
+        ],
+        "schema_fields_filled": 5
+      },
+      "red_flag_check": {
+        "performed": true,
+        "flags_detected": [],
+        "source": "none"
+      },
+      "action_taken": "ASKING",
+      "matched_conditions": [],
+      "reasoning": "The patient has a cough with mucus for 30 minutes and slight fatigue. No shortness of breath or chest pain. Age 16, male. I need to gather more information, including the duration of chief complaint in days (currently 0.02 days, but 30 minutes needs to be confirmed as 0 days), and rule out other potential causes or risk factors. The next step is to explore potential exposures or allergies to help differentiate common cold vs environmental factors.",
+      "next_question_purpose": "To understand if there are any environmental factors or exposures contributing to the cough and fatigue and to add more to risk_factors and medical_history.conditions."
+    },
+    {
+      "session_id": "session_1774715395819",
+      "timestamp": "2026-03-28T16:32:01.230Z",
+      "turn": 6,
+      "patient_snapshot": {
+        "chief_complaint": "cough",
+        "symptoms_collected": [
+          "cough",
+          "30 minutes. mucus.",
+          "nah just lil fatigue",
+          "nah",
+          "16. male. not pregnant.",
+          "nah, but i have an existing allergy of ฝุ่น tho, but it seems irrelevant"
+        ],
+        "schema_fields_filled": 6
+      },
+      "red_flag_check": {
+        "performed": true,
+        "flags_detected": [],
+        "source": "none"
+      },
+      "action_taken": "ASKING",
+      "matched_conditions": [
+        {
+          "condition": "Acute bronchitis mild",
+          "confidence": "Medium",
+          "tag": "CONTINUE"
+        },
+        {
+          "condition": "Common cold",
+          "confidence": "Low",
+          "tag": "CONTINUE"
+        }
+      ],
+      "reasoning": "The patient presents with a cough and mucus for a short duration (30 minutes), and mild fatigue. There are no red flags and no fever reported. Given the very short duration, it's challenging to confidently lean towards any specific condition. Acute bronchitis mild can present with cough, mucus, and fatigue, but the 'persistent' aspect of the cough is usually longer than 30 minutes. A common cold is also possible, but typical key symptoms like runny nose and sore throat are missing. Symtra needs to explore other potential symptoms that differentiate between minor respiratory issues.",
+      "next_question_purpose": "To differentiate between respiratory conditions that present with cough and mucus, and to check for fever to further narrow down possibilities. Asking about nasal congestion/facial pressure helps assess for potential sinus involvement, and temperature is crucial for ruling out infection severity."
+    },
+    {
+      "session_id": "session_1774715395819",
+      "timestamp": "2026-03-28T16:32:19.994Z",
+      "turn": 7,
+      "patient_snapshot": {
+        "chief_complaint": "cough",
+        "symptoms_collected": [
+          "cough",
+          "30 minutes. mucus.",
+          "nah just lil fatigue",
+          "nah",
+          "16. male. not pregnant.",
+          "nah, but i have an existing allergy of ฝุ่น tho, but it seems irrelevant",
+          "no no no"
+        ],
+        "schema_fields_filled": 7
+      },
+      "red_flag_check": {
+        "performed": true,
+        "flags_detected": [],
+        "source": "none"
+      },
+      "action_taken": "ASKING",
+      "matched_conditions": [
+        {
+          "condition": "Common cold",
+          "confidence": "Medium",
+          "tag": "CONTINUE"
+        },
+        {
+          "condition": "Acute bronchitis mild",
+          "confidence": "Medium",
+          "tag": "CONTINUE"
+        }
+      ],
+      "reasoning": "The patient presents with cough for 30 minutes, mucus, and mild fatigue. No fever, no shortness of breath, no chest pain. Existing dust allergy was mentioned but patient thinks it's irrelevant. Common cold and Acute bronchitis mild both include cough and fatigue as symptoms. The short duration (30 minutes) is atypical for established conditions and makes assessment challenging, implying very early stage symptoms if any condition is indeed developing. I need to ask about sore throat/irritation to differentiate further for common cold/viral sore throat, or other respiratory issues. I have also checked for red flags related to fever (no fever), respiratory symptoms (no breathing difficulty or confusion), and chest pain (no chest pain). Given the current information, there are no immediate red flags.",
+      "next_question_purpose": "To determine if the patient has a sore throat or throat irritation, which would help differentiate between conditions like Common cold, Viral sore throat, or Laryngitis, and to further narrow down the respiratory possibilities."
+    },
+    {
+      "session_id": "session_1774715395819",
+      "timestamp": "2026-03-28T16:32:42.530Z",
+      "turn": 8,
+      "patient_snapshot": {
+        "chief_complaint": "cough",
+        "symptoms_collected": [
+          "cough",
+          "30 minutes. mucus.",
+          "nah just lil fatigue",
+          "nah",
+          "16. male. not pregnant.",
+          "nah, but i have an existing allergy of ฝุ่น tho, but it seems irrelevant",
+          "no no no",
+          "throat irritation but not sore"
+        ],
+        "schema_fields_filled": 8
+      },
+      "red_flag_check": {
+        "performed": true,
+        "flags_detected": [],
+        "source": "none"
+      },
+      "action_taken": "ASKING",
+      "matched_conditions": [
+        {
+          "condition": "Common cold",
+          "confidence": "High",
+          "tag": "CONTINUE"
+        },
+        {
+          "condition": "Acute bronchitis mild",
+          "confidence": "Medium",
+          "tag": "CONTINUE"
+        },
+        {
+          "condition": "Laryngitis",
+          "confidence": "Medium",
+          "tag": "CONTINUE"
+        },
+        {
+          "condition": "Allergic rhinitis",
+          "confidence": "Low",
+          "tag": "CONTINUE"
+        },
+        {
+          "condition": "Mild influenza",
+          "confidence": "Low",
+          "tag": "CONTINUE"
+        }
+      ],
+      "reasoning": "The patient reports a cough with mucus for 30 minutes, a little fatigue, and throat irritation, with an existing dust allergy. There is no fever, shortness of breath, or chest pain. My initial thought considers 'Common cold' due to cough, mucus, and throat irritation. 'Acute bronchitis mild' is also plausible given the cough with mucus. 'Laryngitis' is considered due to throat irritation. 'Allergic rhinitis' is in the differential due to the dust allergy, although typical symptoms like sneezing are absent. 'Mild influenza' is a lower probability as fever and body aches are absent, with only mild fatigue. I need to gather more information to differentiate, specifically regarding the persistence of the cough and the presence of hoarseness, which would be a stronger indicator for Laryngitis.",
+      "next_question_purpose": "To differentiate between Common cold, Acute bronchitis mild, and Laryngitis by asking about cough persistence (common in bronchitis) and hoarse voice (a key symptom of laryngitis)."
+    },
+    {
+      "session_id": "session_1774715395819",
+      "timestamp": "2026-03-28T16:33:15.596Z",
+      "turn": 9,
+      "patient_snapshot": {
+        "chief_complaint": "cough",
+        "symptoms_collected": [
+          "cough",
+          "30 minutes. mucus.",
+          "nah just lil fatigue",
+          "nah",
+          "16. male. not pregnant.",
+          "nah, but i have an existing allergy of ฝุ่น tho, but it seems irrelevant",
+          "no no no",
+          "throat irritation but not sore",
+          "not much hoarseness it keeps on going for like 30 minutws now the cough"
+        ],
+        "schema_fields_filled": 9
+      },
+      "red_flag_check": {
+        "performed": true,
+        "flags_detected": [],
+        "source": "none"
+      },
+      "action_taken": "ASKING",
+      "matched_conditions": [
+        {
+          "condition": "Common cold",
+          "confidence": "High",
+          "tag": "CONTINUE"
+        },
+        {
+          "condition": "Acute bronchitis mild",
+          "confidence": "High",
+          "tag": "CONTINUE"
+        },
+        {
+          "condition": "Allergic rhinitis",
+          "confidence": "Medium",
+          "tag": "CONTINUE"
+        },
+        {
+          "condition": "Laryngitis",
+          "confidence": "Low",
+          "tag": "CONTINUE"
+        }
+      ],
+      "reasoning": "The patient has a persistent cough with mucus and throat irritation for 30 minutes, along with mild fatigue. They are a 16-year-old male with a dust allergy and no fever, shortness of breath, chest pain, nasal congestion, or facial pressure. The duration of symptoms (30 minutes) is very short, which leans towards mild, acute conditions. Common cold and Acute bronchitis mild are strong contenders given the cough and mucus. Allergic rhinitis remains a possibility due to the dust allergy and cough/throat irritation without other significant symptoms. Laryngitis probability decreases due to the lack of significant hoarseness. I need to gather vital signs and further confirm the absence of red flags before concluding. Specifically, since the patient mentioned 'lil fatigue', I need to cover the rule for fever safety questions in case it escalates, even if they explicitly denied fever earlier. Also, duration (30 mins) is very short; I need to ensure severity isn't masked by this. The duration field for chief_complaint needs to be collected as a number of days.",
+      "next_question_purpose": "To collect vital signs (temperature, heart rate, blood pressure, oxygen saturation) and confirm the absence of fever, as these are mandatory fields, and to further rule out any immediate concerns, as the patient feels a 'lil fatigue' which can be a red flag if combined with specific vitals."
+    },
+    {
+      "session_id": "session_1774715395819",
+      "timestamp": "2026-03-28T16:33:37.167Z",
+      "turn": 10,
+      "patient_snapshot": {
+        "chief_complaint": "cough",
+        "symptoms_collected": [
+          "cough",
+          "30 minutes. mucus.",
+          "nah just lil fatigue",
+          "nah",
+          "16. male. not pregnant.",
+          "nah, but i have an existing allergy of ฝุ่น tho, but it seems irrelevant",
+          "no no no",
+          "throat irritation but not sore",
+          "not much hoarseness it keeps on going for like 30 minutws now the cough",
+          "nah i dont have them"
+        ],
+        "schema_fields_filled": 10
+      },
+      "red_flag_check": {
+        "performed": true,
+        "flags_detected": [],
+        "source": "none"
+      },
+      "action_taken": "CONTINUE",
+      "matched_conditions": [
+        {
+          "condition": "Common cold",
+          "confidence": "High",
+          "tag": "CONTINUE"
+        },
+        {
+          "condition": "Acute bronchitis mild",
+          "confidence": "Medium",
+          "tag": "CONTINUE"
+        },
+        {
+          "condition": "Allergic rhinitis",
+          "confidence": "Low",
+          "tag": "CONTINUE"
+        }
+      ],
+      "reasoning": "The patient reports a cough with mucus, fatigue, and throat irritation for 30 minutes, with no fever, shortness of breath, chest pain, or significant hoarseness. They have no nasal congestion or facial pressure, which makes conditions like Mild sinus congestion less likely. The very short duration points to early stages of an illness or an acute irritant. Given the combination of cough, mucus production, and throat irritation, a Common cold is a strong possibility. Acute bronchitis mild also presents with persistent cough and mucus. While the patient has a dust allergy, they do not report traditional allergic rhinitis symptoms like sneezing or itchy nose, making it less probable but still considered due to the allergy. Laryngitis was considered due to throat irritation, but ruled out due to the lack of significant hoarseness. No red flags were identified. The conditions considered (Common cold, Acute bronchitis mild, Allergic rhinitis) are all classified as 'CONTINUE'. The duration is very short, so no duration thresholds are met to escalate.",
+      "next_question_purpose": "None"
+    }
+  ]
 }
