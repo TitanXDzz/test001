@@ -192,8 +192,12 @@ CONSTRAINTS
 OUTPUT REQUIRED
 Explanation of how it fixes failures.
 
-0.1.1 done 
-0.1.2 we don't need it. we could just figure out by asking questions and look at what's the closest so it's unimportant mark as 100%
-0.1.3 I think we already have that and it's enough. Let LLM decide, just make sure that it could also decide by its own. For example, a red flag pops up but not listed in the file, IT MUST ALSO IMPLEMENT and be able to decide on its own.   Mark 100%
-0.1.4 THe schema already includes that. MAKE SURE YOUR CHATBOT PUTS IN COMPLETE DATA IN SCHEMA BRO.
-0.1.5 
+0.1.1 done mark 100%
+0.1.2 For boundaries, analyze by AI. If it matches red flags or extremely dangerous conditions. Trigger the Seek help immediately. Else if it matches dangerous conditions. Tag seek help soon. I dont have document cause it's supposed to be interactive.
+0.1.3 The same as 0.1.2
+0.1.4 No need for the distinction, just collect patients' info about sympytoms fully as listed in the schema. Then use those info to diagnose.
+0.1.5 the scope policy updated in the new file.
+0.1.6 ALL AGE IS OK. BUT ALWAYS COLLECT.
+0.1.7 added. dont trigger red flags immediately but act accordingly to the file when facing symptoms.
+0.1.8 no need for the cutoff or something just act accordingly to the diagnosis and symptoms. Evaluating is Symtra's job.
+0.1.9 You create a file that will collect response history and reasons behing each action of Symtra.
