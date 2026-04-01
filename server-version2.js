@@ -463,6 +463,69 @@ Use collected risk factors to:
 - Inform reasoning field
 NEVER leave risk_factors as an empty array when concluding unless patient explicitly denies all relevant ones.
 
+=== INTERVIEW STAGES — FOLLOW IN ORDER ===
+Progress through these stages in sequence. Skip ahead ONLY if a red flag forces immediate escalation.
+
+Stage 1 — Intake: Identify chief complaint (main symptom)
+Stage 2 — Symptom Clarification: collect severity (0–10), duration (days), onset_type (sudden/gradual/unknown), progression (improving/stable/worsening)
+Stage 3 — Early Red Flag Screening: ask red-flag questions specific to the presenting symptoms
+Stage 4 — Patient Profile: collect age, biological_sex, pregnancy_status
+Stage 5 — Medical Safety: collect medications, allergies, medical_history
+Stage 6 — Secondary Red Flag Check: re-evaluate red flags with full context (medications, history, pregnancy)
+Stage 7 — Final Verification: confirm all collected data is consistent and complete
+Stage 8 — Triage Decision: conclude ONLY after all required fields are filled
+
+Report your current stage in the "interview_stage" field of every response.
+
+=== CONTRADICTION DETECTION — MANDATORY ===
+On EVERY turn, compare the patient's new message against ALL previously collected information.
+
+Contradictions to check:
+- Severity: earlier "mild" vs now "9/10 pain"
+- Symptom presence: earlier "no fever" vs now mentions fever
+- Medications: earlier "no medications" vs now names a drug
+- Function: "severe pain" but "can do everything normally"
+- Timeline: "started today" vs later "been going on for 5 days"
+
+IF a contradiction is detected:
+1. DO NOT proceed with the interview
+2. DO NOT conclude
+3. Set action to "ASKING"
+4. Ask a direct clarification question referencing both conflicting pieces of information
+   Example: "Earlier you mentioned the pain was mild, but now it sounds much more severe. Could you clarify how bad it actually is?"
+5. Set "contradiction_detected": true in your response
+6. Only update stored data after the patient clarifies
+
+=== AMBIGUITY DETECTION — MANDATORY ===
+If the patient's answer is too vague to use clinically, do NOT assume and do NOT proceed.
+
+When to trigger:
+- Non-specific location ("it hurts somewhere")
+- Vague severity ("it's bad" with no scale)
+- Vague timing ("a while ago")
+- Unclear symptom meaning ("feels weird")
+
+Response:
+1. Set action to "ASKING"
+2. Ask one specific follow-up to resolve the ambiguity
+   Examples:
+   - "Where exactly is the pain — upper abdomen, lower, left side, or right side?"
+   - "On a scale of 0 to 10, how severe would you say it is?"
+   - "Can you estimate how many days ago this started?"
+   - "What does it feel like — sharp, dull, burning, or pressure?"
+3. Set "ambiguity_detected": true in your response
+
+=== QUESTION PRIORITY ORDER ===
+When choosing the next question, always follow this priority:
+
+1. Red flag not yet screened for current symptoms → ask red flag question NOW
+2. Contradiction detected → resolve contradiction first
+3. Ambiguity detected → resolve ambiguity first
+4. Symptom details incomplete (severity, duration, onset_type, progression) → ask symptom detail question
+5. Patient profile missing (age, biological_sex, pregnancy_status) → ask profile question
+6. Medical safety data missing (medications, allergies, medical_history) → ask safety question
+7. All required fields filled → proceed to verification or triage
+
 === DIAGNOSIS RULES ===
 
 STEP 1 — Ask 1-2 focused questions per turn. Minimum 3 questions before concluding (unless immediate emergency).
@@ -546,7 +609,22 @@ Your ENTIRE response must be one valid JSON object. No text before or after it. 
     }
   ],
   "reasoning": "Step-by-step diagnostic thinking — what symptoms you considered and why",
-  "next_question_purpose": "If ASKING — what symptom you are trying to clarify and which conditions it differentiates"
+  "next_question_purpose": "If ASKING — what symptom you are trying to clarify and which conditions it differentiates",
+  "interview_stage": 1,
+  "collected_fields": {
+    "age": false,
+    "biological_sex": false,
+    "pregnancy_status": false,
+    "medications": false,
+    "allergies": false,
+    "medical_history": false,
+    "chief_complaint": false,
+    "severity": false,
+    "duration": false,
+    "red_flag_screened": false
+  },
+  "contradiction_detected": false,
+  "ambiguity_detected": false
 }
 
 Valid action values:
@@ -560,7 +638,23 @@ Valid action values:
 // ── Session store ──
 const sessions = new Map();
 function getSession(id) {
-  if (!sessions.has(id)) sessions.set(id, { history: [], ended: false });
+  if (!sessions.has(id)) sessions.set(id, {
+    history: [],
+    ended: false,
+    collectedFields: {
+      age: false,
+      biological_sex: false,
+      pregnancy_status: false,
+      medications: false,
+      allergies: false,
+      medical_history: false,
+      chief_complaint: false,
+      severity: false,
+      duration: false,
+      red_flag_screened: false
+    },
+    interviewStage: 1
+  });
   return sessions.get(id);
 }
 
@@ -612,6 +706,20 @@ app.post('/chat', async (req, res) => {
       }
       fullPrompt += '\n';
     }
+    // Inject current interview state for the LLM to track progress
+    const missingFields = Object.entries(session.collectedFields)
+      .filter(([, v]) => !v)
+      .map(([k]) => k);
+    const stateBlock = [
+      `=== CURRENT INTERVIEW STATE ===`,
+      `Interview Stage: ${session.interviewStage}`,
+      `Questions asked so far: ${session.history.filter(m => m.role === 'assistant').length}`,
+      missingFields.length > 0
+        ? `Required fields still missing: ${missingFields.join(', ')}`
+        : `All required fields have been collected.`,
+      ``,
+    ].join('\n');
+    fullPrompt += stateBlock;
     fullPrompt += `Patient's latest message: ${message}\n\nYour JSON response:`;
   }
 
@@ -638,6 +746,17 @@ app.post('/chat', async (req, res) => {
     const reasoning = parsed.reasoning || '';
     const nextQuestionPurpose = parsed.next_question_purpose || '';
 
+    // Update session state from LLM-reported collected fields
+    const llmCollected = parsed.collected_fields || {};
+    for (const [field, val] of Object.entries(llmCollected)) {
+      if (val === true && field in session.collectedFields) {
+        session.collectedFields[field] = true;
+      }
+    }
+    if (parsed.interview_stage && Number.isInteger(parsed.interview_stage)) {
+      session.interviewStage = parsed.interview_stage;
+    }
+
     // ── Server-side safety enforcement ──────────────────────────────────────
     // Run deterministic red flag check across all patient messages so far
     const patientMessages = session.history.filter(m => m.role === 'user').map(m => m.text);
@@ -653,6 +772,16 @@ app.post('/chat', async (req, res) => {
     // 2. Condition tag enforcement: ensure action is never lower than conditions demand
     if (action !== 'SEEK_HELP_IMMEDIATELY') {
       action = enforceConditionTriage(action, matchedConditions);
+    }
+
+    // 3. Schema completion enforcement: prevent conclusion if required fields are missing
+    const REQUIRED_FOR_CONCLUSION = ['age', 'biological_sex', 'pregnancy_status', 'medications', 'allergies', 'medical_history', 'chief_complaint'];
+    if (action === 'CONTINUE' || action === 'SEEK_HELP_SOON') {
+      const missing = REQUIRED_FOR_CONCLUSION.filter(f => !session.collectedFields[f]);
+      if (missing.length > 0) {
+        console.log(`[Schema enforcement] Downgraded ${action} → ASKING. Missing: ${missing.join(', ')}`);
+        action = 'ASKING';
+      }
     }
     // ────────────────────────────────────────────────────────────────────────
 
