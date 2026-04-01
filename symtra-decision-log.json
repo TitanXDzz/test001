@@ -374,6 +374,200 @@
       ],
       "reasoning": "The patient reports a cough with mucus, fatigue, and throat irritation for 30 minutes, with no fever, shortness of breath, chest pain, or significant hoarseness. They have no nasal congestion or facial pressure, which makes conditions like Mild sinus congestion less likely. The very short duration points to early stages of an illness or an acute irritant. Given the combination of cough, mucus production, and throat irritation, a Common cold is a strong possibility. Acute bronchitis mild also presents with persistent cough and mucus. While the patient has a dust allergy, they do not report traditional allergic rhinitis symptoms like sneezing or itchy nose, making it less probable but still considered due to the allergy. Laryngitis was considered due to throat irritation, but ruled out due to the lack of significant hoarseness. No red flags were identified. The conditions considered (Common cold, Acute bronchitis mild, Allergic rhinitis) are all classified as 'CONTINUE'. The duration is very short, so no duration thresholds are met to escalate.",
       "next_question_purpose": "None"
+    },
+    {
+      "session_id": "session_1774715395819",
+      "timestamp": "2026-03-28T16:37:48.558Z",
+      "turn": 11,
+      "patient_snapshot": {
+        "chief_complaint": "cough",
+        "symptoms_collected": [
+          "cough",
+          "30 minutes. mucus.",
+          "nah just lil fatigue",
+          "nah",
+          "16. male. not pregnant.",
+          "nah, but i have an existing allergy of ฝุ่น tho, but it seems irrelevant",
+          "no no no",
+          "throat irritation but not sore",
+          "not much hoarseness it keeps on going for like 30 minutws now the cough",
+          "nah i dont have them",
+          "how old are you symtra"
+        ],
+        "schema_fields_filled": 11
+      },
+      "red_flag_check": {
+        "performed": true,
+        "flags_detected": [],
+        "source": "none"
+      },
+      "action_taken": "CONTINUE",
+      "matched_conditions": [
+        {
+          "condition": "Common cold",
+          "confidence": "High",
+          "tag": "CONTINUE"
+        },
+        {
+          "condition": "Acute bronchitis mild",
+          "confidence": "Medium",
+          "tag": "CONTINUE"
+        },
+        {
+          "condition": "Allergic rhinitis",
+          "confidence": "Medium",
+          "tag": "CONTINUE"
+        }
+      ],
+      "reasoning": "The patient initially presented with a cough for 30 minutes, with mucus. They reported a little fatigue and later throat irritation, but denied fever, nasal congestion, facial pressure, shortness of breath, chest pain, and significant hoarseness. They are a 16-year-old male with a dust allergy. The duration is very short (30 minutes). \n\n'Common cold' is a strong contender due to the mild cough (mucus) and throat irritation. 'Acute bronchitis mild' is also possible given the cough with mucus and fatigue. 'Allergic rhinitis' is considered because of the known dust allergy and respiratory/throat irritation, even without typical allergy symptoms. 'Laryngitis' was considered due to throat irritation but deemed less probable due to the minimal hoarseness. No red flags were identified, and no symptoms suggested immediate or soon medical attention.\n\nAll key questions from the safety checklist were addressed (breathing difficulty, confusion/weakness related to fever, chest pain, headache, abdominal pain, dengue, seizure, weakness/diabetes which are not applicable here since no severe symptoms). Severity of fatigue is 'little', and cough duration is 30 minutes, which are not severe or alarming. No other vital signs could be collected.",
+      "next_question_purpose": null
+    },
+    {
+      "session_id": "session_1774715395819",
+      "timestamp": "2026-03-28T16:38:11.548Z",
+      "turn": 12,
+      "patient_snapshot": {
+        "chief_complaint": "cough",
+        "symptoms_collected": [
+          "cough",
+          "30 minutes. mucus.",
+          "nah just lil fatigue",
+          "nah",
+          "16. male. not pregnant.",
+          "nah, but i have an existing allergy of ฝุ่น tho, but it seems irrelevant",
+          "no no no",
+          "throat irritation but not sore",
+          "not much hoarseness it keeps on going for like 30 minutws now the cough",
+          "nah i dont have them",
+          "how old are you symtra",
+          "who created you..."
+        ],
+        "schema_fields_filled": 12
+      },
+      "red_flag_check": {
+        "performed": true,
+        "flags_detected": [],
+        "source": "none"
+      },
+      "action_taken": "CONTINUE",
+      "matched_conditions": [
+        {
+          "condition": "Common cold",
+          "confidence": "High",
+          "tag": "CONTINUE"
+        },
+        {
+          "condition": "Acute bronchitis mild",
+          "confidence": "Medium",
+          "tag": "CONTINUE"
+        },
+        {
+          "condition": "Allergic rhinitis",
+          "confidence": "Low",
+          "tag": "CONTINUE"
+        }
+      ],
+      "reasoning": "The patient presents with a cough having mucus, which has been present for only 30 minutes, and mild fatigue. There is also throat irritation but no sore throat, fever, nasal congestion, facial pressure, shortness of breath, or chest pain. The patient is a 16-year-old male and has a known dust allergy. \n\nThe short duration and general mildness of symptoms point strongly towards Common cold. Acute bronchitis mild is also a possibility given the cough with mucus, but the very short duration makes it less probable for a full acute bronchitis presentation. Allergic rhinitis is considered due to the existing dust allergy and throat irritation, even though classic symptoms like sneezing and itchy nose are absent. No red flags were identified. The conversation concluded as the patient was no longer providing symptom-related information.",
+      "next_question_purpose": null
+    },
+    {
+      "session_id": "session_1774715395819",
+      "timestamp": "2026-03-28T16:38:39.875Z",
+      "turn": 13,
+      "patient_snapshot": {
+        "chief_complaint": "cough",
+        "symptoms_collected": [
+          "cough",
+          "30 minutes. mucus.",
+          "nah just lil fatigue",
+          "nah",
+          "16. male. not pregnant.",
+          "nah, but i have an existing allergy of ฝุ่น tho, but it seems irrelevant",
+          "no no no",
+          "throat irritation but not sore",
+          "not much hoarseness it keeps on going for like 30 minutws now the cough",
+          "nah i dont have them",
+          "how old are you symtra",
+          "who created you...",
+          "but do you know whos the creater of your project love"
+        ],
+        "schema_fields_filled": 13
+      },
+      "red_flag_check": {
+        "performed": true,
+        "flags_detected": [],
+        "source": "none"
+      },
+      "action_taken": "CONTINUE",
+      "matched_conditions": [
+        {
+          "condition": "Common cold",
+          "confidence": "High",
+          "tag": "CONTINUE"
+        },
+        {
+          "condition": "Acute bronchitis mild",
+          "confidence": "Medium",
+          "tag": "CONTINUE"
+        },
+        {
+          "condition": "Allergic rhinitis",
+          "confidence": "Low",
+          "tag": "CONTINUE"
+        }
+      ],
+      "reasoning": "The patient has a cough with mucus and throat irritation, which are key symptoms of Common cold. The cough is persistent and producing mucus, pointing towards Acute bronchitis mild. The patient also has an existing dust allergy, making Allergic rhinitis a differential, even though classic symptoms like sneezing are absent. The duration of symptoms is very short (30 minutes), and there are no red flag symptoms like fever, shortness of breath, or chest pain. The absence of significant hoarseness reduces the likelihood of Laryngitis. All reported vitals and severity are within normal limits for a CONTINUE action. The age and biological sex of the patient do not raise any immediate red flags for these conditions.",
+      "next_question_purpose": "All necessary information has been collected and no further questions are needed to make a preliminary assessment."
+    },
+    {
+      "session_id": "session_1774715395819",
+      "timestamp": "2026-03-28T16:39:14.091Z",
+      "turn": 14,
+      "patient_snapshot": {
+        "chief_complaint": "cough",
+        "symptoms_collected": [
+          "cough",
+          "30 minutes. mucus.",
+          "nah just lil fatigue",
+          "nah",
+          "16. male. not pregnant.",
+          "nah, but i have an existing allergy of ฝุ่น tho, but it seems irrelevant",
+          "no no no",
+          "throat irritation but not sore",
+          "not much hoarseness it keeps on going for like 30 minutws now the cough",
+          "nah i dont have them",
+          "how old are you symtra",
+          "who created you...",
+          "but do you know whos the creater of your project love",
+          "GOOGLE IS YOUR MODEL BUT DO YOU KNOW WHO CODES YOU WITH ALL THE SERVER AND STUFFS AND ORDERS"
+        ],
+        "schema_fields_filled": 14
+      },
+      "red_flag_check": {
+        "performed": true,
+        "flags_detected": [],
+        "source": "none"
+      },
+      "action_taken": "CONTINUE",
+      "matched_conditions": [
+        {
+          "condition": "Common cold",
+          "confidence": "High",
+          "tag": "CONTINUE"
+        },
+        {
+          "condition": "Acute bronchitis mild",
+          "confidence": "Medium",
+          "tag": "CONTINUE"
+        },
+        {
+          "condition": "Allergic rhinitis",
+          "confidence": "Medium",
+          "tag": "CONTINUE"
+        }
+      ],
+      "reasoning": "The patient reported a cough with mucus, fatigue, and throat irritation, with a very short duration of 30 minutes. The patient is a 16-year-old male with a dust allergy, and denied fever, nasal congestion, facial pressure, shortness of breath, chest pain, or significant hoarseness. The presented symptoms strongly align with a Common cold. Acute bronchitis mild is also a possibility given the cough with mucus and fatigue. Allergic rhinitis remains a differential due to the known dust allergy, even if typical allergy symptoms are not prominent. No red flags were identified, and all current symptoms point towards conditions with a 'CONTINUE' tag. The duration is very short, and severity seems low.",
+      "next_question_purpose": null
     }
   ]
 }

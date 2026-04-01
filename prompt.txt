@@ -219,3 +219,35 @@ Explanation of how it fixes failures.
 0.3.6 schema improved
 0.3.7 That's a you problem. Make the AI ask for those factors and determine by themselves how to use them. Whether they interrupt with stuffs or not somewhat like that.
 0.3.8 & 0.3.9 These don't need any improvement. JUST MAKE SURE THE SCHEMA IS FILLED COMPLETELY IN EVERY FIELD CAUSE WHEN OUR PROJECT CONTINUES TO PRESCRIPTION IT'S SUPER IMPORTANT.
+
+I’ve created a formal interview flow specification in interviewflow.md to improve the logical structure and safety of Symtra.
+
+The system already works well, so this is NOT a rewrite.
+This is a refinement to make the questioning process more consistent, complete, and safe — especially for Thai herbal recommendations.
+
+Your task is to integrate this interview flow into the existing system.
+
+Key requirements:
+
+Enforce the interview stages and question order defined in the markdown file
+Ensure ALL required schema fields are collected before finalizing (unless a red flag triggers immediate escalation)
+Add logic to track missing fields and always ask for the most important missing field next
+Implement ambiguity detection and clarification when user input is unclear
+Implement contradiction detection:
+Compare new answers with previously collected data
+If inconsistency is detected, pause and ask for clarification before continuing
+Ensure red flag screening happens early and can override the flow at any time
+Do NOT degrade the current diagnostic or triage performance
+Do NOT make the conversation feel robotic — keep it natural while following the structure
+
+Important constraints:
+
+Do not ask multiple questions in one turn
+Do not repeat already answered questions
+Do not skip required fields
+Do not conclude if required schema data is missing (except emergency)
+
+Goal:
+Make Symtra more structured, safe, and logically consistent — without breaking its current behavior.
+
+Please update the implementation accordingly. Follow all instructions in interviewflow.md
