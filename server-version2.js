@@ -254,6 +254,32 @@ function enforceConditionTriage(llmAction, matchedConditions) {
   return highest;
 }
 
+// ── Asked-field detector ──────────────────────────────────────────────────────
+// Scans an assistant message for keywords indicating which fields were asked about.
+// Used to prevent re-asking fields the LLM already covered (even if collectedFields
+// wasn't updated because the LLM forgot to self-report).
+const FIELD_ASKED_KEYWORDS = {
+  medications:      ['medication', 'medicine', 'taking any', 'ยา', 'รับประทานยา', 'กินยา'],
+  allergies:        ['allerg', 'แพ้'],
+  medical_history:  ['medical history', 'surgery', 'surgeries', 'past illness', 'chronic condition',
+                     'ประวัติ', 'ผ่าตัด', 'โรคประจำตัว', 'เจ็บป่วย'],
+  age:              ['how old', 'your age', 'อายุ'],
+  biological_sex:   ['gender', 'biological sex', 'เพศ'],
+  pregnancy_status: ['pregnant', 'pregnancy', 'ตั้งครรภ์', 'มีครรภ์'],
+  chief_complaint:  ['main symptom', 'chief complaint', 'อาการ', 'อาการหลัก'],
+  severity:         ['scale of 0', 'severity', 'how severe', 'how bad', 'ความรุนแรง', 'คะแนน'],
+  duration:         ['how long', 'when did', 'duration', 'นานแค่ไหน', 'เริ่มมีอาการ'],
+};
+
+function detectAskedFields(text) {
+  const t = text.toLowerCase();
+  const found = [];
+  for (const [field, keywords] of Object.entries(FIELD_ASKED_KEYWORDS)) {
+    if (keywords.some(kw => t.includes(kw.toLowerCase()))) found.push(field);
+  }
+  return found;
+}
+
 // ── Load schema ──
 let schemaData;
 try { schemaData = JSON.parse(fs.readFileSync('schema.json', 'utf8')); }
@@ -553,6 +579,9 @@ IF action = "ASKING":
   → Your message MUST contain at least one direct question to the patient.
   → Phrases like "I have enough information now" or "Let me assess" without a question are FORBIDDEN.
   → Never say you are about to give a result without actually giving it in that same message.
+  → "Thank you for confirming X. That's very helpful." with NO follow-up question is FORBIDDEN.
+  → Acknowledging an answer and then stopping is FORBIDDEN. Always immediately ask the next question.
+  → Every ASKING message MUST end with a question mark (?).
 
 IF action = "CONTINUE" or "SEEK_HELP_SOON" or "SEEK_HELP_IMMEDIATELY":
   → Your message MUST contain the actual diagnosis conclusion.
@@ -641,6 +670,7 @@ function getSession(id) {
   if (!sessions.has(id)) sessions.set(id, {
     history: [],
     ended: false,
+    askedFields: [],
     collectedFields: {
       age: false,
       biological_sex: false,
@@ -707,18 +737,22 @@ app.post('/chat', async (req, res) => {
       fullPrompt += '\n';
     }
     // Inject current interview state for the LLM to track progress
+    const alreadyAsked = session.askedFields || [];
     const missingFields = Object.entries(session.collectedFields)
-      .filter(([, v]) => !v)
+      .filter(([k, v]) => !v && !alreadyAsked.includes(k))
       .map(([k]) => k);
     const stateBlock = [
       `=== CURRENT INTERVIEW STATE ===`,
       `Interview Stage: ${session.interviewStage}`,
       `Questions asked so far: ${session.history.filter(m => m.role === 'assistant').length}`,
+      alreadyAsked.length > 0
+        ? `Already asked about (patient has answered — DO NOT re-ask): ${alreadyAsked.join(', ')}`
+        : '',
       missingFields.length > 0
-        ? `Required fields still missing: ${missingFields.join(', ')}`
+        ? `Still need to collect: ${missingFields.join(', ')}`
         : `All required fields have been collected.`,
       ``,
-    ].join('\n');
+    ].filter(Boolean).join('\n');
     fullPrompt += stateBlock;
     fullPrompt += `Patient's latest message: ${message}\n\nYour JSON response:`;
   }
@@ -740,6 +774,32 @@ app.post('/chat', async (req, res) => {
       // Last resort fallback — show raw text as message
       parsed = { message: raw, action: 'ASKING', matched_conditions: [], reasoning: '', next_question_purpose: '' };
     }
+
+    // ── Limbo detection: ASKING with no question → retry once ────────────────
+    if ((parsed.action || 'ASKING') === 'ASKING' && !(parsed.message || '').includes('?')) {
+      try {
+        const missingNow = Object.entries(session.collectedFields)
+          .filter(([, v]) => !v).map(([k]) => k);
+        const nextField = missingNow[0] || 'any remaining symptom details';
+        const correctionPrompt =
+          fullPrompt +
+          `\n\nYOUR PREVIOUS RESPONSE WAS INVALID:\n"${(parsed.message || '').slice(0, 300)}"\n\n` +
+          `Problem: You set action="ASKING" but your message contained no question. This is not allowed.\n` +
+          `Fix: You MUST ask the patient a direct question. Next missing field to collect: ${nextField}.\n` +
+          `Reply with corrected JSON that ends with a clear question mark (?):`;
+        const raw2 = (await callOpenRouter(correctionPrompt)).trim();
+        const match2 = raw2.match(/\{[\s\S]*\}/);
+        if (match2) {
+          const p2 = JSON.parse(match2[0]);
+          if (p2 && (p2.message || '').includes('?')) {
+            parsed = p2;
+          }
+        }
+      } catch (retryErr) {
+        console.warn('[Limbo fix] Retry failed:', retryErr.message);
+      }
+    }
+    // ─────────────────────────────────────────────────────────────────────────
 
     const assistantMessage = parsed.message || raw;
     const matchedConditions = parsed.matched_conditions || [];
@@ -775,9 +835,12 @@ app.post('/chat', async (req, res) => {
     }
 
     // 3. Schema completion enforcement: prevent conclusion if required fields are missing
+    // A field counts as covered if collectedFields[f]=true OR it was already asked about (askedFields)
     const REQUIRED_FOR_CONCLUSION = ['age', 'biological_sex', 'pregnancy_status', 'medications', 'allergies', 'medical_history', 'chief_complaint'];
     if (action === 'CONTINUE' || action === 'SEEK_HELP_SOON') {
-      const missing = REQUIRED_FOR_CONCLUSION.filter(f => !session.collectedFields[f]);
+      const missing = REQUIRED_FOR_CONCLUSION.filter(
+        f => !session.collectedFields[f] && !(session.askedFields || []).includes(f)
+      );
       if (missing.length > 0) {
         console.log(`[Schema enforcement] Downgraded ${action} → ASKING. Missing: ${missing.join(', ')}`);
         action = 'ASKING';
@@ -787,6 +850,12 @@ app.post('/chat', async (req, res) => {
 
     // Store assistant message (including greeting so first user reply has full context)
     session.history.push({ role: 'assistant', text: assistantMessage });
+
+    // Track which fields the LLM asked about — prevents re-asking on future turns
+    const fieldsAskedThisTurn = detectAskedFields(assistantMessage);
+    for (const f of fieldsAskedThisTurn) {
+      if (!session.askedFields.includes(f)) session.askedFields.push(f);
+    }
 
     if (action === 'SEEK_HELP_IMMEDIATELY' || action === 'UNKNOWN') {
       session.ended = true;

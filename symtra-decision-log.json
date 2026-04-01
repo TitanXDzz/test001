@@ -568,6 +568,722 @@
       ],
       "reasoning": "The patient reported a cough with mucus, fatigue, and throat irritation, with a very short duration of 30 minutes. The patient is a 16-year-old male with a dust allergy, and denied fever, nasal congestion, facial pressure, shortness of breath, chest pain, or significant hoarseness. The presented symptoms strongly align with a Common cold. Acute bronchitis mild is also a possibility given the cough with mucus and fatigue. Allergic rhinitis remains a differential due to the known dust allergy, even if typical allergy symptoms are not prominent. No red flags were identified, and all current symptoms point towards conditions with a 'CONTINUE' tag. The duration is very short, and severity seems low.",
       "next_question_purpose": null
+    },
+    {
+      "session_id": "session_1775030822160",
+      "timestamp": "2026-04-01T08:07:12.895Z",
+      "turn": 1,
+      "patient_snapshot": {
+        "chief_complaint": "you doing good?",
+        "symptoms_collected": [
+          "you doing good?"
+        ],
+        "schema_fields_filled": 1
+      },
+      "red_flag_check": {
+        "performed": true,
+        "flags_detected": [],
+        "source": "none"
+      },
+      "action_taken": "ASKING",
+      "matched_conditions": [],
+      "reasoning": "The user asked about my well-being, which is outside the scope of my function. I need to politely redirect to collecting the chief complaint. No symptoms have been reported yet, so no conditions can be matched.",
+      "next_question_purpose": "To identify the chief complaint so I can begin assessing symptoms."
+    },
+    {
+      "session_id": "session_1775030822160",
+      "timestamp": "2026-04-01T08:07:42.450Z",
+      "turn": 2,
+      "patient_snapshot": {
+        "chief_complaint": "you doing good?",
+        "symptoms_collected": [
+          "you doing good?",
+          "what's the best hospital in bangkok?"
+        ],
+        "schema_fields_filled": 2
+      },
+      "red_flag_check": {
+        "performed": true,
+        "flags_detected": [],
+        "source": "none"
+      },
+      "action_taken": "ASKING",
+      "matched_conditions": [],
+      "reasoning": "The patient is asking for a hospital recommendation, which Symtra is not programmed to provide. I need to redirect the conversation back to symptom collection to fulfill my purpose.",
+      "next_question_purpose": "To identify the patient's chief complaint and begin the symptom assessment process."
+    },
+    {
+      "session_id": "session_1775030822160",
+      "timestamp": "2026-04-01T08:08:03.283Z",
+      "turn": 3,
+      "patient_snapshot": {
+        "chief_complaint": "you doing good?",
+        "symptoms_collected": [
+          "you doing good?",
+          "what's the best hospital in bangkok?",
+          "i got sick ah"
+        ],
+        "schema_fields_filled": 3
+      },
+      "red_flag_check": {
+        "performed": true,
+        "flags_detected": [],
+        "source": "none"
+      },
+      "action_taken": "ASKING",
+      "matched_conditions": [],
+      "reasoning": "The patient has indicated they are feeling 'sick,' which is a very general term. Symtra needs to identify the chief complaint to proceed with the diagnostic process. Asking for specific symptoms will help narrow down potential conditions and begin collecting the mandatory 'chief_complaint.symptom' field.",
+      "next_question_purpose": "To identify the specific chief complaint/main symptom the patient is experiencing."
+    },
+    {
+      "session_id": "session_1775030822160",
+      "timestamp": "2026-04-01T08:08:24.741Z",
+      "turn": 4,
+      "patient_snapshot": {
+        "chief_complaint": "you doing good?",
+        "symptoms_collected": [
+          "you doing good?",
+          "what's the best hospital in bangkok?",
+          "i got sick ah",
+          "cough cough headache มึนๆง่วงๆ"
+        ],
+        "schema_fields_filled": 4
+      },
+      "red_flag_check": {
+        "performed": true,
+        "flags_detected": [],
+        "source": "none"
+      },
+      "action_taken": "ASKING",
+      "matched_conditions": [
+        {
+          "condition": "Common cold",
+          "confidence": "Medium",
+          "tag": "CONTINUE"
+        },
+        {
+          "condition": "Mild influenza",
+          "confidence": "Medium",
+          "tag": "CONTINUE"
+        },
+        {
+          "condition": "COVID-19 suspected",
+          "confidence": "Medium",
+          "tag": "SEEK_HELP_SOON"
+        },
+        {
+          "condition": "Tension headache",
+          "confidence": "Low",
+          "tag": "CONTINUE"
+        }
+      ],
+      "reasoning": "The patient reports cough and headache, which are common to several respiratory conditions like common cold, influenza, and COVID-19. Dizziness and sleepiness could be related to general malaise from these conditions or indicate fatigue. I need to clarify the presence of fever and the severity of the headache to narrow down the possibilities and screen for red flags.",
+      "next_question_purpose": "To determine the presence of fever (a key symptom for differentiating between respiratory conditions and assessing severity) and to establish the severity of the headache, which is crucial for red flag screening and diagnosis."
+    },
+    {
+      "session_id": "session_1775030822160",
+      "timestamp": "2026-04-01T08:09:15.052Z",
+      "turn": 5,
+      "patient_snapshot": {
+        "chief_complaint": "you doing good?",
+        "symptoms_collected": [
+          "you doing good?",
+          "what's the best hospital in bangkok?",
+          "i got sick ah",
+          "cough cough headache มึนๆง่วงๆ",
+          "just 2 i dont have fever"
+        ],
+        "schema_fields_filled": 5
+      },
+      "red_flag_check": {
+        "performed": true,
+        "flags_detected": [],
+        "source": "none"
+      },
+      "action_taken": "ASKING",
+      "matched_conditions": [
+        {
+          "condition": "Common cold",
+          "confidence": "Medium",
+          "tag": "CONTINUE"
+        }
+      ],
+      "reasoning": "The patient reports cough, headache, dizziness, and sleepiness. The absence of fever makes conditions like severe influenza, COVID-19, or possible pneumonia less likely as primary diagnoses at this stage. Common cold remains a possibility based on cough and headache. I need to gather duration of symptoms and severity of headache to narrow down further.",
+      "next_question_purpose": "To establish the duration of the chief complaint (cough, headache, dizziness, sleepiness) to better assess the potential conditions and their progression."
+    },
+    {
+      "session_id": "session_1775030822160",
+      "timestamp": "2026-04-01T08:09:25.845Z",
+      "turn": 6,
+      "patient_snapshot": {
+        "chief_complaint": "you doing good?",
+        "symptoms_collected": [
+          "you doing good?",
+          "what's the best hospital in bangkok?",
+          "i got sick ah",
+          "cough cough headache มึนๆง่วงๆ",
+          "just 2 i dont have fever",
+          "2 days"
+        ],
+        "schema_fields_filled": 6
+      },
+      "red_flag_check": {
+        "performed": true,
+        "flags_detected": [],
+        "source": "none"
+      },
+      "action_taken": "ASKING",
+      "matched_conditions": [
+        {
+          "condition": "Common cold",
+          "confidence": "Medium",
+          "tag": "CONTINUE"
+        },
+        {
+          "condition": "Mild influenza",
+          "confidence": "Low",
+          "tag": "CONTINUE"
+        },
+        {
+          "condition": "COVID-19 suspected",
+          "confidence": "Low",
+          "tag": "SEEK_HELP_SOON"
+        }
+      ],
+      "reasoning": "The patient reports cough, headache (severity 2/10), dizziness, and sleepiness for 2 days, with no fever. I am considering common respiratory conditions that fit these symptoms. Common cold is a strong candidate given the mild, non-specific symptoms and absence of fever. Mild influenza and COVID-19 are lower probability without fever or other specific symptoms like body aches or loss of smell. My next step is to gather information about medications, as this can be crucial for understanding potential interactions or underlying conditions.",
+      "next_question_purpose": "To collect information on current medications, which is a mandatory field to assess overall health and potential drug interactions or existing conditions."
+    },
+    {
+      "session_id": "session_1775030822160",
+      "timestamp": "2026-04-01T08:09:49.158Z",
+      "turn": 7,
+      "patient_snapshot": {
+        "chief_complaint": "you doing good?",
+        "symptoms_collected": [
+          "you doing good?",
+          "what's the best hospital in bangkok?",
+          "i got sick ah",
+          "cough cough headache มึนๆง่วงๆ",
+          "just 2 i dont have fever",
+          "2 days",
+          "no i didnt take any"
+        ],
+        "schema_fields_filled": 7
+      },
+      "red_flag_check": {
+        "performed": true,
+        "flags_detected": [],
+        "source": "none"
+      },
+      "action_taken": "ASKING",
+      "matched_conditions": [
+        {
+          "condition": "Common cold",
+          "confidence": "Medium",
+          "tag": "CONTINUE"
+        },
+        {
+          "condition": "Mild influenza",
+          "confidence": "Low",
+          "tag": "CONTINUE"
+        }
+      ],
+      "reasoning": "The patient reports cough, headache (2/10 severity), dizziness, and sleepiness for 2 days. They explicitly denied fever and medications. I am considering conditions like Common Cold and Mild Influenza, but the absence of fever makes the latter less likely. The symptoms of dizziness and sleepiness are mild and could be associated with general malaise from a viral illness. I need to gather information about allergies to complete the medical safety profile.",
+      "next_question_purpose": "To collect information on potential allergies, which is important for understanding the patient's medical history."
+    },
+    {
+      "session_id": "session_1775030822160",
+      "timestamp": "2026-04-01T08:10:05.271Z",
+      "turn": 8,
+      "patient_snapshot": {
+        "chief_complaint": "you doing good?",
+        "symptoms_collected": [
+          "you doing good?",
+          "what's the best hospital in bangkok?",
+          "i got sick ah",
+          "cough cough headache มึนๆง่วงๆ",
+          "just 2 i dont have fever",
+          "2 days",
+          "no i didnt take any",
+          "ไรฝุ่น that's all"
+        ],
+        "schema_fields_filled": 8
+      },
+      "red_flag_check": {
+        "performed": true,
+        "flags_detected": [],
+        "source": "none"
+      },
+      "action_taken": "ASKING",
+      "matched_conditions": [
+        {
+          "condition": "Common cold",
+          "confidence": "Medium",
+          "tag": "CONTINUE"
+        },
+        {
+          "condition": "Mild influenza",
+          "confidence": "Low",
+          "tag": "CONTINUE"
+        },
+        {
+          "condition": "Allergic rhinitis",
+          "confidence": "Low",
+          "tag": "CONTINUE"
+        }
+      ],
+      "reasoning": "Symtra has noted the patient's cough, headache (2/10 severity), dizziness, and sleepiness for 2 days, without fever. They also have a dust mite allergy. Symtra is currently considering Common Cold due to the general symptoms, but also Mild Influenza, though lack of fever makes it less likely, and Allergic Rhinitis, but primary symptoms of sneezing/itchy nose are missing. The next step is to collect basic patient demographic information (age and biological sex) which is crucial for completing the patient profile before moving to medical history.",
+      "next_question_purpose": "To collect the patient's age and biological sex to complete the patient profile, as these are critical missing fields that influence diagnostic considerations and overall health assessment."
+    },
+    {
+      "session_id": "session_1775030822160",
+      "timestamp": "2026-04-01T08:10:22.419Z",
+      "turn": 9,
+      "patient_snapshot": {
+        "chief_complaint": "you doing good?",
+        "symptoms_collected": [
+          "you doing good?",
+          "what's the best hospital in bangkok?",
+          "i got sick ah",
+          "cough cough headache มึนๆง่วงๆ",
+          "just 2 i dont have fever",
+          "2 days",
+          "no i didnt take any",
+          "ไรฝุ่น that's all",
+          "16 male"
+        ],
+        "schema_fields_filled": 9
+      },
+      "red_flag_check": {
+        "performed": true,
+        "flags_detected": [],
+        "source": "none"
+      },
+      "action_taken": "ASKING",
+      "matched_conditions": [
+        {
+          "condition": "Common cold",
+          "confidence": "Medium",
+          "tag": "CONTINUE"
+        },
+        {
+          "condition": "Mild influenza",
+          "confidence": "Low",
+          "tag": "CONTINUE"
+        }
+      ],
+      "reasoning": "The patient's current symptoms of cough, mild headache (2/10), dizziness, and sleepiness for 2 days, without fever, are most consistent with an early stage Common cold. Mild influenza is less likely due to the absence of fever, which is a key symptom of influenza. I need to collect medical history to further assess the patient's overall health and rule out any additional risk factors.",
+      "next_question_purpose": "To collect medical history (conditions and surgeries) to complete the patient profile and screen for relevant risk factors that might influence potential diagnoses or their severity."
+    },
+    {
+      "session_id": "session_1775030822160",
+      "timestamp": "2026-04-01T08:12:02.389Z",
+      "turn": 10,
+      "patient_snapshot": {
+        "chief_complaint": "you doing good?",
+        "symptoms_collected": [
+          "you doing good?",
+          "what's the best hospital in bangkok?",
+          "i got sick ah",
+          "cough cough headache มึนๆง่วงๆ",
+          "just 2 i dont have fever",
+          "2 days",
+          "no i didnt take any",
+          "ไรฝุ่น that's all",
+          "16 male",
+          "nah"
+        ],
+        "schema_fields_filled": 10
+      },
+      "red_flag_check": {
+        "performed": true,
+        "flags_detected": [],
+        "source": "none"
+      },
+      "action_taken": "ASKING",
+      "matched_conditions": [
+        {
+          "condition": "Common cold",
+          "confidence": "Medium",
+          "tag": "CONTINUE"
+        },
+        {
+          "condition": "Mild influenza",
+          "confidence": "Low",
+          "tag": "CONTINUE"
+        },
+        {
+          "condition": "Allergic rhinitis",
+          "confidence": "Low",
+          "tag": "CONTINUE"
+        },
+        {
+          "condition": "Tension headache",
+          "confidence": "Low",
+          "tag": "CONTINUE"
+        }
+      ],
+      "reasoning": "The patient's current symptoms of cough, mild headache, dizziness, and sleepiness, without fever, for 2 days, point towards a mild viral illness like a common cold. Mild influenza is less likely due to the absence of fever and body aches. Allergic rhinitis is a possibility given the dust mite allergy, but other key symptoms are missing. Tension headache is a minor component but not the primary driver of all symptoms. I need to screen for respiratory red flags due to the cough and the nature of the symptoms before proceeding to a conclusion.",
+      "next_question_purpose": "To screen for difficulty breathing or shortness of breath, which is a critical red flag for respiratory symptoms and could indicate more severe conditions such as acute bronchitis, possible pneumonia, or severe influenza."
+    },
+    {
+      "session_id": "session_1775030822160",
+      "timestamp": "2026-04-01T08:12:17.151Z",
+      "turn": 11,
+      "patient_snapshot": {
+        "chief_complaint": "you doing good?",
+        "symptoms_collected": [
+          "you doing good?",
+          "what's the best hospital in bangkok?",
+          "i got sick ah",
+          "cough cough headache มึนๆง่วงๆ",
+          "just 2 i dont have fever",
+          "2 days",
+          "no i didnt take any",
+          "ไรฝุ่น that's all",
+          "16 male",
+          "nah",
+          "nah"
+        ],
+        "schema_fields_filled": 11
+      },
+      "red_flag_check": {
+        "performed": true,
+        "flags_detected": [],
+        "source": "none"
+      },
+      "action_taken": "ASKING",
+      "matched_conditions": [],
+      "reasoning": "The patient has provided age, biological sex, chief complaint, duration, severity of headache, absence of fever, no medications, no medical history/surgeries, and an allergy. I've initiated red flag screening for respiratory symptoms as per safety rules and interview stages, specifically focusing on breathing difficulty or shortness of breath given the cough.",
+      "next_question_purpose": "Screen for respiratory red flags (difficulty breathing, shortness of breath) to rule out immediate emergency conditions like severe COVID-19, severe influenza, or possible pneumonia."
+    },
+    {
+      "session_id": "session_1775030822160",
+      "timestamp": "2026-04-01T08:12:30.573Z",
+      "turn": 12,
+      "patient_snapshot": {
+        "chief_complaint": "you doing good?",
+        "symptoms_collected": [
+          "you doing good?",
+          "what's the best hospital in bangkok?",
+          "i got sick ah",
+          "cough cough headache มึนๆง่วงๆ",
+          "just 2 i dont have fever",
+          "2 days",
+          "no i didnt take any",
+          "ไรฝุ่น that's all",
+          "16 male",
+          "nah",
+          "nah",
+          "nah"
+        ],
+        "schema_fields_filled": 12
+      },
+      "red_flag_check": {
+        "performed": true,
+        "flags_detected": [],
+        "source": "none"
+      },
+      "action_taken": "ASKING",
+      "matched_conditions": [
+        {
+          "condition": "Common cold",
+          "confidence": "Medium",
+          "tag": "CONTINUE"
+        },
+        {
+          "condition": "Mild influenza",
+          "confidence": "Low",
+          "tag": "CONTINUE"
+        }
+      ],
+      "reasoning": "The patient's symptoms (cough, headache, dizziness, sleepiness) for 2 days, without fever, and with a low headache severity (2/10) point towards a self-limiting viral illness. Common cold and mild influenza were considered. Common cold is slightly more probable given the lack of fever. I asked about breathing difficulty as a respiratory red flag. Now, I am asking about seizure-like activity due to the reported dizziness.",
+      "next_question_purpose": "To screen for neurological red flags (seizure, loss of consciousness) given the patient's reported dizziness."
+    },
+    {
+      "session_id": "session_1775030822160",
+      "timestamp": "2026-04-01T08:12:45.364Z",
+      "turn": 13,
+      "patient_snapshot": {
+        "chief_complaint": "you doing good?",
+        "symptoms_collected": [
+          "you doing good?",
+          "what's the best hospital in bangkok?",
+          "i got sick ah",
+          "cough cough headache มึนๆง่วงๆ",
+          "just 2 i dont have fever",
+          "2 days",
+          "no i didnt take any",
+          "ไรฝุ่น that's all",
+          "16 male",
+          "nah",
+          "nah",
+          "nah",
+          "nah not at all"
+        ],
+        "schema_fields_filled": 13
+      },
+      "red_flag_check": {
+        "performed": true,
+        "flags_detected": [],
+        "source": "none"
+      },
+      "action_taken": "ASKING",
+      "matched_conditions": [
+        {
+          "condition": "Common cold",
+          "confidence": "Medium",
+          "tag": "CONTINUE"
+        },
+        {
+          "condition": "Mild influenza",
+          "confidence": "Low",
+          "tag": "CONTINUE"
+        }
+      ],
+      "reasoning": "The patient's current symptoms are cough, headache (2/10), dizziness, and sleepiness for 2 days, with no fever. They are a 16-year-old male with a dust mite allergy, no medications, and no significant medical history. I have screened for severe respiratory distress and seizures, which were negative. Given the absence of fever, 'Common cold' seems more probable than 'Mild influenza' so far.",
+      "next_question_purpose": "To collect vitals, specifically temperature, heart rate, and blood pressure, which are still missing and can help differentiate between various conditions and screen for further red flags."
+    },
+    {
+      "session_id": "session_1775031367873",
+      "timestamp": "2026-04-01T08:16:19.560Z",
+      "turn": 1,
+      "patient_snapshot": {
+        "chief_complaint": "ล้มถลอก",
+        "symptoms_collected": [
+          "ล้มถลอก"
+        ],
+        "schema_fields_filled": 1
+      },
+      "red_flag_check": {
+        "performed": true,
+        "flags_detected": [],
+        "source": "none"
+      },
+      "action_taken": "ASKING",
+      "matched_conditions": [],
+      "reasoning": "ผู้ป่วยแจ้งอาการหลักคือ 'ล้มถลอก' ซึ่งเป็นอาการบาดเจ็บทั่วไป Symtra จำเป็นต้องรวบรวมข้อมูลเพิ่มเติมเกี่ยวกับตำแหน่งของรอยถลอกและความรุนแรงของความเจ็บปวดเพื่อประเมินสถานการณ์เบื้องต้นและตรวจหาสัญญาณอันตรายที่อาจเกิดขึ้น เช่น กระดูกหักหรือการติดเชื้อ.",
+      "next_question_purpose": "เพื่อระบุตำแหน่งของอาการถลอกและประเมินระดับความรุนแรงของความเจ็บปวด (severity) ซึ่งเป็นข้อมูลสำคัญสำหรับ chief_complaint.symptom และ chief_complaint.severity. ข้อมูลนี้จะช่วยในการคัดกรองสัญญาณอันตรายเบื้องต้น เช่น การบาดเจ็บกระดูก"
+    },
+    {
+      "session_id": "session_1775031367873",
+      "timestamp": "2026-04-01T08:16:32.219Z",
+      "turn": 2,
+      "patient_snapshot": {
+        "chief_complaint": "ล้มถลอก",
+        "symptoms_collected": [
+          "ล้มถลอก",
+          "เข่าครับ 5"
+        ],
+        "schema_fields_filled": 2
+      },
+      "red_flag_check": {
+        "performed": true,
+        "flags_detected": [],
+        "source": "none"
+      },
+      "action_taken": "ASKING",
+      "matched_conditions": [
+        {
+          "condition": "Minor sprain",
+          "confidence": "Low",
+          "tag": "CONTINUE"
+        },
+        {
+          "condition": "Muscle soreness",
+          "confidence": "Low",
+          "tag": "CONTINUE"
+        }
+      ],
+      "reasoning": "ผู้ป่วยแจ้งอาการหลักคือล้มถลอกที่เข่า โดยมีความเจ็บปวดระดับ 5/10. Symtra ต้องการข้อมูลเพิ่มเติมเกี่ยวกับระยะเวลาที่เกิดอาการ เพื่อช่วยประเมินสถานการณ์และกำหนดการดูแลที่เหมาะสม. ยังไม่มีข้อมูลเกี่ยวกับผู้ป่วย เช่น อายุ เพศ ประวัติสุขภาพ หรือยาที่ใช้อยู่ ซึ่งจำเป็นสำหรับการวินิจฉัยและแนะนำต่อไป. เบื้องต้นจากอาการปวดเข่าระดับปานกลางจากการล้ม อาจคิดถึง Minor sprain หรือ Muscle soreness แต่ยังขาดข้อมูลจำเพาะอื่นๆ",
+      "next_question_purpose": "เพื่อเก็บข้อมูล chief_complaint.duration_days ซึ่งเป็นข้อมูลสำคัญในการประเมินเบื้องต้นและจัดลำดับความเร่งด่วนของอาการ"
+    },
+    {
+      "session_id": "session_1775031367873",
+      "timestamp": "2026-04-01T08:16:58.264Z",
+      "turn": 3,
+      "patient_snapshot": {
+        "chief_complaint": "ล้มถลอก",
+        "symptoms_collected": [
+          "ล้มถลอก",
+          "เข่าครับ 5",
+          "เพิ่งล้มตะกี้ฃ"
+        ],
+        "schema_fields_filled": 3
+      },
+      "red_flag_check": {
+        "performed": true,
+        "flags_detected": [],
+        "source": "none"
+      },
+      "action_taken": "ASKING",
+      "matched_conditions": [
+        {
+          "condition": "Minor sprain",
+          "confidence": "Medium",
+          "tag": "CONTINUE"
+        },
+        {
+          "condition": "Muscle soreness",
+          "confidence": "Low",
+          "tag": "CONTINUE"
+        }
+      ],
+      "reasoning": "ผู้ป่วยแจ้งว่าล้มและมีรอยถลอกที่เข่าเมื่อสักครู่ ความรุนแรงของอาการปวดอยู่ที่ 5/10 Symtra กำลังพยายามคัดกรองสัญญาณอันตรายเบื้องต้นที่อาจบ่งชี้ถึงกระดูกหักหรือการฉีกขาดที่รุนแรง รวมถึงประเมินว่ามีอาการเลือดออกผิดปกติหรือไม่.",
+      "next_question_purpose": "เพื่อคัดกรองสัญญาณอันตราย (red flags) เช่น อาการเลือดออกมาก, กระดูกหัก, หรือการฉีกขาดที่รุนแรง ซึ่งจะช่วยแยกแยะระหว่างอาการบาดเจ็บเล็กน้อยกับการบาดเจ็บที่ต้องการการดูแลทางการแพทย์เร่งด่วน"
+    },
+    {
+      "session_id": "session_1775031367873",
+      "timestamp": "2026-04-01T08:17:12.808Z",
+      "turn": 4,
+      "patient_snapshot": {
+        "chief_complaint": "ล้มถลอก",
+        "symptoms_collected": [
+          "ล้มถลอก",
+          "เข่าครับ 5",
+          "เพิ่งล้มตะกี้ฃ",
+          "ไม่มีครับ"
+        ],
+        "schema_fields_filled": 4
+      },
+      "red_flag_check": {
+        "performed": true,
+        "flags_detected": [],
+        "source": "none"
+      },
+      "action_taken": "ASKING",
+      "matched_conditions": [
+        {
+          "condition": "Minor sprain",
+          "confidence": "Low",
+          "tag": "CONTINUE"
+        }
+      ],
+      "reasoning": "ผู้ป่วยมีอาการถลอกที่เข่า ปวดระดับ 5/10 และระบุว่าเพิ่งล้มเมื่อสักครู่นี้ ไม่มีอาการผิดปกติอื่นๆ ที่เป็นสัญญาณอันตราย เช่น เลือดออกมาก บวมผิดรูป หรือขยับไม่ได้ ข้อมูลเรื่องอายุ เพศ และการตั้งครรภ์ยังขาดอยู่ ซึ่งจำเป็นสำหรับการประเมินที่ครอบคลุมก่อนการสรุปผล",
+      "next_question_purpose": "รวบรวมข้อมูล patient_info (age, biological_sex, pregnancy_status) ซึ่งจำเป็นตาม schema เพื่อการประเมินที่สมบูรณ์"
+    },
+    {
+      "session_id": "session_1775031367873",
+      "timestamp": "2026-04-01T08:17:30.509Z",
+      "turn": 5,
+      "patient_snapshot": {
+        "chief_complaint": "ล้มถลอก",
+        "symptoms_collected": [
+          "ล้มถลอก",
+          "เข่าครับ 5",
+          "เพิ่งล้มตะกี้ฃ",
+          "ไม่มีครับ",
+          "16 ชาย"
+        ],
+        "schema_fields_filled": 5
+      },
+      "red_flag_check": {
+        "performed": true,
+        "flags_detected": [],
+        "source": "none"
+      },
+      "action_taken": "ASKING",
+      "matched_conditions": [
+        {
+          "condition": "Minor sprain",
+          "confidence": "Low",
+          "tag": "CONTINUE"
+        },
+        {
+          "condition": "Muscle soreness",
+          "confidence": "Low",
+          "tag": "CONTINUE"
+        }
+      ],
+      "reasoning": "ผู้ป่วยแจ้งว่าล้มและมีรอยถลอกที่เข่า มีอาการปวดระดับ 5/10 เพิ่งเกิดขึ้นเมื่อสักครู่ และไม่มีอาการเลือดออกมาก บวมผิดรูป หรือขยับเข่าไม่ได้. ในตอนนี้ Symtra ยังไม่มีข้อมูลเพียงพอที่จะให้การประเมินที่ชัดเจนได้ แต่กำลังพิจารณา Minor sprain และ Muscle soreness เป็นอาการเบื้องต้นที่อาจเป็นไปได้ตามข้อมูลที่มี.\n\nคำถามต่อไปคือการเก็บข้อมูลยาที่รับประทานประจำ การแพ้ต่างๆ และประวัติทางการแพทย์ เพื่อให้ได้ข้อมูลครบถ้วนสำหรับ Stage 5 Medical Safety.",
+      "next_question_purpose": "เพื่อรวบรวมข้อมูลด้านประวัติการใช้ยา การแพ้ และประวัติทางการแพทย์ของผู้ป่วย ซึ่งจำเป็นสำหรับการประเมินความปลอดภัยและปัจจัยเสี่ยงต่างๆ (Stage 5 - Medical Safety)."
+    },
+    {
+      "session_id": "session_1775031367873",
+      "timestamp": "2026-04-01T08:17:42.948Z",
+      "turn": 6,
+      "patient_snapshot": {
+        "chief_complaint": "ล้มถลอก",
+        "symptoms_collected": [
+          "ล้มถลอก",
+          "เข่าครับ 5",
+          "เพิ่งล้มตะกี้ฃ",
+          "ไม่มีครับ",
+          "16 ชาย",
+          "ไม่มีครับ"
+        ],
+        "schema_fields_filled": 6
+      },
+      "red_flag_check": {
+        "performed": true,
+        "flags_detected": [],
+        "source": "none"
+      },
+      "action_taken": "ASKING",
+      "matched_conditions": [],
+      "reasoning": "ผู้ป่วยมีอาการถลอกที่เข่า ความรุนแรง 5/10 เกิดขึ้นในวันนี้ ไม่มีอาการเลือดออกมาก บวมผิดรูป หรือขยับเข่าไม่ได้. ผู้ป่วยอายุ 16 ปี เพศชาย ไม่มีอาการ Red Flag. ตอนนี้ Symtra กำลังอยู่ในขั้นตอนการรวบรวมข้อมูลด้านความปลอดภัยทางการแพทย์ เพื่อให้ได้ข้อมูลที่ครบถ้วนก่อนทำการประเมิน",
+      "next_question_purpose": "รวบรวมข้อมูลยาที่ใช้ประจำ, ประวัติการแพ้ และประวัติการเจ็บป่วย/ผ่าตัด/โรคประจำตัว เพื่อประเมินความปลอดภัยและผลกระทบต่ออาการปัจจุบัน"
+    },
+    {
+      "session_id": "session_1775031367873",
+      "timestamp": "2026-04-01T08:17:53.661Z",
+      "turn": 7,
+      "patient_snapshot": {
+        "chief_complaint": "ล้มถลอก",
+        "symptoms_collected": [
+          "ล้มถลอก",
+          "เข่าครับ 5",
+          "เพิ่งล้มตะกี้ฃ",
+          "ไม่มีครับ",
+          "16 ชาย",
+          "ไม่มีครับ",
+          "ไม่มีครับ"
+        ],
+        "schema_fields_filled": 7
+      },
+      "red_flag_check": {
+        "performed": true,
+        "flags_detected": [],
+        "source": "none"
+      },
+      "action_taken": "ASKING",
+      "matched_conditions": [],
+      "reasoning": "Symtra กำลังอยู่ในขั้นตอนที่ 5 คือการเก็บข้อมูลประวัติทางการแพทย์ของผู้ป่วย หลังจากสอบถาม chief complaint (รอยถลอกที่เข่า) และรายละเอียดของอาการ (ความเจ็บปวดระดับ 5/10, เกิดขึ้น \"ตะกี้\") รวมถึงได้คัดกรองเบื้องต้นเกี่ยวกับอาการน่าเป็นห่วง (ไม่มีเลือดออกมาก บวมผิดรูป ขยับเข่าไม่ได้) และได้ข้อมูลส่วนตัวของผู้ป่วย (อายุ 16 ปี, ชาย) Symtra กำลังสอบถามข้อมูลส่วนบุคคลเพิ่มเติมเพื่อประเมินความเสี่ยงและพิจารณาสภาพร่างกายของผู้ป่วยให้ครบถ้วน รวมถึงยาที่ใช้ประจำ, อาการแพ้, และประวัติการเจ็บป่วยหรือผ่าตัดต่างๆ เพื่อให้มั่นใจว่าได้รวบรวมข้อมูลที่จำเป็นก่อนจะสรุปผลการประเมิน",
+      "next_question_purpose": "เพื่อยืนยันว่าผู้ป่วยไม่มีโรคประจำตัวหรือประวัติแพ้ที่อาจส่งผลต่อการดูแลรอยถลอก และเป็นการรวบรวมข้อมูลตาม schema.json"
+    },
+    {
+      "session_id": "session_1775031367873",
+      "timestamp": "2026-04-01T08:19:21.389Z",
+      "turn": 8,
+      "patient_snapshot": {
+        "chief_complaint": "ล้มถลอก",
+        "symptoms_collected": [
+          "ล้มถลอก",
+          "เข่าครับ 5",
+          "เพิ่งล้มตะกี้ฃ",
+          "ไม่มีครับ",
+          "16 ชาย",
+          "ไม่มีครับ",
+          "ไม่มีครับ",
+          "ไม่มีครับ"
+        ],
+        "schema_fields_filled": 8
+      },
+      "red_flag_check": {
+        "performed": true,
+        "flags_detected": [],
+        "source": "none"
+      },
+      "action_taken": "ASKING",
+      "matched_conditions": [
+        {
+          "condition": "Minor sprain",
+          "confidence": "High",
+          "tag": "CONTINUE"
+        }
+      ],
+      "reasoning": "ผู้ป่วยมีอาการบาดเจ็บที่เข่าหลังจากล้มถลอก มีความเจ็บปวดระดับ 5/10 ซึ่งจัดอยู่ในระดับปานกลาง Symtra ได้สอบถามอาการร่วมที่อาจเป็นสัญญาณอันตราย เช่น เลือดออกมาก บวมผิดรูป หรือขยับไม่ได้ ซึ่งผู้ป่วยปฏิเสธทั้งหมด นอกจากนี้ยังได้สอบถามข้อมูลผู้ป่วยเพิ่มเติม ได้แก่ อายุ 16 ปี เพศชาย และไม่มีประวัติการใช้ยาประจำ การแพ้ หรือโรคประจำตัว/การผ่าตัด ซึ่งข้อมูลเหล่านี้ช่วยยืนยันว่าอาการไม่น่าจะมีภาวะแทรกซ้อนจากปัจจัยสุขภาพอื่นๆ ด้วย เนื่องจากอาการปวดอยู่ในระดับปานกลาง ไม่พบอาการที่บ่งชี้ถึงกระดูกหักหรือการบาดเจ็บรุนแรงอื่นๆ จึงเข้าได้กับ Minor sprain ซึ่งมี tag เป็น CONTINUE",
+      "next_question_purpose": null
     }
   ]
 }
