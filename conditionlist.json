@@ -663,5 +663,859 @@
     "tag": "SEEK_HELP_IMMEDIATELY",
     "key_symptoms": "high body temperature confusion hot skin weakness",
     "red_flags": "loss of consciousness seizures confusion"
+  },
+  {
+    "condition": "Diabetes suspected",
+    "category": "Metabolic",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "frequent urination excessive thirst unexplained weight loss fatigue blurred vision",
+    "red_flags": "confusion vomiting severe dehydration"
+  },
+  {
+    "condition": "Prediabetes suspected",
+    "category": "Metabolic",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "increased thirst frequent urination fatigue overweight",
+    "red_flags": "confusion vomiting dehydration"
+  },
+  {
+    "condition": "Hypertension suspected",
+    "category": "Cardiac",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "repeated high blood pressure headache dizziness often no symptoms",
+    "red_flags": "chest pain neurological symptoms shortness of breath"
+  },
+  {
+    "condition": "Hypotension suspected",
+    "category": "Cardiac",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "dizziness lightheadedness weakness faint feeling",
+    "red_flags": "fainting confusion chest pain"
+  },
+  {
+    "condition": "Stable angina suspected",
+    "category": "Cardiac",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "chest discomfort with exertion pressure tightness relieved by rest",
+    "red_flags": "pain at rest shortness of breath sweating"
+  },
+  {
+    "condition": "Heart failure suspected",
+    "category": "Cardiac",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "shortness of breath leg swelling fatigue trouble lying flat",
+    "red_flags": "severe breathlessness blue lips chest pain"
+  },
+  {
+    "condition": "Atrial fibrillation suspected",
+    "category": "Cardiac",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "irregular heartbeat palpitations fatigue shortness of breath",
+    "red_flags": "chest pain fainting stroke symptoms"
+  },
+  {
+    "condition": "Pericarditis suspected",
+    "category": "Cardiac",
+    "tag": "SEEK_HELP_IMMEDIATELY",
+    "key_symptoms": "sharp chest pain worse lying flat better leaning forward",
+    "red_flags": "shortness of breath fainting low blood pressure"
+  },
+  {
+    "condition": "COPD exacerbation suspected",
+    "category": "Respiratory",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "chronic cough wheezing increased sputum shortness of breath",
+    "red_flags": "severe breathing difficulty blue lips confusion"
+  },
+  {
+    "condition": "Tuberculosis suspected",
+    "category": "Respiratory",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "chronic cough weight loss night sweats fever",
+    "red_flags": "coughing blood severe breathlessness weakness"
+  },
+  {
+    "condition": "Pleurisy suspected",
+    "category": "Respiratory",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "sharp chest pain worse with breathing cough",
+    "red_flags": "shortness of breath blue lips coughing blood"
+  },
+  {
+    "condition": "Sleep apnea suspected",
+    "category": "Sleep",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "loud snoring daytime sleepiness witnessed pauses in breathing morning headache",
+    "red_flags": "severe daytime sleepiness falling asleep while driving breathing pauses"
+  },
+  {
+    "condition": "Allergic asthma suspected",
+    "category": "Respiratory",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "wheezing cough chest tightness triggered by allergens",
+    "red_flags": "severe breathing difficulty inability to speak blue lips"
+  },
+  {
+    "condition": "Mononucleosis suspected",
+    "category": "Infectious",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "sore throat fatigue fever swollen lymph nodes",
+    "red_flags": "breathing difficulty severe abdominal pain dehydration"
+  },
+  {
+    "condition": "Hand foot and mouth disease suspected",
+    "category": "Infectious",
+    "tag": "CONTINUE",
+    "key_symptoms": "mouth sores rash on hands feet fever",
+    "red_flags": "dehydration severe weakness breathing difficulty"
+  },
+  {
+    "condition": "Chickenpox suspected",
+    "category": "Infectious",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "itchy blister rash fever fatigue",
+    "red_flags": "breathing difficulty confusion severe skin infection"
+  },
+  {
+    "condition": "Measles suspected",
+    "category": "Infectious",
+    "tag": "SEEK_HELP_IMMEDIATELY",
+    "key_symptoms": "high fever cough red eyes rash",
+    "red_flags": "breathing difficulty confusion seizures dehydration"
+  },
+  {
+    "condition": "Mumps suspected",
+    "category": "Infectious",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "jaw swelling cheek pain fever headache",
+    "red_flags": "severe headache testicle pain confusion"
+  },
+  {
+    "condition": "Leptospirosis suspected",
+    "category": "Tropical",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "fever muscle pain headache red eyes nausea",
+    "red_flags": "jaundice breathing difficulty confusion reduced urination"
+  },
+  {
+    "condition": "Malaria suspected",
+    "category": "Tropical",
+    "tag": "SEEK_HELP_IMMEDIATELY",
+    "key_symptoms": "fever chills sweating headache weakness",
+    "red_flags": "confusion seizures breathing difficulty severe weakness"
+  },
+  {
+    "condition": "Typhoid suspected",
+    "category": "Infectious",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "prolonged fever abdominal pain weakness diarrhea or constipation",
+    "red_flags": "confusion severe dehydration bleeding abdominal swelling"
+  },
+  {
+    "condition": "Hepatitis suspected",
+    "category": "Gastrointestinal",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "jaundice dark urine nausea fatigue right upper abdominal pain",
+    "red_flags": "confusion severe vomiting bleeding severe abdominal pain"
+  },
+  {
+    "condition": "Food allergy mild",
+    "category": "Allergic",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "itching hives mild swelling nausea after food",
+    "red_flags": "breathing difficulty throat swelling fainting"
+  },
+  {
+    "condition": "Dehydration mild",
+    "category": "General",
+    "tag": "CONTINUE",
+    "key_symptoms": "thirst dry mouth dark urine tiredness",
+    "red_flags": "confusion fainting inability to drink fluids"
+  },
+  {
+    "condition": "Fever unknown cause",
+    "category": "General",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "fever chills body aches feeling unwell",
+    "red_flags": "breathing difficulty confusion seizure stiff neck"
+  },
+  {
+    "condition": "Viral syndrome",
+    "category": "General",
+    "tag": "CONTINUE",
+    "key_symptoms": "fever fatigue body aches headache mild cough",
+    "red_flags": "breathing difficulty confusion severe dehydration"
+  },
+  {
+    "condition": "Hypothyroidism suspected",
+    "category": "Endocrine",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "fatigue weight gain cold intolerance constipation dry skin",
+    "red_flags": "confusion severe weakness chest pain"
+  },
+  {
+    "condition": "Hyperthyroidism suspected",
+    "category": "Endocrine",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "weight loss tremor palpitations heat intolerance anxiety",
+    "red_flags": "chest pain severe palpitations confusion fever"
+  },
+  {
+    "condition": "Iron deficiency anemia suspected",
+    "category": "Hematology",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "fatigue pale skin dizziness shortness of breath on exertion",
+    "red_flags": "chest pain fainting severe weakness"
+  },
+  {
+    "condition": "Anemia severe suspected",
+    "category": "Hematology",
+    "tag": "SEEK_HELP_IMMEDIATELY",
+    "key_symptoms": "severe weakness faintness shortness of breath paleness",
+    "red_flags": "chest pain fainting confusion rapid heartbeat"
+  },
+  {
+    "condition": "Vitamin B12 deficiency suspected",
+    "category": "Metabolic",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "fatigue numbness tingling memory problems pale skin",
+    "red_flags": "severe weakness difficulty walking confusion"
+  },
+  {
+    "condition": "Obesity related symptoms",
+    "category": "Metabolic",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "weight gain snoring fatigue joint pain",
+    "red_flags": "chest pain severe breathlessness fainting"
+  },
+  {
+    "condition": "Acute kidney injury suspected",
+    "category": "Urinary",
+    "tag": "SEEK_HELP_IMMEDIATELY",
+    "key_symptoms": "reduced urination swelling fatigue nausea",
+    "red_flags": "confusion breathing difficulty chest pain severe weakness"
+  },
+  {
+    "condition": "Chronic kidney disease suspected",
+    "category": "Urinary",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "swelling fatigue foamy urine high blood pressure",
+    "red_flags": "shortness of breath confusion chest pain reduced urination"
+  },
+  {
+    "condition": "Overactive bladder suspected",
+    "category": "Urinary",
+    "tag": "CONTINUE",
+    "key_symptoms": "frequent urination urgency waking at night to urinate",
+    "red_flags": "fever blood in urine back pain"
+  },
+  {
+    "condition": "Hematuria suspected",
+    "category": "Urinary",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "blood in urine pink urine painful urination",
+    "red_flags": "clots inability to urinate severe pain fever"
+  },
+  {
+    "condition": "Prostatitis suspected",
+    "category": "Genitourinary",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "pelvic pain painful urination fever urinary frequency",
+    "red_flags": "unable to urinate severe pain high fever"
+  },
+  {
+    "condition": "Benign prostatic hyperplasia suspected",
+    "category": "Genitourinary",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "weak urine stream hesitancy frequent urination nocturia",
+    "red_flags": "unable to urinate blood in urine fever"
+  },
+  {
+    "condition": "Balanitis suspected",
+    "category": "Genitourinary",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "penile redness itching swelling discharge",
+    "red_flags": "severe swelling inability to urinate fever"
+  },
+  {
+    "condition": "Epididymitis suspected",
+    "category": "Genitourinary",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "testicle pain swelling fever painful urination",
+    "red_flags": "severe swelling high fever vomiting sudden severe pain"
+  },
+  {
+    "condition": "Pelvic inflammatory disease suspected",
+    "category": "Gynecological",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "lower abdominal pain fever abnormal vaginal discharge pain during sex",
+    "red_flags": "fainting severe pain vomiting heavy bleeding"
+  },
+  {
+    "condition": "Vaginitis suspected",
+    "category": "Gynecological",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "vaginal itching discharge irritation odor",
+    "red_flags": "fever severe pelvic pain pregnancy related bleeding"
+  },
+  {
+    "condition": "Yeast infection suspected",
+    "category": "Gynecological",
+    "tag": "CONTINUE",
+    "key_symptoms": "vaginal itching thick white discharge irritation",
+    "red_flags": "fever severe pelvic pain pregnancy related symptoms"
+  },
+  {
+    "condition": "Bacterial vaginosis suspected",
+    "category": "Gynecological",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "thin discharge fishy odor vaginal irritation",
+    "red_flags": "fever pelvic pain pregnancy related bleeding"
+  },
+  {
+    "condition": "Ovarian cyst suspected",
+    "category": "Gynecological",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "pelvic pain bloating irregular periods pain during sex",
+    "red_flags": "sudden severe pain fainting vomiting"
+  },
+  {
+    "condition": "Ovarian torsion suspected",
+    "category": "Gynecological",
+    "tag": "SEEK_HELP_IMMEDIATELY",
+    "key_symptoms": "sudden severe pelvic pain nausea vomiting",
+    "red_flags": "fainting severe pain persistent vomiting"
+  },
+  {
+    "condition": "Endometriosis suspected",
+    "category": "Gynecological",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "painful periods pelvic pain pain during sex bowel pain",
+    "red_flags": "fainting severe bleeding severe abdominal pain"
+  },
+  {
+    "condition": "Dysmenorrhea",
+    "category": "Gynecological",
+    "tag": "CONTINUE",
+    "key_symptoms": "period cramps lower abdominal pain nausea",
+    "red_flags": "fainting severe bleeding fever"
+  },
+  {
+    "condition": "Pregnancy suspected",
+    "category": "Gynecological",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "missed period nausea breast tenderness fatigue",
+    "red_flags": "severe pain heavy bleeding fainting"
+  },
+  {
+    "condition": "Pre eclampsia suspected",
+    "category": "Gynecological",
+    "tag": "SEEK_HELP_IMMEDIATELY",
+    "key_symptoms": "pregnancy high blood pressure headache swelling vision changes",
+    "red_flags": "seizure severe headache severe abdominal pain shortness of breath"
+  },
+  {
+    "condition": "Labor suspected",
+    "category": "Gynecological",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "regular contractions pelvic pressure back pain fluid leakage",
+    "red_flags": "heavy bleeding decreased fetal movement severe pain"
+  },
+  {
+    "condition": "Postpartum hemorrhage suspected",
+    "category": "Gynecological",
+    "tag": "SEEK_HELP_IMMEDIATELY",
+    "key_symptoms": "heavy bleeding after delivery dizziness weakness",
+    "red_flags": "fainting confusion rapid heartbeat severe bleeding"
+  },
+  {
+    "condition": "Depression suspected",
+    "category": "Mental",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "low mood loss of interest fatigue poor sleep hopelessness",
+    "red_flags": "suicidal thoughts inability to function self neglect"
+  },
+  {
+    "condition": "Generalized anxiety suspected",
+    "category": "Mental",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "excessive worry restlessness muscle tension poor sleep",
+    "red_flags": "suicidal thoughts chest pain fainting"
+  },
+  {
+    "condition": "Obsessive compulsive disorder suspected",
+    "category": "Mental",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "intrusive thoughts compulsive behaviors anxiety distress",
+    "red_flags": "suicidal thoughts inability to function self harm"
+  },
+  {
+    "condition": "Post traumatic stress suspected",
+    "category": "Mental",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "flashbacks nightmares hypervigilance avoidance anxiety",
+    "red_flags": "suicidal thoughts self harm inability to stay safe"
+  },
+  {
+    "condition": "Psychosis suspected",
+    "category": "Mental",
+    "tag": "SEEK_HELP_IMMEDIATELY",
+    "key_symptoms": "hallucinations delusions disorganized thinking paranoia",
+    "red_flags": "violent behavior inability to care for self suicidal thoughts"
+  },
+  {
+    "condition": "Bipolar mania suspected",
+    "category": "Mental",
+    "tag": "SEEK_HELP_IMMEDIATELY",
+    "key_symptoms": "very little sleep elevated mood risky behavior rapid speech",
+    "red_flags": "psychosis dangerous behavior inability to stay safe"
+  },
+  {
+    "condition": "Substance intoxication suspected",
+    "category": "Mental",
+    "tag": "SEEK_HELP_IMMEDIATELY",
+    "key_symptoms": "confusion poor coordination unusual behavior drowsiness",
+    "red_flags": "breathing difficulty unconsciousness seizures"
+  },
+  {
+    "condition": "Substance withdrawal suspected",
+    "category": "Mental",
+    "tag": "SEEK_HELP_IMMEDIATELY",
+    "key_symptoms": "tremor sweating anxiety nausea agitation",
+    "red_flags": "seizures confusion hallucinations"
+  },
+  {
+    "condition": "Cluster headache suspected",
+    "category": "Neurological",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "severe one sided headache eye watering nasal congestion",
+    "red_flags": "neurological deficit confusion vision loss"
+  },
+  {
+    "condition": "Medication overuse headache suspected",
+    "category": "Neurological",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "frequent headache daily pain regular painkiller use",
+    "red_flags": "neurological symptoms confusion worst headache"
+  },
+  {
+    "condition": "Brain tumor suspected",
+    "category": "Neurological",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "progressive headache vomiting seizures neurological changes",
+    "red_flags": "rapid neurological decline severe weakness confusion"
+  },
+  {
+    "condition": "Transient ischemic attack suspected",
+    "category": "Neurological",
+    "tag": "SEEK_HELP_IMMEDIATELY",
+    "key_symptoms": "brief weakness speech trouble facial droop resolved symptoms",
+    "red_flags": "recurrent symptoms persistent weakness confusion"
+  },
+  {
+    "condition": "Bell palsy suspected",
+    "category": "Neurological",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "one sided facial weakness drooping inability to close eye",
+    "red_flags": "arm weakness speech trouble severe headache"
+  },
+  {
+    "condition": "Peripheral neuropathy suspected",
+    "category": "Neurological",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "numbness tingling burning feet or hands",
+    "red_flags": "rapidly worsening weakness bladder problems trouble breathing"
+  },
+  {
+    "condition": "Carpal tunnel syndrome suspected",
+    "category": "Neurological",
+    "tag": "CONTINUE",
+    "key_symptoms": "hand numbness tingling wrist pain weakness grip",
+    "red_flags": "progressive weakness severe numbness arm swelling"
+  },
+  {
+    "condition": "Dementia suspected",
+    "category": "Neurological",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "memory loss confusion getting lost language difficulty",
+    "red_flags": "sudden confusion severe behavioral change safety risk"
+  },
+  {
+    "condition": "Delirium suspected",
+    "category": "Neurological",
+    "tag": "SEEK_HELP_IMMEDIATELY",
+    "key_symptoms": "sudden confusion agitation drowsiness disorientation",
+    "red_flags": "severe drowsiness hallucinations fever inability to stay awake"
+  },
+  {
+    "condition": "Parkinsonism suspected",
+    "category": "Neurological",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "tremor slow movement stiffness balance problems",
+    "red_flags": "frequent falls confusion inability to swallow"
+  },
+  {
+    "condition": "Irritable bowel syndrome suspected",
+    "category": "Gastrointestinal",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "recurrent abdominal pain bloating diarrhea or constipation",
+    "red_flags": "weight loss blood in stool fever night symptoms"
+  },
+  {
+    "condition": "Inflammatory bowel disease suspected",
+    "category": "Gastrointestinal",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "chronic diarrhea abdominal pain blood in stool weight loss",
+    "red_flags": "severe bleeding dehydration fever severe pain"
+  },
+  {
+    "condition": "Diverticulitis suspected",
+    "category": "Gastrointestinal",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "left lower abdominal pain fever constipation nausea",
+    "red_flags": "severe abdominal pain vomiting heavy bleeding"
+  },
+  {
+    "condition": "Pancreatitis suspected",
+    "category": "Gastrointestinal",
+    "tag": "SEEK_HELP_IMMEDIATELY",
+    "key_symptoms": "severe upper abdominal pain vomiting pain radiating to back",
+    "red_flags": "persistent vomiting shock symptoms confusion breathing difficulty"
+  },
+  {
+    "condition": "Cholecystitis suspected",
+    "category": "Gastrointestinal",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "right upper abdominal pain fever nausea worse after meals",
+    "red_flags": "jaundice severe pain vomiting confusion"
+  },
+  {
+    "condition": "Lactose intolerance suspected",
+    "category": "Gastrointestinal",
+    "tag": "CONTINUE",
+    "key_symptoms": "bloating gas diarrhea after dairy",
+    "red_flags": "weight loss blood in stool severe pain"
+  },
+  {
+    "condition": "Hemorrhoids thrombosed suspected",
+    "category": "Gastrointestinal",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "painful anal lump rectal pain swelling",
+    "red_flags": "heavy bleeding fever severe pain"
+  },
+  {
+    "condition": "Anal fissure suspected",
+    "category": "Gastrointestinal",
+    "tag": "CONTINUE",
+    "key_symptoms": "pain with bowel movement small bright red bleeding",
+    "red_flags": "heavy bleeding fever severe swelling"
+  },
+  {
+    "condition": "Oral thrush suspected",
+    "category": "Oral",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "white patches in mouth soreness altered taste",
+    "red_flags": "difficulty swallowing dehydration severe pain"
+  },
+  {
+    "condition": "Gingivitis suspected",
+    "category": "Oral",
+    "tag": "CONTINUE",
+    "key_symptoms": "bleeding gums swollen gums bad breath",
+    "red_flags": "facial swelling fever loose teeth"
+  },
+  {
+    "condition": "Temporomandibular joint disorder suspected",
+    "category": "Oral",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "jaw pain clicking headache pain chewing",
+    "red_flags": "jaw locking severe swelling facial weakness"
+  },
+  {
+    "condition": "Corneal abrasion suspected",
+    "category": "Eye",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "eye pain tearing light sensitivity foreign body sensation",
+    "red_flags": "vision loss severe pain chemical exposure"
+  },
+  {
+    "condition": "Stye suspected",
+    "category": "Eye",
+    "tag": "CONTINUE",
+    "key_symptoms": "painful eyelid bump localized redness swelling",
+    "red_flags": "vision change spreading redness fever"
+  },
+  {
+    "condition": "Blepharitis suspected",
+    "category": "Eye",
+    "tag": "CONTINUE",
+    "key_symptoms": "itchy eyelids crusting burning irritation",
+    "red_flags": "vision loss severe swelling eye pain"
+  },
+  {
+    "condition": "Retinal detachment suspected",
+    "category": "Eye",
+    "tag": "SEEK_HELP_IMMEDIATELY",
+    "key_symptoms": "flashes floaters curtain over vision sudden vision change",
+    "red_flags": "sudden vision loss eye trauma severe vision reduction"
+  },
+  {
+    "condition": "Uveitis suspected",
+    "category": "Eye",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "red eye pain blurred vision light sensitivity",
+    "red_flags": "vision loss severe pain vomiting"
+  },
+  {
+    "condition": "Allergic conjunctivitis",
+    "category": "Eye",
+    "tag": "CONTINUE",
+    "key_symptoms": "itchy red eyes watery discharge sneezing",
+    "red_flags": "vision loss severe pain eyelid swelling"
+  },
+  {
+    "condition": "Foreign body in eye suspected",
+    "category": "Eye",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "gritty eye pain tearing redness after exposure",
+    "red_flags": "vision loss severe pain chemical burn"
+  },
+  {
+    "condition": "Cerumen impaction recurrent",
+    "category": "ENT",
+    "tag": "CONTINUE",
+    "key_symptoms": "ear blockage reduced hearing fullness",
+    "red_flags": "severe pain discharge dizziness"
+  },
+  {
+    "condition": "Hearing loss sudden suspected",
+    "category": "ENT",
+    "tag": "SEEK_HELP_IMMEDIATELY",
+    "key_symptoms": "sudden reduced hearing ear fullness ringing",
+    "red_flags": "vertigo facial weakness severe headache"
+  },
+  {
+    "condition": "Tinnitus suspected",
+    "category": "ENT",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "ringing in ear buzzing hearing change",
+    "red_flags": "sudden hearing loss severe dizziness neurological symptoms"
+  },
+  {
+    "condition": "Rhinosinusitis chronic suspected",
+    "category": "ENT",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "nasal congestion facial pressure reduced smell symptoms lasting weeks",
+    "red_flags": "eye swelling severe headache fever"
+  },
+  {
+    "condition": "Oral allergy syndrome suspected",
+    "category": "Allergic",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "itchy mouth after raw fruits or vegetables mild lip swelling",
+    "red_flags": "throat swelling breathing difficulty fainting"
+  },
+  {
+    "condition": "Atopic dermatitis suspected",
+    "category": "Dermatology",
+    "tag": "CONTINUE",
+    "key_symptoms": "itchy dry skin recurrent rash flexural areas",
+    "red_flags": "fever pus widespread redness"
+  },
+  {
+    "condition": "Psoriasis suspected",
+    "category": "Dermatology",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "thick scaly plaques itchy dry skin",
+    "red_flags": "fever widespread redness severe joint pain"
+  },
+  {
+    "condition": "Acne vulgaris",
+    "category": "Dermatology",
+    "tag": "CONTINUE",
+    "key_symptoms": "pimples blackheads oily skin inflamed bumps",
+    "red_flags": "severe swelling fever widespread infection"
+  },
+  {
+    "condition": "Fungal skin infection suspected",
+    "category": "Dermatology",
+    "tag": "CONTINUE",
+    "key_symptoms": "itchy ring shaped rash scaling",
+    "red_flags": "spreading redness fever severe pain"
+  },
+  {
+    "condition": "Scabies suspected",
+    "category": "Dermatology",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "intense itching worse at night rash burrows",
+    "red_flags": "widespread infection fever severe skin pain"
+  },
+  {
+    "condition": "Impetigo suspected",
+    "category": "Dermatology",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "honey crusted sores itchy rash redness",
+    "red_flags": "fever spreading redness facial swelling"
+  },
+  {
+    "condition": "Herpes simplex suspected",
+    "category": "Dermatology",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "painful grouped blisters tingling recurrent sores",
+    "red_flags": "eye involvement severe headache confusion"
+  },
+  {
+    "condition": "Sunburn moderate",
+    "category": "Dermatology",
+    "tag": "CONTINUE",
+    "key_symptoms": "red painful skin warm skin peeling",
+    "red_flags": "large blisters fever confusion dehydration"
+  },
+  {
+    "condition": "Pressure ulcer suspected",
+    "category": "Dermatology",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "skin breakdown over pressure area pain redness",
+    "red_flags": "fever black tissue foul smell spreading redness"
+  },
+  {
+    "condition": "Osteoarthritis suspected",
+    "category": "Musculoskeletal",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "joint pain stiffness worse with use reduced movement",
+    "red_flags": "fever hot joint inability to bear weight"
+  },
+  {
+    "condition": "Rheumatoid arthritis suspected",
+    "category": "Musculoskeletal",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "joint pain morning stiffness hand swelling fatigue",
+    "red_flags": "chest pain fever severe weakness inability to use limb"
+  },
+  {
+    "condition": "Septic arthritis suspected",
+    "category": "Musculoskeletal",
+    "tag": "SEEK_HELP_IMMEDIATELY",
+    "key_symptoms": "hot swollen joint severe pain fever inability to move joint",
+    "red_flags": "high fever confusion severe swelling shock symptoms"
+  },
+  {
+    "condition": "Bursitis suspected",
+    "category": "Musculoskeletal",
+    "tag": "CONTINUE",
+    "key_symptoms": "localized joint pain swelling tenderness over joint",
+    "red_flags": "fever severe redness inability to move limb"
+  },
+  {
+    "condition": "Tendinitis suspected",
+    "category": "Musculoskeletal",
+    "tag": "CONTINUE",
+    "key_symptoms": "pain with movement tendon tenderness overuse pain",
+    "red_flags": "sudden snap severe weakness inability to use limb"
+  },
+  {
+    "condition": "Frozen shoulder suspected",
+    "category": "Musculoskeletal",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "shoulder pain stiffness limited range of motion",
+    "red_flags": "arm weakness severe swelling chest pain"
+  },
+  {
+    "condition": "Cervical radiculopathy suspected",
+    "category": "Musculoskeletal",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "neck pain arm tingling numbness weakness",
+    "red_flags": "progressive weakness loss of bladder control severe trauma"
+  },
+  {
+    "condition": "Lumbar radiculopathy suspected",
+    "category": "Musculoskeletal",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "low back pain leg tingling numbness weakness",
+    "red_flags": "saddle numbness bladder problems progressive weakness"
+  },
+  {
+    "condition": "Osteoporosis suspected",
+    "category": "Musculoskeletal",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "back pain fragility fracture height loss",
+    "red_flags": "sudden severe pain inability to walk neurological symptoms"
+  },
+  {
+    "condition": "Fibromyalgia suspected",
+    "category": "Musculoskeletal",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "widespread pain fatigue poor sleep brain fog",
+    "red_flags": "fever weight loss neurological deficit"
+  },
+  {
+    "condition": "Peripheral arterial disease suspected",
+    "category": "Vascular",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "leg pain with walking cold feet slow healing wounds",
+    "red_flags": "sudden pale painful limb numbness weakness"
+  },
+  {
+    "condition": "Acute limb ischemia suspected",
+    "category": "Vascular",
+    "tag": "SEEK_HELP_IMMEDIATELY",
+    "key_symptoms": "sudden leg pain pale cold numb limb",
+    "red_flags": "loss of pulse severe weakness paralysis"
+  },
+  {
+    "condition": "Varicose veins suspected",
+    "category": "Vascular",
+    "tag": "CONTINUE",
+    "key_symptoms": "visible twisted veins leg heaviness swelling aching",
+    "red_flags": "sudden one sided swelling bleeding skin ulcer"
+  },
+  {
+    "condition": "Syncope suspected",
+    "category": "General",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "fainting brief loss of consciousness dizziness",
+    "red_flags": "chest pain shortness of breath injury persistent confusion"
+  },
+  {
+    "condition": "Chronic fatigue suspected",
+    "category": "General",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "persistent tiredness poor concentration unrefreshing sleep",
+    "red_flags": "weight loss chest pain shortness of breath fainting"
+  },
+  {
+    "condition": "Weight loss unexplained",
+    "category": "General",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "unintentional weight loss poor appetite fatigue",
+    "red_flags": "vomiting blood blood in stool severe weakness"
+  },
+  {
+    "condition": "Weight gain unexplained",
+    "category": "General",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "rapid weight gain swelling fatigue shortness of breath",
+    "red_flags": "breathing difficulty chest pain confusion"
+  },
+  {
+    "condition": "Lymph node swelling suspected",
+    "category": "General",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "swollen lymph nodes neck armpit groin tenderness",
+    "red_flags": "difficulty breathing rapid enlargement weight loss night sweats"
+  },
+  {
+    "condition": "Deconditioning suspected",
+    "category": "General",
+    "tag": "CONTINUE",
+    "key_symptoms": "poor stamina fatigue weakness after inactivity",
+    "red_flags": "chest pain fainting shortness of breath"
+  },
+  {
+    "condition": "Motion sickness",
+    "category": "General",
+    "tag": "CONTINUE",
+    "key_symptoms": "nausea dizziness vomiting during travel",
+    "red_flags": "severe dehydration fainting persistent neurological symptoms"
   }
 ]
