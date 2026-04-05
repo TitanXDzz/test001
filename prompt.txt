@@ -266,3 +266,27 @@ today or able to find out how long "last friday" was. And also I want you to fix
 collect dose and frequency. Also fix other things related to this added schema. Oh and make sure herbs are also part of medication so collect them together or maybe 
  create a new box in schema up to you. Oh and also, although we shouldn't ask more than once, if the extraction fails ( e.g. the patient doesn't answer the question 
  ) , you have to ask again to make sure the extraction works. 
+
+Check out adaptive_question_selection.md
+I’ve created a specification for adaptive (uncertainty-based) question selection to improve Symtra’s questioning logic.
+The system already works well, so this is NOT a rewrite.
+This is an upgrade to make question selection more efficient and intelligent.
+Your task is to integrate this into the existing system.
+Key instructions:
+* Follow the markdown specification
+* Do NOT break or replace the current logic
+* Preserve:
+  * red flag handling
+  * schema completion requirements
+  * interview flow structure
+* Adaptive questioning must only operate AFTER:
+  * red flags are handled
+* Ensure the system:
+  * avoids redundant questions
+  * selects the most informative next question
+  * stops early when confidence is sufficient
+* Keep responses natural (not robotic)
+Goal:
+Improve question efficiency and decision quality without degrading safety or accuracy.
+Implement this as an extension to the current system, not a replacement.
+For full prompt, read in adaptive_question_selection.md
