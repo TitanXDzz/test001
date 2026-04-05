@@ -254,6 +254,106 @@ function enforceConditionTriage(llmAction, matchedConditions) {
   return highest;
 }
 
+// ── Extracted Data Validator ──────────────────────────────────────────────────
+// Checks completeness (required fields that are still null) and
+// correctness (filled fields that have invalid values).
+function validateExtractedData(data) {
+  const errors  = [];  // incorrect values
+  const missing = [];  // required fields still null
+
+  if (!data) return { valid: false, complete: false, errors: ['No extracted data available'], missing: ['all fields'] };
+
+  const pi = data.patient_info || {};
+  const cc = data.chief_complaint || {};
+  const v  = data.vitals || {};
+  const mh = data.medical_history || {};
+  const tr = data.triage_result || {};
+
+  // ── Patient info ──
+  if (pi.age === null || pi.age === undefined)
+    missing.push('age');
+  else if (typeof pi.age !== 'number' || pi.age < 0 || pi.age > 120)
+    errors.push('age must be a number between 0 and 120');
+
+  if (!pi.biological_sex || pi.biological_sex === null)
+    missing.push('biological_sex');
+  else if (!['male', 'female', 'unknown'].includes(pi.biological_sex))
+    errors.push('biological_sex must be one of: male, female, unknown');
+
+  if (pi.pregnancy_status === null || pi.pregnancy_status === undefined)
+    missing.push('pregnancy_status');
+  else if (typeof pi.pregnancy_status !== 'boolean')
+    errors.push('pregnancy_status must be true or false');
+
+  // ── Chief complaint ──
+  if (!cc.symptom)
+    missing.push('chief_complaint.symptom');
+
+  if (cc.severity === null || cc.severity === undefined)
+    missing.push('chief_complaint.severity');
+  else if (typeof cc.severity !== 'number' || cc.severity < 0 || cc.severity > 10)
+    errors.push('chief_complaint.severity must be a number between 0 and 10');
+
+  if (cc.duration_days === null || cc.duration_days === undefined)
+    missing.push('chief_complaint.duration_days');
+  else if (typeof cc.duration_days !== 'number' || cc.duration_days < 0)
+    errors.push('chief_complaint.duration_days must be >= 0');
+
+  // ── Symptoms ──
+  if (data.symptoms === null || data.symptoms === undefined)
+    missing.push('symptoms');
+  else if (Array.isArray(data.symptoms)) {
+    data.symptoms.forEach((s, i) => {
+      if (!s.name)
+        errors.push(`symptoms[${i}].name is empty`);
+      if (s.severity !== null && s.severity !== undefined && (typeof s.severity !== 'number' || s.severity < 0 || s.severity > 10))
+        errors.push(`symptoms[${i}].severity must be 0–10`);
+      if (s.duration_days !== null && s.duration_days !== undefined && (typeof s.duration_days !== 'number' || s.duration_days < 0))
+        errors.push(`symptoms[${i}].duration_days must be >= 0`);
+      if (s.onset_type && !['sudden', 'gradual', 'unknown'].includes(s.onset_type))
+        errors.push(`symptoms[${i}].onset_type must be: sudden, gradual, or unknown`);
+      if (s.progression && !['improving', 'stable', 'worsening', 'unknown'].includes(s.progression))
+        errors.push(`symptoms[${i}].progression must be: improving, stable, worsening, or unknown`);
+    });
+  }
+
+  // ── Vitals (only validate if provided) ──
+  if (v.temperature_c !== null && v.temperature_c !== undefined &&
+      (typeof v.temperature_c !== 'number' || v.temperature_c < 30 || v.temperature_c > 45))
+    errors.push('vitals.temperature_c must be between 30 and 45°C');
+
+  if (v.heart_rate_bpm !== null && v.heart_rate_bpm !== undefined &&
+      (typeof v.heart_rate_bpm !== 'number' || v.heart_rate_bpm < 20 || v.heart_rate_bpm > 300))
+    errors.push('vitals.heart_rate_bpm must be between 20 and 300');
+
+  if (v.oxygen_saturation_percent !== null && v.oxygen_saturation_percent !== undefined &&
+      (typeof v.oxygen_saturation_percent !== 'number' || v.oxygen_saturation_percent < 50 || v.oxygen_saturation_percent > 100))
+    errors.push('vitals.oxygen_saturation_percent must be between 50 and 100');
+
+  // ── Medications / Allergies / Medical history ──
+  // null = not yet asked (missing), [] = asked and answered none (OK)
+  if (data.medications === null || data.medications === undefined) missing.push('medications');
+  if (data.allergies   === null || data.allergies   === undefined) missing.push('allergies');
+  if (mh.conditions    === null || mh.conditions    === undefined) missing.push('medical_history.conditions');
+  if (mh.surgeries     === null || mh.surgeries     === undefined) missing.push('medical_history.surgeries');
+
+  // ── Triage result ──
+  if (tr.tag !== null && tr.tag !== undefined &&
+      !['CONTINUE', 'SEEK_HELP_SOON', 'SEEK_HELP_IMMEDIATELY'].includes(tr.tag))
+    errors.push('triage_result.tag must be: CONTINUE, SEEK_HELP_SOON, or SEEK_HELP_IMMEDIATELY');
+
+  if (tr.confidence !== null && tr.confidence !== undefined &&
+      !['low', 'medium', 'high'].includes(tr.confidence))
+    errors.push('triage_result.confidence must be: low, medium, or high');
+
+  return {
+    valid:    errors.length === 0,
+    complete: missing.length === 0,
+    errors,
+    missing
+  };
+}
+
 // ── Asked-field detector ──────────────────────────────────────────────────────
 // Scans an assistant message for keywords indicating which fields were asked about.
 // Used to prevent re-asking fields the LLM already covered (even if collectedFields
@@ -828,18 +928,33 @@ app.post('/chat', async (req, res) => {
       }
     }
 
-    // ── Step 2: Inject extracted data into Symtra's prompt ──────────────────
-    // Symtra reads both the clean structured data AND the raw conversation.
+    // ── Step 2: Validate extracted data ─────────────────────────────────────
+    session.validationResult = validateExtractedData(session.extractedData);
+
+    // ── Step 3: Inject extracted data + validation report into Symtra's prompt
+    // Symtra reads clean structured data AND knows exactly what's missing/wrong.
     if (!isInit && session.extractedData) {
+      const vr = session.validationResult;
+      const validationBlock =
+        `=== DATA VALIDATION REPORT ===\n` +
+        (vr.missing.length > 0
+          ? `Missing fields (not yet collected — prioritize asking about these): ${vr.missing.join(', ')}\n`
+          : `All required fields collected.\n`) +
+        (vr.errors.length > 0
+          ? `Data errors (incorrect values — flag and re-ask): ${vr.errors.join(' | ')}\n`
+          : `All filled fields passed validation.\n`) +
+        `=== END VALIDATION REPORT ===\n\n`;
+
       const extractedBlock =
         `=== STRUCTURED PATIENT DATA (extracted & normalized by extraction agent) ===\n` +
-        `Use this clean structured data as the primary source for diagnosis and triage decisions.\n` +
-        `You may also refer to the raw conversation history for additional context and nuance.\n\n` +
+        `Use this as the primary source for diagnosis and triage decisions.\n` +
+        `You may also refer to the raw conversation history for context and nuance.\n\n` +
         JSON.stringify(session.extractedData, null, 2) + '\n' +
         `=== END STRUCTURED PATIENT DATA ===\n\n`;
+
       fullPrompt = fullPrompt.replace(
         `Patient's latest message: ${message}\n\nYour JSON response:`,
-        extractedBlock + `Patient's latest message: ${message}\n\nYour JSON response:`
+        validationBlock + extractedBlock + `Patient's latest message: ${message}\n\nYour JSON response:`
       );
     }
 
@@ -1002,7 +1117,8 @@ app.post('/chat', async (req, res) => {
       next_question_purpose: nextQuestionPurpose,
       session_ended: session.ended,
       turn: turnNumber,
-      extracted_data: session.extractedData || null
+      extracted_data: session.extractedData || null,
+      validation_result: session.validationResult || null
     });
 
   } catch (err) {
