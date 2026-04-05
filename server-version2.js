@@ -285,6 +285,11 @@ let schemaData;
 try { schemaData = JSON.parse(fs.readFileSync('schema.json', 'utf8')); }
 catch (e) { console.error('ERROR: Cannot load schema.json:', e.message); process.exit(1); }
 
+// ── Load extraction agent prompt ──
+let extractionAgentPrompt;
+try { extractionAgentPrompt = fs.readFileSync('extraction-agent.txt', 'utf8'); }
+catch (e) { console.error('ERROR: Cannot load extraction-agent.txt:', e.message); process.exit(1); }
+
 // ── Decision Log ──
 const LOG_PATH = path.join(__dirname, 'symtra-decision-log.json');
 let decisionLog;
@@ -724,7 +729,8 @@ function getSession(id) {
       duration: false,
       red_flag_screened: false
     },
-    interviewStage: 1
+    interviewStage: 1,
+    extractedData: null
   });
   return sessions.get(id);
 }
@@ -799,7 +805,35 @@ app.post('/chat', async (req, res) => {
   }
 
   try {
-    let raw = (await callOpenRouter(fullPrompt)).trim();
+    // Build extraction prompt from current conversation history
+    const extractionFullPrompt = isInit ? null : (() => {
+      const langNote = language === 'th'
+        ? 'Patient messages may be in Thai. Extract and normalize all data into the JSON schema.'
+        : 'Extract and normalize all patient data into the JSON schema.';
+      let p = extractionAgentPrompt + '\n\n' + langNote + '\n\n=== CONVERSATION ===\n';
+      for (const msg of session.history) {
+        p += `${msg.role === 'user' ? 'Patient' : 'Symtra'}: ${msg.text}\n`;
+      }
+      p += '\nExtract and output JSON now:';
+      return p;
+    })();
+
+    // Run main Symtra call and extraction call in parallel
+    const [raw, extractionRaw] = await Promise.all([
+      callOpenRouter(fullPrompt).then(r => r.trim()),
+      extractionFullPrompt
+        ? callOpenRouter(extractionFullPrompt).then(r => r.trim()).catch(err => { console.warn('[Extraction] failed:', err.message); return null; })
+        : Promise.resolve(null)
+    ]);
+
+    // Parse extraction agent result and store in session
+    if (extractionRaw) {
+      const extMatch = extractionRaw.match(/\{[\s\S]*\}/);
+      if (extMatch) {
+        try { session.extractedData = JSON.parse(extMatch[0]); }
+        catch { console.warn('[Extraction] JSON parse failed'); }
+      }
+    }
 
     // Robustly extract the JSON object — handles code fences, preamble text, etc.
     let parsed;
@@ -942,7 +976,8 @@ app.post('/chat', async (req, res) => {
       reasoning,
       next_question_purpose: nextQuestionPurpose,
       session_ended: session.ended,
-      turn: turnNumber
+      turn: turnNumber,
+      extracted_data: session.extractedData || null
     });
 
   } catch (err) {
