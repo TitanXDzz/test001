@@ -1183,13 +1183,6 @@
     "red_flags": "persistent vomiting shock symptoms confusion breathing difficulty"
   },
   {
-    "condition": "Cholecystitis suspected",
-    "category": "Gastrointestinal",
-    "tag": "SEEK_HELP_SOON",
-    "key_symptoms": "right upper abdominal pain fever nausea worse after meals",
-    "red_flags": "jaundice severe pain vomiting confusion"
-  },
-  {
     "condition": "Lactose intolerance suspected",
     "category": "Gastrointestinal",
     "tag": "CONTINUE",
@@ -1281,13 +1274,6 @@
     "red_flags": "vision loss severe pain chemical burn"
   },
   {
-    "condition": "Cerumen impaction recurrent",
-    "category": "ENT",
-    "tag": "CONTINUE",
-    "key_symptoms": "ear blockage reduced hearing fullness",
-    "red_flags": "severe pain discharge dizziness"
-  },
-  {
     "condition": "Hearing loss sudden suspected",
     "category": "ENT",
     "tag": "SEEK_HELP_IMMEDIATELY",
@@ -1314,13 +1300,6 @@
     "tag": "SEEK_HELP_SOON",
     "key_symptoms": "itchy mouth after raw fruits or vegetables mild lip swelling",
     "red_flags": "throat swelling breathing difficulty fainting"
-  },
-  {
-    "condition": "Atopic dermatitis suspected",
-    "category": "Dermatology",
-    "tag": "CONTINUE",
-    "key_symptoms": "itchy dry skin recurrent rash flexural areas",
-    "red_flags": "fever pus widespread redness"
   },
   {
     "condition": "Psoriasis suspected",
