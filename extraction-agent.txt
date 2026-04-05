@@ -24,10 +24,18 @@ PREGNANCY STATUS:
   true  = patient confirmed pregnant
   false = patient explicitly said NOT pregnant
 
-EXAMPLES — medications:
-  Patient never mentioned medications at all       → "medications": null
-  Patient said "I don't take any medications"      → "medications": []
-  Patient said "I take paracetamol 500mg daily"    → "medications": [{"name": "paracetamol", "dose": "500mg", "frequency": "daily"}]
+EXAMPLES — medications (includes prescription drugs, OTC medicines, herbs, supplements, traditional remedies):
+  Patient never mentioned medications at all               → "medications": null
+  Patient said "I don't take any medications or herbs"     → "medications": []
+  Patient said "I take paracetamol 500mg daily"            → "medications": [{"name": "paracetamol", "dose": "500mg", "frequency": "daily"}]
+  Patient said "I drink ginger tea twice a day"            → "medications": [{"name": "ginger tea", "dose": null, "frequency": "twice a day"}]
+  Patient said "I take fish oil 1000mg and aspirin 81mg"   → "medications": [{"name": "fish oil", "dose": "1000mg", "frequency": null}, {"name": "aspirin", "dose": "81mg", "frequency": null}]
+  Patient said "I use herbal medicine but don't know name" → "medications": [{"name": "unknown herbal medicine", "dose": null, "frequency": null}]
+
+HERB / SUPPLEMENT RULE:
+  Always capture herbs, traditional medicine, supplements (vitamins, fish oil, herbal teas, etc.) in the medications array.
+  Use null for dose or frequency only when the patient did not mention them — do NOT guess.
+  If patient says "just herbs" with no details → [{"name": "unspecified herbs", "dose": null, "frequency": null}]
 
 EXAMPLES — allergies:
   Allergies never mentioned in conversation        → "allergies": null
@@ -109,9 +117,19 @@ Convert all severity descriptions to a number:
 - If both a descriptor AND a number are given → use the HIGHER (worse) of the two
 - If vague with no further context → null
 
+=== DATE CONTEXT ===
+{{TODAY_DATE}}
+Use this date to resolve ALL relative time expressions (e.g. "last friday", "last week", "yesterday").
+For relative weekday names, find the most recent past occurrence of that weekday and count how many days ago it was.
+Example: if today is Sunday 2026-04-05:
+  - "last friday" = 2026-04-03 → 2 days ago → duration_days: 2
+  - "last monday" = 2026-03-30 → 6 days ago → duration_days: 6
+  - "last tuesday" = 2026-03-31 → 5 days ago → duration_days: 5
+  - "last saturday" = 2026-04-04 → 1 day ago → duration_days: 1
+
 === DURATION CONVERSION (to days) ===
-Convert all time expressions into number of days (duration_days):
-- "since this morning", "started today" → 0
+Convert all time expressions into number of days (duration_days). Use today's date above for relative expressions.
+- "since this morning", "started today", "earlier today" → 0
 - "since yesterday", "one day" → 1
 - "a couple of days", "two days" → 2
 - "a few days", "several days" → 3
@@ -120,6 +138,10 @@ Convert all time expressions into number of days (duration_days):
 - "a month", "about a month" → 30
 - "a few months" → 90
 - "a year", "about a year" → 365
+- "last [weekday]" → calculate days back from today to that weekday (see DATE CONTEXT above)
+- "last week" → 7
+- "last month" → 30
+- "since last [weekday]" → same as "last [weekday]" — calculate calendar days back
 - "a long time", "a while" → null (too vague — do not guess)
 - If patient gives exact days → use directly
 
@@ -237,6 +259,8 @@ Your output must match this structure exactly. Do not add or remove fields.
   },
 
   "medications": null,
+  // When populated: [{"name": "string", "dose": "string | null", "frequency": "string | null"}]
+  // Includes all drugs, herbs, supplements, traditional medicine. null = never asked. [] = asked, none taken.
 
   "allergies": null,
 

@@ -252,4 +252,17 @@ Make Symtra more structured, safe, and logically consistent — without breaking
 
 Please update the implementation accordingly. Follow all instructions in interviewflow.md
 
+Extract structured data from the conversation into JSON strictly following schema.json.
+Rules:
+- Do not invent data
+- If missing → use null
+- Normalize symptoms into standard terms
+- Convert severity to 0–10
+- Convert duration into days
+And also follow all previous instructions earlier
 
+Cool! Now let's continue. Now can you fix small detail. for duration, the patient might say something like " last friday " make sure symtra knows what day is      
+today or able to find out how long "last friday" was. And also I want you to fix schema for medication a little bit. Apart from gathering name of medication, also   
+collect dose and frequency. Also fix other things related to this added schema. Oh and make sure herbs are also part of medication so collect them together or maybe 
+ create a new box in schema up to you. Oh and also, although we shouldn't ask more than once, if the extraction fails ( e.g. the patient doesn't answer the question 
+ ) , you have to ask again to make sure the extraction works. 

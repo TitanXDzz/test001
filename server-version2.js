@@ -122,65 +122,190 @@ function normalizeSymptoms(text) {
   let t = text.toLowerCase();
 
   // === BREATHING ===
-  t = t.replace(/can'?t breathe|cannot breathe|trouble breathing|hard(?: time)? to? breathe|difficulty breathing|unable to breathe|not breathing (?:well|properly|right)|breathing (?:is )?hard|struggling to breathe|having trouble breathing/g, 'difficulty breathing');
-  t = t.replace(/short of breath|shortness of breath|not enough air|out of breath|breath(?:ing)? is short/g, 'severe shortness of breath');
-  t = t.replace(/gasping(?: for air)?|can barely breathe|barely breathing|struggling for air/g, 'gasping for air');
-  t = t.replace(/can'?t (?:speak|talk) in (?:full )?sentences?|unable to speak.*sentences?|barely (?:speak|talk)|speaking in (?:short|incomplete) sentences?/g, 'unable to speak full sentences');
-  t = t.replace(/blue lips?|lips? (?:are |is |turning )?blue|bluish lips?|cyanosis/g, 'blue lips');
-  t = t.replace(/wheez(?:e|ing)|whistling (?:when|while) breathing/g, 'wheezing');
+  t = t.replace(/can'?t breathe|cannot breathe|trouble breathing|hard(?: time)? to? breathe|difficulty breathing|unable to breathe|not breathing (?:well|properly|right)|breathing (?:is )?hard|struggling to breathe|having trouble breathing|can'?t catch (?:my )?breath|breathless(?:ness)?|winded|no air|airway (?:is )?blocked|choking on air|feel(?:ing)? like (?:i'?m? )?suffocating|suffocation/g, 'difficulty breathing');
+  // Thai: หายใจไม่ออก, หายใจลำบาก, หายใจไม่ทัน, หายใจติดขัด, เหนื่อยหอบ, หอบเหนื่อย, หายใจหอบ
+  t = t.replace(/หายใจไม่ออก|หายใจลำบาก|หายใจไม่ทัน|หายใจติดขัด|เหนื่อยหอบ|หอบเหนื่อย|หายใจหอบ|หายใจไม่ได้/g, 'difficulty breathing');
+
+  t = t.replace(/short of breath|shortness of breath|not enough air|out of breath|breath(?:ing)? is short|running out of breath|feeling breathless|can'?t get enough air|air (?:hunger|isn'?t enough)/g, 'severe shortness of breath');
+  // Thai: หายใจสั้น, ขาดอากาศ, รู้สึกขาดอากาศ
+  t = t.replace(/หายใจสั้น|ขาดอากาศ|รู้สึกขาดอากาศ|อากาศไม่พอ/g, 'severe shortness of breath');
+
+  t = t.replace(/gasping(?: for air)?|can barely breathe|barely breathing|struggling for air|fighting for air|desperately breathing/g, 'gasping for air');
+  // Thai: หอบแฮ่ก, หายใจแฮ่ก, หายใจขาดใจ
+  t = t.replace(/หอบแฮ่ก|หายใจแฮ่ก|หายใจขาดใจ|หอบหายใจ/g, 'gasping for air');
+
+  t = t.replace(/can'?t (?:speak|talk) in (?:full )?sentences?|unable to speak.*sentences?|barely (?:speak|talk)|speaking in (?:short|incomplete) sentences?|too breathless to (?:speak|talk)|can'?t finish a sentence/g, 'unable to speak full sentences');
+
+  t = t.replace(/blue lips?|lips? (?:are |is |turning )?blue|bluish lips?|cyanosis|lips? (?:look|gone|are|turned) blue|purple lips?|dark(?:ened)? lips?/g, 'blue lips');
+  // Thai: ริมฝีปากเขียว, ปากเขียว, ริมฝีปากคล้ำ
+  t = t.replace(/ริมฝีปากเขียว|ปากเขียว|ริมฝีปากคล้ำ|ปากคล้ำ/g, 'blue lips');
+
+  t = t.replace(/wheez(?:e|ing)|whistling (?:when|while) breathing|breath(?:ing)? makes? (?:a )?(?:whistl|wheez)|noisy breathing/g, 'wheezing');
+  // Thai: หายใจมีเสียงหวีด, เสียงหวีดเวลาหายใจ
+  t = t.replace(/หายใจมีเสียงหวีด|เสียงหวีดเวลาหายใจ|หายใจวี้ด/g, 'wheezing');
 
   // === CARDIAC ===
-  t = t.replace(/chest (?:pain|hurt|hurts?|ache|aches?|is painful|is sore|discomfort)|pain (?:in|on) (?:my )?(?:chest|heart area)|chest feels? (?:painful|sore)|tight chest|chest tightness|chest (?:feels? )?tight/g, 'chest pain');
-  t = t.replace(/chest pressure|pressure (?:on|in|around) (?:my )?chest|feels? like (?:pressure|weight|elephant) on (?:my )?chest/g, 'chest pressure');
-  t = t.replace(/spread(?:ing)? (?:to|toward) (?:my )?(?:left )?(?:arm|shoulder)|radiat(?:ing|es) (?:to|toward) (?:my )?(?:left )?(?:arm|shoulder)|pain going (?:down|to) (?:my )?(?:left )?(?:arm|shoulder)|arm (?:pain|ache).*chest|chest.*pain.*arm/g, 'pain spreading to arm');
-  t = t.replace(/spread(?:ing)? (?:to|toward) (?:my )?jaw|radiat(?:ing|es) (?:to|toward) (?:my )?jaw|jaw (?:pain|ache)|pain.*(?:to|in) (?:my )?jaw/g, 'pain spreading to jaw');
-  t = t.replace(/sweat(?:ing|s|ed)?|drenched(?: in sweat)?|profuse(?:ly)? sweat(?:ing)?/g, 'sweating');
-  t = t.replace(/heart (?:racing|pounding|beating fast|palpitat)|palpitat|rapidly? (?:beating|pounding) heart|fast heart(?:beat)?/g, 'rapid heartbeat');
+  t = t.replace(/chest (?:pain|hurt|hurts?|ache|aches?|is painful|is sore|discomfort)|pain (?:in|on) (?:my )?(?:chest|heart area)|chest feels? (?:painful|sore)|tight chest|chest tightness|chest (?:feels? )?tight|my chest (?:hurts?|aches?)|heart (?:hurts?|aches?|is sore)|pain around (?:my )?heart/g, 'chest pain');
+  // Thai: เจ็บหน้าอก, ปวดหน้าอก, แน่นอก, แน่นหน้าอก, เจ็บอก
+  t = t.replace(/เจ็บหน้าอก|ปวดหน้าอก|แน่นอก|แน่นหน้าอก|เจ็บอก|อกแน่น|หน้าอกแน่น|หน้าอกเจ็บ/g, 'chest pain');
+
+  t = t.replace(/chest pressure|pressure (?:on|in|around) (?:my )?chest|feels? like (?:pressure|weight|elephant|something heavy) on (?:my )?chest|chest (?:is )?being squeezed|squeezing (?:in|on) (?:my )?chest/g, 'chest pressure');
+  // Thai: รู้สึกหนักที่หน้าอก, หน้าอกถูกบีบ
+  t = t.replace(/รู้สึกหนักที่หน้าอก|หน้าอกถูกบีบ|หน้าอกถูกกด|รู้สึกแน่นหน้าอก/g, 'chest pressure');
+
+  t = t.replace(/spread(?:ing)? (?:to|toward) (?:my )?(?:left )?(?:arm|shoulder)|radiat(?:ing|es) (?:to|toward) (?:my )?(?:left )?(?:arm|shoulder)|pain going (?:down|to) (?:my )?(?:left )?(?:arm|shoulder)|arm (?:pain|ache).*chest|chest.*pain.*arm|left arm (?:pain|ache|hurts?)/g, 'pain spreading to arm');
+  // Thai: เจ็บร้าวไปแขน, ปวดร้าวไปที่แขน
+  t = t.replace(/เจ็บร้าวไปแขน|ปวดร้าวไปที่แขน|เจ็บร้าวแขน|ปวดร้าวแขน/g, 'pain spreading to arm');
+
+  t = t.replace(/spread(?:ing)? (?:to|toward) (?:my )?jaw|radiat(?:ing|es) (?:to|toward) (?:my )?jaw|jaw (?:pain|ache)|pain.*(?:to|in) (?:my )?jaw|pain (?:up|in) (?:my )?jaw/g, 'pain spreading to jaw');
+  // Thai: เจ็บร้าวไปขากรรไกร, ปวดร้าวขากรรไกร
+  t = t.replace(/เจ็บร้าวไปขากรรไกร|ปวดร้าวขากรรไกร|เจ็บที่ขากรรไกร/g, 'pain spreading to jaw');
+
+  t = t.replace(/sweat(?:ing|s|ed)?|drenched(?: in sweat)?|profuse(?:ly)? sweat(?:ing)?|cold sweat|clammy(?: skin)?|soaked in sweat|sweating a lot/g, 'sweating');
+  // Thai: เหงื่อออกมาก, เหงื่อแตก, เหงื่อออกท่วมตัว, เหงื่อเย็น
+  t = t.replace(/เหงื่อออกมาก|เหงื่อแตก|เหงื่อออกท่วมตัว|เหงื่อเย็น|ตัวเย็นชื้น/g, 'sweating');
+
+  t = t.replace(/heart (?:racing|pounding|beating fast|palpitat|fluttering|skipping)|palpitat|rapidly? (?:beating|pounding) heart|fast heart(?:beat)?|irregular heartbeat|heart (?:beat|skips?)|heart is (?:going fast|beating irregularly)/g, 'rapid heartbeat');
+  // Thai: ใจสั่น, หัวใจเต้นเร็ว, หัวใจเต้นแรง, หัวใจเต้นผิดจังหวะ
+  t = t.replace(/ใจสั่น|หัวใจเต้นเร็ว|หัวใจเต้นแรง|หัวใจเต้นผิดจังหวะ|ใจสั่นใจหวิว/g, 'rapid heartbeat');
 
   // === STROKE ===
-  t = t.replace(/face (?:drooping|droop|drop|fell|is drooping|looks? drooped?|feels? droopy)|drooping face|facial droop/g, 'face drooping');
-  t = t.replace(/arm (?:weakness|is weak|feels? weak|won'?t move|can'?t lift)|weak(?:ness in| )arm|one arm (?:is )?weak/g, 'arm weakness');
-  t = t.replace(/trouble speaking|difficulty speaking|slurred speech|can'?t speak|hard to speak|speech (?:problem|difficulty|trouble|slurred)|words (?:won'?t come|aren'?t coming|are slurred)/g, 'speech difficulty');
-  t = t.replace(/(?:sudden(?:ly)?|new) confusion|confused|confusion|disoriented|not thinking clearly|mind (?:is )?foggy|can'?t think (?:straight|clearly)/g, 'confusion');
-  t = t.replace(/vision (?:loss|lost|gone|is gone)|can'?t see (?:well |properly |clearly )?suddenly|sudden(?:ly)? (?:blind|can'?t see|loss of vision)|blurry vision (?:sudden|all of (?:a )?sudden)/g, 'vision loss');
-  t = t.replace(/loss of balance|can'?t balance|losing balance|falling over|unsteady (?:on my feet|walking)|dizzy and falling/g, 'loss of balance');
-  t = t.replace(/worst headache(?: of my life)?|sudden(?:ly)? severe headache|sudden(?:ly)? terrible headache|thunderclap headache|worst pain in my head/g, 'sudden severe headache');
+  t = t.replace(/face (?:drooping|droop|drop|fell|is drooping|looks? drooped?|feels? droopy)|drooping face|facial droop|one side of (?:my )?face (?:is )?drooping|face (?:is )?uneven|asymmetric face/g, 'face drooping');
+  // Thai: หน้าเบี้ยว, ปากเบี้ยว, หน้าตก, ปากตก
+  t = t.replace(/หน้าเบี้ยว|ปากเบี้ยว|หน้าตก|ปากตก|ใบหน้าเบี้ยว/g, 'face drooping');
+
+  t = t.replace(/arm (?:weakness|is weak|feels? weak|won'?t move|can'?t lift)|weak(?:ness in| )arm|one arm (?:is )?weak|can'?t raise (?:my )?arm|arm (?:is )?numb (?:and|or) weak|arm (?:feels? )?heavy/g, 'arm weakness');
+  // Thai: แขนอ่อนแรง, ยกแขนไม่ขึ้น, แขนไม่มีแรง
+  t = t.replace(/แขนอ่อนแรง|ยกแขนไม่ขึ้น|แขนไม่มีแรง|แขนอ่อน|ยกแขนไม่ได้/g, 'arm weakness');
+
+  t = t.replace(/trouble speaking|difficulty speaking|slurred speech|can'?t speak|hard to speak|speech (?:problem|difficulty|trouble|slurred)|words (?:won'?t come|aren'?t coming|are slurred)|garbled speech|mumbling|can'?t get words out|words (?:are )?jumbled/g, 'speech difficulty');
+  // Thai: พูดไม่ชัด, พูดไม่ออก, พูดลำบาก, พูดไม่ได้
+  t = t.replace(/พูดไม่ชัด|พูดไม่ออก|พูดลำบาก|พูดไม่ได้|พูดสับสน|พูดไม่รู้เรื่อง/g, 'speech difficulty');
+
+  t = t.replace(/(?:sudden(?:ly)?|new) confusion|confused|confusion|disoriented|not thinking clearly|mind (?:is )?foggy|can'?t think (?:straight|clearly)|don'?t know where (?:i am|i'm)|lost and confused|bewildered|don'?t know what'?s happening/g, 'confusion');
+  // Thai: สับสน, มึนงง, ไม่รู้เรื่อง, งงงวย
+  t = t.replace(/สับสน|มึนงง|ไม่รู้เรื่อง|งงงวย|คิดไม่ออก|ไม่รู้สึกตัว/g, 'confusion');
+
+  t = t.replace(/vision (?:loss|lost|gone|is gone)|can'?t see (?:well |properly |clearly )?suddenly|sudden(?:ly)? (?:blind|can'?t see|loss of vision)|blurry vision (?:sudden|all of (?:a )?sudden)|went blind|everything (?:is )?blurry suddenly|sight (?:is )?gone/g, 'vision loss');
+  // Thai: ตามัว, มองไม่เห็น, ตาพร่า, สายตาพร่ามัว
+  t = t.replace(/ตามัว|มองไม่เห็น|ตาพร่า|สายตาพร่ามัว|ตามืด|มองไม่ชัด/g, 'vision loss');
+
+  t = t.replace(/loss of balance|can'?t balance|losing balance|falling over|unsteady (?:on my feet|walking)|dizzy and falling|can'?t walk straight|staggering|veering (?:to one side|sideways)/g, 'loss of balance');
+  // Thai: เดินเซ, ทรงตัวไม่ได้, ทรงตัวไม่ได้, ล้ม
+  t = t.replace(/เดินเซ|ทรงตัวไม่ได้|เดินไม่ได้|เดินล้ม|ทรงตัวไม่อยู่/g, 'loss of balance');
+
+  t = t.replace(/worst headache(?: of my life)?|sudden(?:ly)? severe headache|sudden(?:ly)? terrible headache|thunderclap headache|worst pain in my head|explosive headache|head (?:feels? like it'?s? )?exploding|sudden(?:ly)? worst head pain/g, 'sudden severe headache');
+  // Thai: ปวดหัวรุนแรงทันที, ปวดหัวอย่างรุนแรง, ปวดหัวมากที่สุด
+  t = t.replace(/ปวดหัวรุนแรงทันที|ปวดหัวอย่างรุนแรง|ปวดหัวมากที่สุด|ปวดหัวรุนแรง|ปวดหัวอย่างหนัก/g, 'sudden severe headache');
 
   // === ALLERGY / ANAPHYLAXIS ===
-  t = t.replace(/swoll?en?.*(lips?|tongue|throat)|lips?.*(swoll?en|swelling)|tongue.*(swoll?en|swelling)|throat.*(swoll?en|swelling|closing(?: up)?|tightening)|mouth (?:swollen|swelling)/g, 'swelling of throat');
-  t = t.replace(/hives|urticaria|welts (?:all over|on skin)|itchy (?:bumps|welts) (?:all over|everywhere)/g, 'hives');
-  t = t.replace(/faint(?:ing|ed)?|passed? out|about to faint|feel(?:ing)? like (?:i(?:'m| am| might| could) )?faint(?:ing)?|nearly fainted|almost fainted|collapsed?|falling? unconscious/g, 'fainting');
+  t = t.replace(/swoll?en?.*(lips?|tongue|throat)|lips?.*(swoll?en|swelling)|tongue.*(swoll?en|swelling)|throat.*(swoll?en|swelling|closing(?: up)?|tightening)|mouth (?:swollen|swelling)|throat (?:is )?closing|can'?t swallow|difficulty swallowing (?:suddenly)|airway (?:closing|blocked)/g, 'swelling of throat');
+  // Thai: คอบวม, ลำคอบวม, คอตีบ, กลืนลำบาก
+  t = t.replace(/คอบวม|ลำคอบวม|คอตีบ|กลืนลำบาก|คอปิด|ลิ้นบวม|ริมฝีปากบวม|ปากบวม/g, 'swelling of throat');
+
+  t = t.replace(/hives|urticaria|welts (?:all over|on skin)|itchy (?:bumps|welts) (?:all over|everywhere)|raised (?:bumps|rash) (?:all over|on skin)|skin breaking out in (?:hives|welts)/g, 'hives');
+  // Thai: ลมพิษ, ผื่นคัน, ผื่นนูน
+  t = t.replace(/ลมพิษ|ผื่นคัน|ผื่นนูน|ผื่นขึ้นทั่วตัว|ตุ่มคัน/g, 'hives');
+
+  t = t.replace(/faint(?:ing|ed)?|passed? out|about to faint|feel(?:ing)? like (?:i(?:'m| am| might| could) )?faint(?:ing)?|nearly fainted|almost fainted|collapsed?|falling? unconscious|going to black out|blacking out|head (?:is )?spinning and (?:i'?m? )?about to faint/g, 'fainting');
+  // Thai: เป็นลม, หมดสติ, วิงเวียนจนจะเป็นลม, หน้ามืดจะเป็นลม
+  t = t.replace(/เป็นลม|วิงเวียนจนจะเป็นลม|หน้ามืดจะเป็นลม|จะเป็นลม|รู้สึกจะเป็นลม|หน้ามืด/g, 'fainting');
 
   // === SEPSIS / MENINGITIS / INFECTION ===
-  t = t.replace(/high fever|very high (?:fever|temperature)|extremely high (?:fever|temperature)|temperature (?:is )?(?:very|extremely) high|fever (?:is )?(?:very|extremely|dangerously) high|burning up|spiking (?:a )?fever/g, 'high fever');
-  t = t.replace(/stiff neck|neck.*(?:stiff|rigid|stiffness)|can'?t (?:move|turn|bend) (?:my )?neck|neck won'?t move|neck (?:is |feels? )stiff|stiffness in (?:my )?neck/g, 'stiff neck');
-  t = t.replace(/light.*(?:sensitive|bother|hurt|sensitivity|hurts?)|sensitive (?:to|about) light|photophobia|bright light (?:bother|hurt|is painful)|light (?:is )?painful/g, 'light sensitivity');
-  t = t.replace(/rapid(?:ly)? breath(?:ing)?|breathing (?:fast|quickly|rapidly)|fast breathing|breath(?:ing)? (?:rate )?is (?:fast|rapid|quick)/g, 'rapid breathing');
-  t = t.replace(/extreme(?:ly)? weak(?:ness)?|very weak|can barely move|too weak to|incredibly weak|severely weak|weakness is (?:severe|extreme|bad)/g, 'extreme weakness');
+  t = t.replace(/high fever|very high (?:fever|temperature)|extremely high (?:fever|temperature)|temperature (?:is )?(?:very|extremely) high|fever (?:is )?(?:very|extremely|dangerously) high|burning up|spiking (?:a )?fever|raging fever|temp(?:erature)? (?:is )?(?:over|above) (?:39|40|103|104)|fever (?:won'?t break|keeps? going up)/g, 'high fever');
+  // Thai: ไข้สูง, ตัวร้อนมาก, มีไข้สูง
+  t = t.replace(/ไข้สูง|ตัวร้อนมาก|มีไข้สูง|ไข้สูงมาก|ตัวร้อนจัด|ร้อนมาก/g, 'high fever');
+
+  t = t.replace(/stiff neck|neck.*(?:stiff|rigid|stiffness)|can'?t (?:move|turn|bend) (?:my )?neck|neck won'?t move|neck (?:is |feels? )stiff|stiffness in (?:my )?neck|neck (?:is )?locked|neck (?:is )?very stiff/g, 'stiff neck');
+  // Thai: คอแข็ง, หันคอไม่ได้, คอขยับไม่ได้
+  t = t.replace(/คอแข็ง|หันคอไม่ได้|คอขยับไม่ได้|คอตึง|ขยับคอไม่ได้/g, 'stiff neck');
+
+  t = t.replace(/light.*(?:sensitive|bother|hurt|sensitivity|hurts?)|sensitive (?:to|about) light|photophobia|bright light (?:bother|hurt|is painful)|light (?:is )?painful|eyes (?:hurt|are sore) (?:in|with) (?:the )?light|can'?t stand (?:the )?light/g, 'light sensitivity');
+  // Thai: แสงเข้าตาแล้วเจ็บ, ทนแสงไม่ได้, แสงทำให้เจ็บตา
+  t = t.replace(/แสงเข้าตาแล้วเจ็บ|ทนแสงไม่ได้|แสงทำให้เจ็บตา|ไวต่อแสง|แสงรบกวน/g, 'light sensitivity');
+
+  t = t.replace(/rapid(?:ly)? breath(?:ing)?|breathing (?:fast|quickly|rapidly)|fast breathing|breath(?:ing)? (?:rate )?is (?:fast|rapid|quick)|panting|hyperventilat(?:ing|ion)/g, 'rapid breathing');
+  // Thai: หายใจเร็ว, หายใจถี่
+  t = t.replace(/หายใจเร็ว|หายใจถี่|หอบเร็ว/g, 'rapid breathing');
+
+  t = t.replace(/extreme(?:ly)? weak(?:ness)?|very weak|can barely move|too weak to|incredibly weak|severely weak|weakness is (?:severe|extreme|bad)|no strength (?:at all|left)|total(?:ly)? exhausted|completely drained|can'?t (?:get up|stand)|body (?:won'?t|can'?t) move/g, 'extreme weakness');
+  // Thai: อ่อนแรงมาก, ไม่มีแรง, แทบไม่มีแรง
+  t = t.replace(/อ่อนแรงมาก|ไม่มีแรง|แทบไม่มีแรง|อ่อนเพลียมาก|ร่างกายอ่อนแรง|ลุกไม่ได้/g, 'extreme weakness');
 
   // === SEIZURE ===
-  t = t.replace(/seizure|convuls(?:ion|ions|ing|ed)?|blacked? out|fit \(seizure\)|epileptic|grand mal/g, 'seizure');
-  t = t.replace(/body (?:shook|shake|shakes?|shak(?:ing|ed)) uncontroll|shak(?:ing|ed) (?:uncontrollably|violently|all over)|uncontroll(?:ably|able) shak|twitching uncontrollably|jerking uncontrollably/g, 'seizure');
-  t = t.replace(/passed? out|lost consciousness|loss of consciousness|went unconscious|became unconscious/g, 'loss of consciousness');
+  t = t.replace(/seizure|convuls(?:ion|ions|ing|ed)?|blacked? out|fit \(seizure\)|epileptic|grand mal|having (?:a )?fit|epileptic (?:episode|attack)/g, 'seizure');
+  t = t.replace(/body (?:shook|shake|shakes?|shak(?:ing|ed)) uncontroll|shak(?:ing|ed) (?:uncontrollably|violently|all over)|uncontroll(?:ably|able) shak|twitching uncontrollably|jerking uncontrollably|full body (?:shake|spasm|jerk)/g, 'seizure');
+  // Thai: ชัก, กระตุก, ชักกระตุก, ตัวแข็ง
+  t = t.replace(/ชักกระตุก|กระตุกทั้งตัว|ตัวแข็งกระตุก|ชักเกร็ง/g, 'seizure');
+  t = t.replace(/^ชัก$|ชักๆ|มีอาการชัก/g, 'seizure');
+
+  t = t.replace(/passed? out|lost consciousness|loss of consciousness|went unconscious|became unconscious|blacked? out completely|knocked out/g, 'loss of consciousness');
+  // Thai: หมดสติ, ล้มหมดสติ
+  t = t.replace(/หมดสติ|ล้มหมดสติ|หมดความรู้สึก|หมดสติไป/g, 'loss of consciousness');
 
   // === BLEEDING ===
-  t = t.replace(/heavy bleeding|bleeding heavily|a lot of blood (?:coming out|flowing)|severe bleeding|profuse bleeding/g, 'heavy bleeding');
-  t = t.replace(/bleeding (?:that |which )?(?:won'?t|doesn'?t|will not|refuses to) stop|can'?t stop (?:the )?bleeding|non.?stop bleeding/g, 'bleeding that will not stop');
-  t = t.replace(/vomit(?:ing)? (?:up )?blood|throw(?:ing)? up blood|blood in (?:my )?vomit|threw up blood/g, 'vomiting blood');
-  t = t.replace(/blood in (?:my )?(?:stool|poop|bowel movement|feces)|bloody stool|stool (?:has|with|is) blood/g, 'blood in stool');
-  t = t.replace(/cough(?:ing)? (?:up )?blood|blood when (?:i )?cough|spitting (?:up )?blood/g, 'coughing blood');
-  t = t.replace(/bleeding gums?|gums?.*(?:bleed|bleeding|are bleeding)|gums that bleed/g, 'bleeding gums');
-  t = t.replace(/nose(?:bleed| bleeding| is bleeding)|bleeding (?:from|out of) (?:my )?nose/g, 'nose bleeding');
+  t = t.replace(/heavy bleeding|bleeding heavily|a lot of blood (?:coming out|flowing)|severe bleeding|profuse bleeding|bleeding (?:a lot|badly|excessively)/g, 'heavy bleeding');
+  // Thai: เลือดออกมาก, เลือดไหลมาก
+  t = t.replace(/เลือดออกมาก|เลือดไหลมาก|มีเลือดออกมาก/g, 'heavy bleeding');
+
+  t = t.replace(/bleeding (?:that |which )?(?:won'?t|doesn'?t|will not|refuses to) stop|can'?t stop (?:the )?bleeding|non.?stop bleeding|bleeding (?:for hours?|continuously)|won'?t clot/g, 'bleeding that will not stop');
+  // Thai: เลือดหยุดไม่ได้, ห้ามเลือดไม่หยุด
+  t = t.replace(/เลือดหยุดไม่ได้|ห้ามเลือดไม่หยุด|เลือดไม่หยุด/g, 'bleeding that will not stop');
+
+  t = t.replace(/vomit(?:ing)? (?:up )?blood|throw(?:ing)? up blood|blood in (?:my )?vomit|threw up blood|puking blood|retching blood/g, 'vomiting blood');
+  // Thai: อาเจียนเป็นเลือด, อ้วกเป็นเลือด
+  t = t.replace(/อาเจียนเป็นเลือด|อ้วกเป็นเลือด|อาเจียนมีเลือดปน/g, 'vomiting blood');
+
+  t = t.replace(/blood in (?:my )?(?:stool|poop|bowel movement|feces)|bloody stool|stool (?:has|with|is) blood|poop(?:ing)? blood|black tarry stool|dark bloody stool/g, 'blood in stool');
+  // Thai: ถ่ายเป็นเลือด, อุจจาระมีเลือด
+  t = t.replace(/ถ่ายเป็นเลือด|อุจจาระมีเลือด|อุจจาระเป็นเลือด|ถ่ายมีเลือดปน/g, 'blood in stool');
+
+  t = t.replace(/cough(?:ing)? (?:up )?blood|blood when (?:i )?cough|spitting (?:up )?blood|blood(?:y)? spit|hemoptysis/g, 'coughing blood');
+  // Thai: ไอเป็นเลือด, ไอออกมาเป็นเลือด
+  t = t.replace(/ไอเป็นเลือด|ไอออกมาเป็นเลือด|ไอมีเลือดปน/g, 'coughing blood');
+
+  t = t.replace(/bleeding gums?|gums?.*(?:bleed|bleeding|are bleeding)|gums that bleed|gums? won'?t stop bleeding/g, 'bleeding gums');
+  // Thai: เหงือกเลือดออก, เหงือกมีเลือดออก
+  t = t.replace(/เหงือกเลือดออก|เหงือกมีเลือดออก|เหงือกออกเลือด/g, 'bleeding gums');
+
+  t = t.replace(/nose(?:bleed| bleeding| is bleeding)|bleeding (?:from|out of) (?:my )?nose|blood (?:coming|dripping|flowing) from (?:my )?nose/g, 'nose bleeding');
+  // Thai: เลือดกำเดาออก, เลือดออกทางจมูก
+  t = t.replace(/เลือดกำเดาออก|เลือดออกทางจมูก|กำเดาออก/g, 'nose bleeding');
 
   // === DEHYDRATION ===
-  t = t.replace(/extreme(?:ly)? thirst(?:y)?|very thirst(?:y)?|terribly thirst(?:y)?|incredibly thirst(?:y)?/g, 'extreme thirst');
-  t = t.replace(/can'?t (?:keep|hold) fluids?(?: down)?|unable to drink|can'?t drink|vomiting everything|nothing (?:is )?staying down/g, 'unable to drink fluids');
-  t = t.replace(/barely urinating|not urinating|very little urine|no urine|haven'?t (?:urinated|peed) in/g, 'very little urine');
+  t = t.replace(/extreme(?:ly)? thirst(?:y)?|very thirst(?:y)?|terribly thirst(?:y)?|incredibly thirst(?:y)?|dying of thirst|unbearably thirst(?:y)?|constant(?:ly)? thirst(?:y)?/g, 'extreme thirst');
+  // Thai: กระหายน้ำมาก, หิวน้ำมาก
+  t = t.replace(/กระหายน้ำมาก|หิวน้ำมาก|กระหายน้ำอย่างรุนแรง|กระหายน้ำมากผิดปกติ/g, 'extreme thirst');
+
+  t = t.replace(/can'?t (?:keep|hold) fluids?(?: down)?|unable to drink|can'?t drink|vomiting everything|nothing (?:is )?staying down|everything (?:comes|comes) back up|can'?t keep anything down/g, 'unable to drink fluids');
+  // Thai: ดื่มน้ำแล้วอาเจียน, กินน้ำไม่ได้
+  t = t.replace(/ดื่มน้ำแล้วอาเจียน|กินน้ำไม่ได้|ดื่มน้ำไม่ได้|กินอะไรก็อาเจียน/g, 'unable to drink fluids');
+
+  t = t.replace(/barely urinating|not urinating|very little urine|no urine|haven'?t (?:urinated|peed) in|urine (?:output is )?very low|hardly (?:peeing|urinating)|dark (?:yellow|brown) urine (?:and )?not much/g, 'very little urine');
+  // Thai: ปัสสาวะน้อย, ไม่ค่อยได้ปัสสาวะ
+  t = t.replace(/ปัสสาวะน้อย|ไม่ค่อยได้ปัสสาวะ|ปัสสาวะน้อยมาก|ไม่ปัสสาวะ/g, 'very little urine');
 
   // === ABDOMINAL ===
-  t = t.replace(/severe (?:stomach|abdominal|belly|gut|tummy) pain|very bad (?:stomach|abdominal|belly) pain|excruciating (?:stomach|abdominal|belly) pain|(?:terrible|horrible|awful) (?:stomach|abdominal|belly) pain/g, 'severe abdominal pain');
-  t = t.replace(/lower right (?:stomach|abdomen|abdominal|belly|side|quadrant|area)|right lower (?:abdomen|stomach|belly|abdominal|side|quadrant|area)|right side (?:lower|bottom)|pain.*lower right|lower right.*pain/g, 'right lower abdominal pain');
-  t = t.replace(/can'?t stop vomiting|persistent vomiting|vomiting (?:again and again|repeatedly|over and over|keeps? happening|non.?stop)|keeps? vomiting|won'?t stop vomiting/g, 'persistent vomiting');
+  t = t.replace(/severe (?:stomach|abdominal|belly|gut|tummy) pain|very bad (?:stomach|abdominal|belly) pain|excruciating (?:stomach|abdominal|belly) pain|(?:terrible|horrible|awful) (?:stomach|abdominal|belly) pain|unbearable (?:stomach|abdominal|belly|tummy) pain|sharp (?:stomach|abdominal|belly) pain/g, 'severe abdominal pain');
+  // Thai: ปวดท้องรุนแรง, ปวดท้องมาก
+  t = t.replace(/ปวดท้องรุนแรง|ปวดท้องมาก|ปวดท้องอย่างรุนแรง|ปวดท้องอย่างหนัก|ปวดท้องแบบรุนแรง/g, 'severe abdominal pain');
+
+  t = t.replace(/lower right (?:stomach|abdomen|abdominal|belly|side|quadrant|area)|right lower (?:abdomen|stomach|belly|abdominal|side|quadrant|area)|right side (?:lower|bottom)|pain.*lower right|lower right.*pain|appendix (?:area|pain|hurts?)/g, 'right lower abdominal pain');
+  // Thai: ปวดท้องน้อยด้านขวา, ปวดท้องขวาล่าง
+  t = t.replace(/ปวดท้องน้อยด้านขวา|ปวดท้องขวาล่าง|ปวดท้องด้านขวาล่าง/g, 'right lower abdominal pain');
+
+  t = t.replace(/can'?t stop vomiting|persistent vomiting|vomiting (?:again and again|repeatedly|over and over|keeps? happening|non.?stop)|keeps? vomiting|won'?t stop vomiting|vomiting (?:many times|multiple times|all day)|keeps? throwing up/g, 'persistent vomiting');
+  // Thai: อาเจียนซ้ำๆ, อาเจียนไม่หยุด
+  t = t.replace(/อาเจียนซ้ำๆ|อาเจียนไม่หยุด|อาเจียนบ่อย|อ้วกซ้ำๆ|อ้วกไม่หยุด/g, 'persistent vomiting');
+
+  // === GENERAL THAI SYMPTOM MAPPINGS ===
+  // These catch standalone Thai words that weren't caught by the specific patterns above
+  // ไข้ (fever - general) — map to high fever context only if alone
+  t = t.replace(/มีไข้สูงมาก|ไข้สูงมาก/g, 'high fever');
+  // ชัก (seizure) — standalone
+  t = t.replace(/(?<![ก-๙])ชัก(?![ก-๙])/g, 'seizure');
+  // หมดสติ (unconscious) — standalone
+  t = t.replace(/(?<![ก-๙])หมดสติ(?![ก-๙])/g, 'loss of consciousness');
 
   return t;
 }
@@ -396,7 +521,7 @@ function validateExtractedData(data) {
 // Used to prevent re-asking fields the LLM already covered (even if collectedFields
 // wasn't updated because the LLM forgot to self-report).
 const FIELD_ASKED_KEYWORDS = {
-  medications:      ['medication', 'medicine', 'taking any', 'ยา', 'รับประทานยา', 'กินยา'],
+  medications:      ['medication', 'medicine', 'taking any', 'herb', 'supplement', 'herbal', 'traditional medicine', 'ยา', 'รับประทานยา', 'กินยา', 'สมุนไพร', 'อาหารเสริม'],
   allergies:        ['allerg', 'แพ้'],
   medical_history:  ['medical history', 'surgery', 'surgeries', 'past illness', 'chronic condition',
                      'ประวัติ', 'ผ่าตัด', 'โรคประจำตัว', 'เจ็บป่วย'],
@@ -607,13 +732,15 @@ ${schemaFieldsText}
 
 === DURATION COLLECTION RULES ===
 Always convert any time expression the patient gives into a number of days for duration_days.
+Today's date is injected into the extraction agent — it can resolve relative expressions like "last friday" or "last monday" into exact day counts.
 Examples:
 - "since yesterday" → 1
 - "for about a week" → 7
 - "started this morning" → 0 (same day)
 - "a few days" → 3
 - "two weeks" → 14
-- "since last Monday" → calculate days from today
+- "last friday" / "last monday" → extraction agent calculates exact days from today's date
+- "last week" → 7
 If the patient is vague (e.g. "a while"), ask them to estimate in days or weeks.
 NEVER leave duration_days as null when concluding.
 
@@ -646,7 +773,7 @@ Stage 1 — Intake: Identify chief complaint (main symptom)
 Stage 2 — Symptom Clarification: collect severity (0–10), duration (days), onset_type (sudden/gradual/unknown), progression (improving/stable/worsening)
 Stage 3 — Early Red Flag Screening: ask red-flag questions specific to the presenting symptoms
 Stage 4 — Patient Profile: collect age, biological_sex, pregnancy_status
-Stage 5 — Medical Safety: collect medications, allergies, medical_history
+Stage 5 — Medical Safety: collect medications (including dose, frequency, herbs, supplements, and traditional remedies), allergies, medical_history
 Stage 6 — Secondary Red Flag Check: re-evaluate red flags with full context (medications, history, pregnancy)
 Stage 7 — Final Verification: confirm all collected data is consistent and complete
 Stage 8 — Triage Decision: conclude ONLY after all required fields are filled
@@ -948,7 +1075,9 @@ app.post('/chat', async (req, res) => {
       const langNote = language === 'th'
         ? 'Patient messages may be in Thai. Extract and normalize all data into the JSON schema.'
         : 'Extract and normalize all patient data into the JSON schema.';
-      let extractionFullPrompt = extractionAgentPrompt + '\n\n' + langNote + '\n\n=== CONVERSATION ===\n';
+      const todayDate = new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+      const todayDateLine = `Today's date is: ${todayDate}`;
+      let extractionFullPrompt = extractionAgentPrompt.replace('{{TODAY_DATE}}', todayDateLine) + '\n\n' + langNote + '\n\n=== CONVERSATION ===\n';
       for (const msg of session.history) {
         extractionFullPrompt += `${msg.role === 'user' ? 'Patient' : 'Symtra'}: ${msg.text}\n`;
       }
@@ -967,6 +1096,27 @@ app.post('/chat', async (req, res) => {
 
     // ── Step 2: Validate extracted data ─────────────────────────────────────
     session.validationResult = validateExtractedData(session.extractedData);
+
+    // ── Step 2b: Re-ask detection ─────────────────────────────────────────────
+    // If a field was asked in a previous turn but extraction still returns null,
+    // the patient likely didn't answer — flag it so Symtra re-asks clearly.
+    if (!isInit && session.askedFields.length > 0) {
+      const ex2 = session.extractedData;
+      const isMale = ex2?.patient_info?.biological_sex === 'male';
+      const REASK_CHECKS = {
+        age:              () => ex2?.patient_info?.age === null || ex2?.patient_info?.age === undefined,
+        pregnancy_status: () => !isMale && (ex2?.patient_info?.pregnancy_status === null || ex2?.patient_info?.pregnancy_status === undefined),
+        medications:      () => ex2?.medications === null || ex2?.medications === undefined,
+        allergies:        () => ex2?.allergies === null || ex2?.allergies === undefined,
+        medical_history:  () => ex2?.medical_history?.conditions === null || ex2?.medical_history?.conditions === undefined,
+        severity:         () => ex2?.chief_complaint?.severity === null || ex2?.chief_complaint?.severity === undefined,
+        duration:         () => ex2?.chief_complaint?.duration_days === null || ex2?.chief_complaint?.duration_days === undefined,
+      };
+      session.reaskFields = session.askedFields
+        .filter(f => REASK_CHECKS[f] && REASK_CHECKS[f]());
+    } else {
+      session.reaskFields = [];
+    }
 
     // ── Step 3: Symptom-to-condition lookup ──────────────────────────────────
     // Deterministic lookup — converts normalized symptoms to candidate conditions.
@@ -1010,9 +1160,18 @@ app.post('/chat', async (req, res) => {
         JSON.stringify(session.extractedData, null, 2) + '\n' +
         `=== END STRUCTURED PATIENT DATA ===\n\n`;
 
+      const reaskBlock = (session.reaskFields && session.reaskFields.length > 0)
+        ? `=== RE-ASK REQUIRED — EXTRACTION FAILED ===\n` +
+          `The following fields were already asked in a previous turn but the patient's answer could not be extracted.\n` +
+          `The patient likely did not answer clearly. You MUST ask again — directly and simply, one field at a time.\n` +
+          `Fields to re-ask: ${session.reaskFields.join(', ')}\n` +
+          `Do NOT skip these. Do NOT assume the answer. Ask the patient clearly.\n` +
+          `=== END RE-ASK ===\n\n`
+        : '';
+
       fullPrompt = fullPrompt.replace(
         `Patient's latest message: ${message}\n\nYour JSON response:`,
-        symptomMatchBlock + validationBlock + extractedBlock + `Patient's latest message: ${message}\n\nYour JSON response:`
+        symptomMatchBlock + validationBlock + extractedBlock + reaskBlock + `Patient's latest message: ${message}\n\nYour JSON response:`
       );
     }
 

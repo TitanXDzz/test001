@@ -47,7 +47,7 @@
     "surgeries": ["string"]
   },
 
-  "medications": "null (not yet asked) | [] (asked, patient said none) | [{name, dose, frequency}]",
+  "medications": "null (not yet asked) | [] (asked, patient said none) | [{name, dose, frequency}] — includes prescription drugs, OTC medicines, herbs, supplements, and traditional remedies",
 
   "allergies": "null (not yet asked) | [] (asked, patient said none) | [string]",
 
