@@ -805,35 +805,46 @@ app.post('/chat', async (req, res) => {
   }
 
   try {
-    // Build extraction prompt from current conversation history
-    const extractionFullPrompt = isInit ? null : (() => {
+    // ── Step 1: Run extraction agent first ──────────────────────────────────
+    // Extraction must complete before Symtra runs so Symtra can read clean data.
+    if (!isInit) {
       const langNote = language === 'th'
         ? 'Patient messages may be in Thai. Extract and normalize all data into the JSON schema.'
         : 'Extract and normalize all patient data into the JSON schema.';
-      let p = extractionAgentPrompt + '\n\n' + langNote + '\n\n=== CONVERSATION ===\n';
+      let extractionFullPrompt = extractionAgentPrompt + '\n\n' + langNote + '\n\n=== CONVERSATION ===\n';
       for (const msg of session.history) {
-        p += `${msg.role === 'user' ? 'Patient' : 'Symtra'}: ${msg.text}\n`;
+        extractionFullPrompt += `${msg.role === 'user' ? 'Patient' : 'Symtra'}: ${msg.text}\n`;
       }
-      p += '\nExtract and output JSON now:';
-      return p;
-    })();
-
-    // Run main Symtra call and extraction call in parallel
-    const [raw, extractionRaw] = await Promise.all([
-      callOpenRouter(fullPrompt).then(r => r.trim()),
-      extractionFullPrompt
-        ? callOpenRouter(extractionFullPrompt).then(r => r.trim()).catch(err => { console.warn('[Extraction] failed:', err.message); return null; })
-        : Promise.resolve(null)
-    ]);
-
-    // Parse extraction agent result and store in session
-    if (extractionRaw) {
-      const extMatch = extractionRaw.match(/\{[\s\S]*\}/);
-      if (extMatch) {
-        try { session.extractedData = JSON.parse(extMatch[0]); }
-        catch { console.warn('[Extraction] JSON parse failed'); }
+      extractionFullPrompt += '\nExtract and output JSON now:';
+      try {
+        const extractionRaw = (await callOpenRouter(extractionFullPrompt)).trim();
+        const extMatch = extractionRaw.match(/\{[\s\S]*\}/);
+        if (extMatch) {
+          try { session.extractedData = JSON.parse(extMatch[0]); }
+          catch { console.warn('[Extraction] JSON parse failed'); }
+        }
+      } catch (err) {
+        console.warn('[Extraction] call failed:', err.message);
       }
     }
+
+    // ── Step 2: Inject extracted data into Symtra's prompt ──────────────────
+    // Symtra reads both the clean structured data AND the raw conversation.
+    if (!isInit && session.extractedData) {
+      const extractedBlock =
+        `=== STRUCTURED PATIENT DATA (extracted & normalized by extraction agent) ===\n` +
+        `Use this clean structured data as the primary source for diagnosis and triage decisions.\n` +
+        `You may also refer to the raw conversation history for additional context and nuance.\n\n` +
+        JSON.stringify(session.extractedData, null, 2) + '\n' +
+        `=== END STRUCTURED PATIENT DATA ===\n\n`;
+      fullPrompt = fullPrompt.replace(
+        `Patient's latest message: ${message}\n\nYour JSON response:`,
+        extractedBlock + `Patient's latest message: ${message}\n\nYour JSON response:`
+      );
+    }
+
+    // ── Step 3: Run main Symtra call with enriched prompt ───────────────────
+    const raw = (await callOpenRouter(fullPrompt)).trim();
 
     // Robustly extract the JSON object — handles code fences, preamble text, etc.
     let parsed;
