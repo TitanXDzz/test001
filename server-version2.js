@@ -921,11 +921,25 @@ app.post('/chat', async (req, res) => {
     }
 
     // 3. Schema completion enforcement: prevent conclusion if required fields are missing
-    // A field counts as covered if collectedFields[f]=true OR it was already asked about (askedFields)
+    // A field counts as collected if ANY of:
+    //   (a) collectedFields[f] = true  (LLM self-reported)
+    //   (b) askedFields includes it    (Symtra asked this turn or earlier)
+    //   (c) extractedData has it as non-null — including [] which means "asked, answered none"
+    const ex = session.extractedData;
+    const extractedCollected = {
+      age:               ex?.patient_info?.age !== null && ex?.patient_info?.age !== undefined,
+      biological_sex:    ex?.patient_info?.biological_sex !== null && ex?.patient_info?.biological_sex !== undefined,
+      pregnancy_status:  ex?.patient_info?.pregnancy_status !== null && ex?.patient_info?.pregnancy_status !== undefined,
+      medications:       ex?.medications !== null && ex?.medications !== undefined,
+      allergies:         ex?.allergies !== null && ex?.allergies !== undefined,
+      medical_history:   ex?.medical_history?.conditions !== null && ex?.medical_history?.conditions !== undefined,
+      chief_complaint:   ex?.chief_complaint?.symptom !== null && ex?.chief_complaint?.symptom !== undefined,
+    };
+
     const REQUIRED_FOR_CONCLUSION = ['age', 'biological_sex', 'pregnancy_status', 'medications', 'allergies', 'medical_history', 'chief_complaint'];
     if (action === 'CONTINUE' || action === 'SEEK_HELP_SOON') {
       const missing = REQUIRED_FOR_CONCLUSION.filter(
-        f => !session.collectedFields[f] && !(session.askedFields || []).includes(f)
+        f => !session.collectedFields[f] && !(session.askedFields || []).includes(f) && !extractedCollected[f]
       );
       if (missing.length > 0) {
         console.log(`[Schema enforcement] Downgraded ${action} → ASKING. Missing: ${missing.join(', ')}`);

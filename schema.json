@@ -47,17 +47,9 @@
     "surgeries": ["string"]
   },
 
-  "medications": [
-    {
-      "name": "string (non-empty)",
-      "dose": "string | null",
-      "frequency": "string | null"
-    }
-  ],
+  "medications": "null (not yet asked) | [] (asked, patient said none) | [{name, dose, frequency}]",
 
-  "allergies": [
-    "string (allergen name only)"
-  ],
+  "allergies": "null (not yet asked) | [] (asked, patient said none) | [string]",
 
   "red_flags": {
     "detected": "boolean",
