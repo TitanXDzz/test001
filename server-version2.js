@@ -416,6 +416,147 @@ function enforceConditionTriage(llmAction, matchedConditions) {
   return highest;
 }
 
+// ── Adaptive Question Selection ───────────────────────────────────────────────
+// Scores candidate questions by how well they differentiate top competing diagnoses.
+// This is a suggestion layer only — safety, schema, and contradiction logic always win.
+
+const ADAPTIVE_QUESTION_BANK = {
+  // Respiratory
+  'loss of smell':      { question: 'Have you noticed any loss of smell or taste?',                             triage_relevant: false },
+  'cough':              { question: 'Do you have a cough?',                                                      triage_relevant: false },
+  'sore throat':        { question: 'Do you have a sore throat?',                                                triage_relevant: false },
+  'runny nose':         { question: 'Do you have a runny or blocked nose?',                                      triage_relevant: false },
+  'body ache':          { question: 'Are you experiencing body aches or muscle pain?',                           triage_relevant: false },
+  'fatigue':            { question: 'Are you feeling unusually tired or fatigued?',                              triage_relevant: false },
+  'wheezing':           { question: 'Do you hear a whistling sound when you breathe?',                           triage_relevant: true  },
+  'shortness of breath':{ question: 'Are you experiencing any shortness of breath?',                             triage_relevant: true  },
+  'chest pain':         { question: 'Do you have any chest pain or tightness?',                                  triage_relevant: true  },
+  // Cardiac
+  'palpitations':       { question: 'Have you noticed your heart racing or beating irregularly?',                triage_relevant: true  },
+  'sweating':           { question: 'Are you sweating more than usual, or having cold sweats?',                  triage_relevant: true  },
+  // Neurological
+  'headache':           { question: 'Do you have a headache?',                                                   triage_relevant: false },
+  'dizziness':          { question: 'Are you feeling dizzy or lightheaded?',                                     triage_relevant: false },
+  'confusion':          { question: 'Are you feeling confused or having trouble thinking clearly?',               triage_relevant: true  },
+  'vision changes':     { question: 'Have you noticed any changes in your vision?',                              triage_relevant: true  },
+  'numbness':           { question: 'Are you experiencing any numbness or tingling?',                            triage_relevant: true  },
+  // Gastrointestinal
+  'nausea':             { question: 'Are you feeling nauseous?',                                                  triage_relevant: false },
+  'vomiting':           { question: 'Have you been vomiting?',                                                    triage_relevant: false },
+  'diarrhea':           { question: 'Have you had diarrhea?',                                                     triage_relevant: false },
+  'abdominal pain':     { question: 'Do you have any stomach or abdominal pain?',                                triage_relevant: false },
+  'loss of appetite':   { question: 'Have you lost your appetite recently?',                                     triage_relevant: false },
+  'bloating':           { question: 'Are you experiencing bloating or a swollen abdomen?',                       triage_relevant: false },
+  'heartburn':          { question: 'Do you have a burning feeling in your chest or throat after eating?',       triage_relevant: false },
+  // Infection / fever
+  'fever':              { question: 'Do you have a fever or feel feverish?',                                     triage_relevant: false },
+  'chills':             { question: 'Are you experiencing chills or shivering?',                                 triage_relevant: false },
+  'night sweats':       { question: 'Do you wake up with night sweats?',                                         triage_relevant: false },
+  'stiff neck':         { question: 'Do you have a stiff neck or pain when turning your head?',                  triage_relevant: true  },
+  'light sensitivity':  { question: 'Are your eyes sensitive to bright light?',                                  triage_relevant: true  },
+  // Skin
+  'rash':               { question: 'Have you noticed any rash or skin changes?',                                triage_relevant: false },
+  'itching':            { question: 'Are you experiencing itching on your skin?',                                triage_relevant: false },
+  'jaundice':           { question: 'Has your skin or the whites of your eyes turned yellowish?',                triage_relevant: true  },
+  // Urinary
+  'painful urination':  { question: 'Does it hurt or burn when you urinate?',                                    triage_relevant: false },
+  'frequent urination': { question: 'Are you urinating more frequently than usual?',                             triage_relevant: false },
+  'blood in urine':     { question: 'Have you noticed any blood in your urine?',                                 triage_relevant: true  },
+  'lower back pain':    { question: 'Do you have any pain in your lower back or sides?',                         triage_relevant: false },
+  // Musculoskeletal
+  'joint pain':         { question: 'Are you experiencing pain or swelling in any joints?',                      triage_relevant: false },
+  'back pain':          { question: 'Do you have any back pain?',                                                triage_relevant: false },
+  'muscle weakness':    { question: 'Are you feeling unusual muscle weakness?',                                  triage_relevant: true  },
+  // ENT / head
+  'ear pain':           { question: 'Do you have any ear pain or fullness in your ears?',                        triage_relevant: false },
+  'nasal congestion':   { question: 'Do you have a blocked or congested nose?',                                  triage_relevant: false },
+  'swollen glands':     { question: 'Have you noticed any swollen or tender lumps in your neck or armpits?',    triage_relevant: false },
+  // General
+  'weight loss':        { question: 'Have you lost weight unexpectedly in recent weeks?',                        triage_relevant: false },
+  'anxiety':            { question: 'Are you experiencing unusual anxiety or restlessness?',                     triage_relevant: false },
+  'swelling':           { question: 'Do you have any swelling in your legs, feet, or ankles?',                   triage_relevant: false },
+};
+
+// Map a condition's key_symptoms + red_flags text to matching question bank symptom keys
+function getConditionAdaptiveSymptoms(cond) {
+  const text = ((cond.key_symptoms || '') + ' ' + (cond.red_flags || '')).toLowerCase();
+  return Object.keys(ADAPTIVE_QUESTION_BANK).filter(sym => text.includes(sym));
+}
+
+// Derive confirmed symptom set from extracted data
+function getConfirmedSymptoms(extractedData) {
+  const s = new Set();
+  if (!extractedData) return s;
+  if (extractedData.chief_complaint?.symptom)
+    s.add(extractedData.chief_complaint.symptom.toLowerCase().trim());
+  (extractedData.symptoms || []).forEach(x => { if (x?.name) s.add(x.name.toLowerCase().trim()); });
+  (extractedData.associated_symptoms || []).forEach(x => { if (x) s.add(x.toLowerCase().trim()); });
+  return s;
+}
+
+// Main adaptive question scorer
+// Returns the best next question, or null if nothing to suggest
+function computeAdaptiveQuestion(topMatches, extractedData, adaptiveAsked) {
+  if (!topMatches || topMatches.length < 2) return null;
+
+  const top = topMatches.slice(0, 4);
+  const confirmed = getConfirmedSymptoms(extractedData);
+  const asked = adaptiveAsked || new Set();
+
+  // Map each condition to its adaptive symptom set
+  const condSymptomMap = {};
+  for (const mc of top) {
+    const cond = conditions.find(c => c.condition.toLowerCase() === mc.condition.toLowerCase());
+    condSymptomMap[mc.condition] = cond ? getConditionAdaptiveSymptoms(cond) : [];
+  }
+
+  // Build candidate pool: symptom → set of top conditions that have it
+  const pool = new Map();
+  for (const [condName, syms] of Object.entries(condSymptomMap)) {
+    for (const sym of syms) {
+      if (!pool.has(sym)) pool.set(sym, new Set());
+      pool.get(sym).add(condName);
+    }
+  }
+
+  const scored = [];
+  for (const [sym, condSet] of pool) {
+    if (asked.has(sym)) continue;   // −5 → skip entirely
+    // Skip if already confirmed (answer known)
+    const alreadyKnown = [...confirmed].some(cs => cs.includes(sym) || sym.includes(cs));
+    if (alreadyKnown) continue;
+
+    let score = 0;
+    // +3 if distinguishes (present in some but not all top conditions)
+    if (condSet.size > 0 && condSet.size < top.length) score += 3;
+    // +2 if triage-relevant
+    if (ADAPTIVE_QUESTION_BANK[sym]?.triage_relevant) score += 2;
+    // +2 symptom not yet known
+    score += 2;
+    // +1 per condition it excludes (exclusivity bonus)
+    score += (top.length - condSet.size);
+
+    scored.push({ sym, score, condSet: [...condSet] });
+  }
+
+  if (scored.length === 0) return null;
+  scored.sort((a, b) => b.score - a.score);
+
+  const best = scored[0];
+  const absentIn = top.filter(c => !best.condSet.includes(c.condition)).map(c => c.condition);
+  const rationale = absentIn.length > 0
+    ? `Distinguishes ${best.condSet.join(' / ')} from ${absentIn.join(' / ')}`
+    : `Key symptom for ${best.condSet.join(', ')}`;
+
+  return {
+    symptom:        best.sym,
+    question:       ADAPTIVE_QUESTION_BANK[best.sym]?.question || `Do you have ${best.sym}?`,
+    score:          best.score,
+    rationale,
+    triage_relevant: ADAPTIVE_QUESTION_BANK[best.sym]?.triage_relevant || false
+  };
+}
+
 // ── Extracted Data Validator ──────────────────────────────────────────────────
 // Checks completeness (required fields that are still null) and
 // correctness (filled fields that have invalid values).
@@ -994,7 +1135,9 @@ function getSession(id) {
       red_flag_screened: false
     },
     interviewStage: 1,
-    extractedData: null
+    extractedData: null,
+    adaptiveAskedSymptoms: new Set(),
+    adaptiveSuggestion: null
   });
   return sessions.get(id);
 }
@@ -1122,6 +1265,23 @@ app.post('/chat', async (req, res) => {
     // Deterministic lookup — converts normalized symptoms to candidate conditions.
     session.symptomMatches = lookupConditionsBySymptoms(session.extractedData);
 
+    // ── Step 3b: Adaptive question selection ─────────────────────────────────
+    // Runs AFTER red flags, AFTER schema check, AFTER symptom lookup.
+    // Picks the question that best differentiates the top competing diagnoses.
+    session.adaptiveSuggestion = null;
+    if (!isInit && session.symptomMatches && session.symptomMatches.length >= 2) {
+      const suggestion = computeAdaptiveQuestion(
+        session.symptomMatches,
+        session.extractedData,
+        session.adaptiveAskedSymptoms
+      );
+      if (suggestion) {
+        session.adaptiveSuggestion = suggestion;
+        // Mark this symptom as asked so we don't suggest it again next turn
+        session.adaptiveAskedSymptoms.add(suggestion.symptom);
+      }
+    }
+
     // ── Step 4: Inject all enriched data into Symtra's prompt ────────────────
     // Symtra gets: matched candidates + validation report + clean structured data
     // + raw conversation. Plain text is always available for nuance.
@@ -1169,9 +1329,23 @@ app.post('/chat', async (req, res) => {
           `=== END RE-ASK ===\n\n`
         : '';
 
+      const adaptiveBlock = session.adaptiveSuggestion
+        ? `=== ADAPTIVE QUESTION SUGGESTION ===\n` +
+          `Based on the top competing diagnoses, the most informative next question is:\n` +
+          `  "${session.adaptiveSuggestion.question}"\n` +
+          `  Target symptom: ${session.adaptiveSuggestion.symptom}\n` +
+          `  Rationale: ${session.adaptiveSuggestion.rationale}\n` +
+          (session.adaptiveSuggestion.triage_relevant
+            ? `  ⚠️ This symptom is triage-relevant — asking it is a safety priority.\n`
+            : '') +
+          `You SHOULD ask this (or a natural rephrasing) unless a higher-priority item is pending\n` +
+          `(red flag, contradiction, ambiguity, required schema field, or re-ask).\n` +
+          `=== END ADAPTIVE SUGGESTION ===\n\n`
+        : '';
+
       fullPrompt = fullPrompt.replace(
         `Patient's latest message: ${message}\n\nYour JSON response:`,
-        symptomMatchBlock + validationBlock + extractedBlock + reaskBlock + `Patient's latest message: ${message}\n\nYour JSON response:`
+        symptomMatchBlock + validationBlock + extractedBlock + reaskBlock + adaptiveBlock + `Patient's latest message: ${message}\n\nYour JSON response:`
       );
     }
 
