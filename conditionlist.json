@@ -383,5 +383,285 @@
     "tag": "SEEK_HELP_SOON",
     "key_symptoms": "sudden fear chest tightness rapid breathing",
     "red_flags": "fainting persistent chest pain"
+  },
+  {
+    "condition": "Upper respiratory infection",
+    "category": "Respiratory",
+    "tag": "CONTINUE",
+    "key_symptoms": "runny nose cough sore throat fatigue",
+    "red_flags": "breathing difficulty chest pain high fever"
+  },
+  {
+    "condition": "Acute sinusitis moderate",
+    "category": "Respiratory",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "facial pain nasal congestion thick nasal discharge",
+    "red_flags": "eye swelling severe headache severe facial pain"
+  },
+  {
+    "condition": "Mild asthma exacerbation",
+    "category": "Respiratory",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "wheezing cough mild shortness of breath chest tightness",
+    "red_flags": "severe breathing difficulty inability to speak blue lips"
+  },
+  {
+    "condition": "Benign palpitations suspected",
+    "category": "Cardiac",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "heart racing irregular heartbeat fluttering sensation",
+    "red_flags": "fainting chest pain shortness of breath"
+  },
+  {
+    "condition": "Concussion mild",
+    "category": "Neurological",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "head injury headache dizziness nausea",
+    "red_flags": "loss of consciousness confusion repeated vomiting"
+  },
+  {
+    "condition": "Gastroenteritis mild",
+    "category": "Gastrointestinal",
+    "tag": "CONTINUE",
+    "key_symptoms": "diarrhea vomiting stomach cramps mild fever",
+    "red_flags": "severe dehydration blood in stool inability to drink fluids"
+  },
+  {
+    "condition": "Gastroenteritis severe",
+    "category": "Gastrointestinal",
+    "tag": "SEEK_HELP_IMMEDIATELY",
+    "key_symptoms": "persistent vomiting severe diarrhea weakness dehydration",
+    "red_flags": "confusion fainting inability to drink fluids"
+  },
+  {
+    "condition": "Hemorrhoids suspected",
+    "category": "Gastrointestinal",
+    "tag": "CONTINUE",
+    "key_symptoms": "bright red blood in stool rectal pain itching",
+    "red_flags": "heavy bleeding severe pain dizziness"
+  },
+  {
+    "condition": "Urticaria",
+    "category": "Dermatology",
+    "tag": "CONTINUE",
+    "key_symptoms": "hives itchy rash raised welts",
+    "red_flags": "breathing difficulty lip swelling throat swelling"
+  },
+  {
+    "condition": "Minor burn",
+    "category": "Dermatology",
+    "tag": "CONTINUE",
+    "key_symptoms": "red skin burn pain small blisters",
+    "red_flags": "large burn severe pain facial burn"
+  },
+  {
+    "condition": "Back strain",
+    "category": "Musculoskeletal",
+    "tag": "CONTINUE",
+    "key_symptoms": "lower back pain muscle stiffness pain with movement",
+    "red_flags": "leg weakness numbness loss of bladder control"
+  },
+  {
+    "condition": "Joint sprain moderate",
+    "category": "Musculoskeletal",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "joint pain swelling limited movement",
+    "red_flags": "inability to bear weight joint deformity"
+  },
+  {
+    "condition": "Acute stress reaction",
+    "category": "Mental",
+    "tag": "CONTINUE",
+    "key_symptoms": "anxiety restlessness difficulty sleeping feeling overwhelmed",
+    "red_flags": "fainting chest pain suicidal thoughts"
+  },
+  {
+    "condition": "Bacterial conjunctivitis suspected",
+    "category": "Eye",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "red eye discharge sticky eyelids irritation",
+    "red_flags": "vision loss severe eye pain light sensitivity"
+  },
+  {
+    "condition": "Viral conjunctivitis",
+    "category": "Eye",
+    "tag": "CONTINUE",
+    "key_symptoms": "red eye watery discharge irritation",
+    "red_flags": "vision loss severe eye pain"
+  },
+  {
+    "condition": "Acute glaucoma suspected",
+    "category": "Eye",
+    "tag": "SEEK_HELP_IMMEDIATELY",
+    "key_symptoms": "severe eye pain blurred vision headache nausea",
+    "red_flags": "sudden vision loss severe eye pain vomiting"
+  },
+  {
+    "condition": "Otitis externa suspected",
+    "category": "ENT",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "outer ear pain itching ear tenderness discharge",
+    "red_flags": "severe swelling fever spreading redness"
+  },
+  {
+    "condition": "Tonsillitis suspected",
+    "category": "Respiratory",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "sore throat fever swollen tonsils painful swallowing",
+    "red_flags": "difficulty breathing inability to swallow drooling"
+  },
+  {
+    "condition": "Peritonsillar abscess suspected",
+    "category": "Respiratory",
+    "tag": "SEEK_HELP_IMMEDIATELY",
+    "key_symptoms": "severe sore throat muffled voice drooling one sided throat pain",
+    "red_flags": "breathing difficulty inability to swallow worsening swelling"
+  },
+  {
+    "condition": "Croup suspected",
+    "category": "Respiratory",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "barking cough hoarse voice noisy breathing",
+    "red_flags": "stridor at rest breathing difficulty blue lips"
+  },
+  {
+    "condition": "Bronchiolitis suspected",
+    "category": "Respiratory",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "wheezing cough fast breathing poor feeding",
+    "red_flags": "breathing difficulty blue lips exhaustion"
+  },
+  {
+    "condition": "Diarrhea mild",
+    "category": "Gastrointestinal",
+    "tag": "CONTINUE",
+    "key_symptoms": "loose stools stomach cramps urgency",
+    "red_flags": "blood in stool severe dehydration persistent vomiting"
+  },
+  {
+    "condition": "Bowel obstruction suspected",
+    "category": "Gastrointestinal",
+    "tag": "SEEK_HELP_IMMEDIATELY",
+    "key_symptoms": "severe abdominal pain vomiting bloating inability to pass stool",
+    "red_flags": "persistent vomiting severe distension shock symptoms"
+  },
+  {
+    "condition": "GI bleeding suspected",
+    "category": "Gastrointestinal",
+    "tag": "SEEK_HELP_IMMEDIATELY",
+    "key_symptoms": "black stool vomiting blood weakness dizziness",
+    "red_flags": "fainting heavy bleeding confusion"
+  },
+  {
+    "condition": "Vertigo suspected",
+    "category": "Neurological",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "spinning sensation nausea imbalance worsened by movement",
+    "red_flags": "new weakness severe headache double vision"
+  },
+  {
+    "condition": "Sciatica suspected",
+    "category": "Musculoskeletal",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "lower back pain leg pain tingling numbness",
+    "red_flags": "leg weakness loss of bladder control saddle numbness"
+  },
+  {
+    "condition": "Gout suspected",
+    "category": "Musculoskeletal",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "sudden joint pain swelling redness warmth",
+    "red_flags": "fever inability to bear weight spreading redness"
+  },
+  {
+    "condition": "Shingles suspected",
+    "category": "Dermatology",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "painful blistering rash burning tingling one sided rash",
+    "red_flags": "eye involvement facial weakness severe pain"
+  },
+  {
+    "condition": "Skin abscess suspected",
+    "category": "Dermatology",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "painful skin lump redness warmth pus",
+    "red_flags": "fever spreading redness severe swelling"
+  },
+  {
+    "condition": "Pilonidal abscess suspected",
+    "category": "Dermatology",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "painful swelling near tailbone redness drainage",
+    "red_flags": "fever rapidly worsening pain spreading redness"
+  },
+  {
+    "condition": "Suicidal crisis",
+    "category": "Mental",
+    "tag": "SEEK_HELP_IMMEDIATELY",
+    "key_symptoms": "suicidal thoughts hopelessness intent self harm thoughts",
+    "red_flags": "suicide plan suicide attempt inability to stay safe"
+  },
+  {
+    "condition": "Urinary retention suspected",
+    "category": "Urinary",
+    "tag": "SEEK_HELP_IMMEDIATELY",
+    "key_symptoms": "unable to urinate lower abdominal pain bladder fullness",
+    "red_flags": "severe pain confusion inability to pass urine"
+  },
+  {
+    "condition": "Testicular torsion suspected",
+    "category": "Genitourinary",
+    "tag": "SEEK_HELP_IMMEDIATELY",
+    "key_symptoms": "sudden testicle pain swelling nausea",
+    "red_flags": "severe pain high riding testicle vomiting"
+  },
+  {
+    "condition": "Ectopic pregnancy suspected",
+    "category": "Gynecological",
+    "tag": "SEEK_HELP_IMMEDIATELY",
+    "key_symptoms": "lower abdominal pain vaginal bleeding missed period dizziness",
+    "red_flags": "fainting severe pain shoulder pain heavy bleeding"
+  },
+  {
+    "condition": "Miscarriage suspected",
+    "category": "Gynecological",
+    "tag": "SEEK_HELP_IMMEDIATELY",
+    "key_symptoms": "vaginal bleeding cramping pregnancy symptoms decreasing",
+    "red_flags": "heavy bleeding fainting severe pain"
+  },
+  {
+    "condition": "Heavy menstrual bleeding",
+    "category": "Gynecological",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "very heavy period passing clots fatigue dizziness",
+    "red_flags": "fainting severe weakness soaking pads rapidly"
+  },
+  {
+    "condition": "Hypertensive emergency suspected",
+    "category": "Cardiac",
+    "tag": "SEEK_HELP_IMMEDIATELY",
+    "key_symptoms": "very high blood pressure headache chest pain shortness of breath",
+    "red_flags": "neurological symptoms chest pain confusion vision changes"
+  },
+  {
+    "condition": "Deep vein thrombosis suspected",
+    "category": "Vascular",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "one sided leg swelling calf pain warmth redness",
+    "red_flags": "shortness of breath chest pain fainting"
+  },
+  {
+    "condition": "Heat exhaustion",
+    "category": "General",
+    "tag": "SEEK_HELP_SOON",
+    "key_symptoms": "heavy sweating dizziness weakness nausea headache",
+    "red_flags": "confusion fainting persistent vomiting"
+  },
+  {
+    "condition": "Heat stroke suspected",
+    "category": "General",
+    "tag": "SEEK_HELP_IMMEDIATELY",
+    "key_symptoms": "high body temperature confusion hot skin weakness",
+    "red_flags": "loss of consciousness seizures confusion"
   }
 ]

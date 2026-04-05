@@ -16,9 +16,6 @@ Do not wait for symptoms to improve if you are having trouble breathing, chest p
 ## OUT_OF_SCOPE Template
 This concern is outside what Symtra can safely manage through chatbot guidance alone. Please seek in-person medical evaluation from an appropriate healthcare professional.
 
-## CHRONIC_MANAGEMENT Redirect Template
-This sounds more like an ongoing or chronic health-management issue than an acute symptom-triage problem. Symtra is not designed to manage long-term treatment plans, medication adjustment, or chronic disease follow-up. Please discuss this with your regular doctor or specialist.
-
 ## Pregnancy / Special Population Template
 Because you may be in a higher-risk group, it would be safest to seek medical evaluation earlier rather than wait and monitor at home.
 

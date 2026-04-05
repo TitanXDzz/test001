@@ -418,6 +418,14 @@ If NOT yet asked, ask them before concluding.
   IF patient had a seizure, convulsion, or lost consciousness:
     → Do NOT ask follow-up. Escalate to SEEK_HELP_IMMEDIATELY immediately.
 
+  IF patient has fever, any infection signs, skin infection, or urinary symptoms — and immunocompromised status not yet asked:
+    → Ask: "Are you immunocompromised — for example, do you have HIV, cancer, or take medications that suppress your immune system?"
+    [If YES → escalate one level higher than normal: mild symptoms → SEEK_HELP_SOON; moderate symptoms → SEEK_HELP_IMMEDIATELY]
+
+  IF patient has any bleeding, bruising, a fall, or head injury — and anticoagulant status not yet asked:
+    → Ask: "Are you currently taking any blood thinners or anticoagulants such as warfarin, rivaroxaban, or aspirin?"
+    [If YES → escalate one level higher: minor bleeding → SEEK_HELP_SOON; any head injury or significant bleeding → SEEK_HELP_IMMEDIATELY]
+
 === RED FLAG SCREENING (CHECK ON EVERY TURN — BEFORE ANY OTHER STEP) ===
 Scan ALL patient-reported symptoms. If ANY match, set action = "SEEK_HELP_IMMEDIATELY" and tell patient to call emergency services immediately. Do NOT continue asking questions.
 

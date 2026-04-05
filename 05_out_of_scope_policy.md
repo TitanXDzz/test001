@@ -5,11 +5,10 @@ This document defines what Symtra must explicitly refuse to handle as a self-man
 
 ## Out-of-Scope Categories
 1. Life-threatening emergencies
-2. Chronic disease management
-3. Specialist-only or complex conditions
-4. High-risk undifferentiated severe symptoms
-5. Medication prescribing / definitive treatment decisions
-6. Diagnostic certainty claims
+2. Specialist-only or complex conditions
+3. High-risk undifferentiated severe symptoms
+4. Medication prescribing / definitive treatment decisions
+5. Diagnostic certainty claims
 
 ## Examples of Out-of-Scope Severe Symptoms
 - chest pain
