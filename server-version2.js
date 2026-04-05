@@ -64,6 +64,43 @@ const conditionsText = conditions.map((c, i) =>
   `  [${i + 1}] "${c.condition}" | category: ${c.category} | tag: ${c.tag} | key_symptoms: ${c.key_symptoms} | red_flags: ${c.red_flags}`
 ).join('\n');
 
+// ── Symptom-to-Condition Lookup ───────────────────────────────────────────────
+// Deterministic server-side lookup: takes normalized symptom names from extracted
+// data and finds matching conditions by substring-matching against key_symptoms
+// and red_flags fields in conditionlist.json.
+function lookupConditionsBySymptoms(extractedData) {
+  if (!extractedData) return [];
+
+  // Collect all normalized symptom names from extracted data
+  const symptomNames = new Set();
+  if (extractedData.chief_complaint?.symptom)
+    symptomNames.add(extractedData.chief_complaint.symptom.toLowerCase().trim());
+  if (Array.isArray(extractedData.symptoms))
+    extractedData.symptoms.forEach(s => { if (s?.name) symptomNames.add(s.name.toLowerCase().trim()); });
+  if (Array.isArray(extractedData.associated_symptoms))
+    extractedData.associated_symptoms.forEach(s => { if (s) symptomNames.add(s.toLowerCase().trim()); });
+
+  if (symptomNames.size === 0) return [];
+
+  const results = [];
+  for (const cond of conditions) {
+    const searchText = ((cond.key_symptoms || '') + ' ' + (cond.red_flags || '')).toLowerCase();
+    const matched = [...symptomNames].filter(sym => searchText.includes(sym));
+    if (matched.length > 0) {
+      results.push({
+        condition: cond.condition,
+        category:  cond.category,
+        tag:       cond.tag,
+        matched_symptoms: matched,
+        match_count:      matched.length
+      });
+    }
+  }
+
+  // Sort by number of matched symptoms (most relevant first)
+  return results.sort((a, b) => b.match_count - a.match_count);
+}
+
 // ── Load red flag list ──
 let redFlagData;
 try { redFlagData = JSON.parse(fs.readFileSync('redflaglist.json', 'utf8')); }
@@ -931,10 +968,31 @@ app.post('/chat', async (req, res) => {
     // ── Step 2: Validate extracted data ─────────────────────────────────────
     session.validationResult = validateExtractedData(session.extractedData);
 
-    // ── Step 3: Inject extracted data + validation report into Symtra's prompt
-    // Symtra reads clean structured data AND knows exactly what's missing/wrong.
+    // ── Step 3: Symptom-to-condition lookup ──────────────────────────────────
+    // Deterministic lookup — converts normalized symptoms to candidate conditions.
+    session.symptomMatches = lookupConditionsBySymptoms(session.extractedData);
+
+    // ── Step 4: Inject all enriched data into Symtra's prompt ────────────────
+    // Symtra gets: matched candidates + validation report + clean structured data
+    // + raw conversation. Plain text is always available for nuance.
     if (!isInit && session.extractedData) {
       const vr = session.validationResult;
+      const sm = session.symptomMatches;
+
+      const symptomMatchBlock = sm.length > 0
+        ? `=== SYMPTOM-MATCHED CONDITIONS (deterministic lookup from normalized symptoms) ===\n` +
+          `These conditions matched the patient's normalized symptoms from the condition database.\n` +
+          `Use these as your primary differential diagnosis candidates.\n` +
+          `You may still consider other conditions if clinically warranted.\n\n` +
+          sm.map(m =>
+            `  - "${m.condition}" [${m.tag}] | category: ${m.category} | matched: ${m.matched_symptoms.join(', ')} (${m.match_count} symptom${m.match_count > 1 ? 's' : ''})`
+          ).join('\n') + '\n' +
+          `=== END SYMPTOM-MATCHED CONDITIONS ===\n\n`
+        : `=== SYMPTOM-MATCHED CONDITIONS ===\n` +
+          `No conditions matched yet — patient symptoms are not yet normalized or too vague.\n` +
+          `Use the full condition database and raw conversation to guide your questions.\n` +
+          `=== END SYMPTOM-MATCHED CONDITIONS ===\n\n`;
+
       const validationBlock =
         `=== DATA VALIDATION REPORT ===\n` +
         (vr.missing.length > 0
@@ -948,17 +1006,17 @@ app.post('/chat', async (req, res) => {
       const extractedBlock =
         `=== STRUCTURED PATIENT DATA (extracted & normalized by extraction agent) ===\n` +
         `Use this as the primary source for diagnosis and triage decisions.\n` +
-        `You may also refer to the raw conversation history for context and nuance.\n\n` +
+        `You may also refer to the raw conversation history below for context and nuance.\n\n` +
         JSON.stringify(session.extractedData, null, 2) + '\n' +
         `=== END STRUCTURED PATIENT DATA ===\n\n`;
 
       fullPrompt = fullPrompt.replace(
         `Patient's latest message: ${message}\n\nYour JSON response:`,
-        validationBlock + extractedBlock + `Patient's latest message: ${message}\n\nYour JSON response:`
+        symptomMatchBlock + validationBlock + extractedBlock + `Patient's latest message: ${message}\n\nYour JSON response:`
       );
     }
 
-    // ── Step 3: Run main Symtra call with enriched prompt ───────────────────
+    // ── Step 5: Run main Symtra call with fully enriched prompt ─────────────
     const raw = (await callOpenRouter(fullPrompt)).trim();
 
     // Robustly extract the JSON object — handles code fences, preamble text, etc.
@@ -1118,7 +1176,8 @@ app.post('/chat', async (req, res) => {
       session_ended: session.ended,
       turn: turnNumber,
       extracted_data: session.extractedData || null,
-      validation_result: session.validationResult || null
+      validation_result: session.validationResult || null,
+      symptom_matched_conditions: session.symptomMatches || []
     });
 
   } catch (err) {
